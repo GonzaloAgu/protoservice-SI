@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Electroservice - Ingresar electrodoméstico</title>
+  <link rel="stylesheet" href="./styles/styles.css">
+  <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+  <script src="./views/ingreso_producto.js"></script>
+</head>
+
+<body>
+  <h1 id="title">ELECTROSERVICE</h1>
+  <div class="navbar">
+    <a href="/nuevareparacion">Nueva Reparación</a>
+    <a href="/consulta">Consultar Reparaciones</a>
+  </div>
+  <form id="survey-form" class="maincontainer">
+    <fieldset>
+      <h3>Información de producto</h3>
+      <div class="input-container">
+        <label class="third">Tipo
+          <select id="tipo-input" required>
+            <option value="0">Sin especificar</option>
+          </select>
+        </label>
+        <label class="third">Fabricante
+          <select id="fabricante-input" required>
+            <option value="0">Sin especificar</option>
+          </select>
+        </label>
+        <label class="third">Modelo(*)
+          <input class="texto-input" id="modelo-input" type="text" required maxlength="30">
+        </label>
+        <label>Fallo
+          <textarea class="texto-input" id="falla-input" required maxlength="140"></textarea>
+        </label>
+      </div>
+      <hr>
+      <h3>Información del cliente</h3>
+      <div class="input-container">
+        <label class="third">DNI(*)<input id="dni-input" type="number" required max="99999999"></label>
+        <label class="third">Nombre<input id="nombre-input" type="text" maxlength="50"></label>
+        <label class="third">Telefono <input id="telefono-input" type="number" maxlength="12"></label>
+        <hr>
+        <input type="submit" id="submit" value="Ingresar">
+      </div>
+    </fieldset>
+  </form>
+</body>
+
+</html>
