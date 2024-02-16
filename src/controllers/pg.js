@@ -23,11 +23,11 @@ module.exports = class Db {
   }
 
   async obtenerTiposElectro() {
-    return (await this.pool.query('SELECT * FROM tipo_electro;')).rows;
+    return (await this.pool.query('SELECT * FROM tipo_electro ORDER BY descripcion;')).rows;
   }
 
   async obtenerFabricantes() {
-    return (await this.pool.query('SELECT * FROM fabricante')).rows;
+    return (await this.pool.query('SELECT * FROM fabricante ORDER BY descripcion;')).rows;
   }
 
   async nuevaReparacion(reqbody) {

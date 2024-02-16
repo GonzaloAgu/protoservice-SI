@@ -10,10 +10,9 @@ fetch('/tipo-productos')
   })
   .then(data => {
     const datalist = document.getElementById('tipo-input');
-    let values = 1;
     data.forEach(option => {
       const optionElement = document.createElement('option');
-      optionElement.value = values++;
+      optionElement.value = option.id;
       optionElement.text = option.descripcion;
       datalist.appendChild(optionElement);
     });
@@ -33,10 +32,9 @@ fetch('/tipo-productos/fabricante')
   })
   .then(data => {
     const datalist = document.getElementById('fabricante-input');
-    let values = 1;
     data.forEach(option => {
       const optionElement = document.createElement('option');
-      optionElement.value = values++;
+      optionElement.value = option.id;
       optionElement.text = option.descripcion;
       datalist.appendChild(optionElement);
     });
