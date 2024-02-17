@@ -24,6 +24,8 @@ router.get('/', (req, res) => {
 .post('/', validarReqBody, (req, res) => {
     pg.nuevaReparacion(req.body);
     res.json({nombre: req.body.nombre, monto: 10000});
+}).post('/obtenercliente', async(req, res) => {
+    res.json(await pg.buscarCliente(req.body.dni))
 })
 
 module.exports = router;

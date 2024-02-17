@@ -115,7 +115,11 @@ input::-webkit-inner-spin-button {
   font-size: 1em;
 }
 
-
+#nombre-form {
+  margin: auto;
+  justify-content: start;
+  width: 90%;
+}
 
 #submit {
   font-weight: 700;
