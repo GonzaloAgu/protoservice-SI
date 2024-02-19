@@ -21,11 +21,17 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname
         , '../../public/views/ingreso_producto.html'))
 })
-.post('/', validarReqBody, (req, res) => {
-    pg.nuevaReparacion(req.body);
-    res.json({nombre: req.body.nombre, monto: 10000});
+.post('/', validarReqBody, async (req, res) => {
+    res.json(await pg.nuevaReparacion(req.body));
 }).post('/obtenercliente', async(req, res) => {
     res.json(await pg.buscarCliente(req.body.dni))
+}).post('agregarcliente', async(req, res) => {
+    try {
+        pg.agregarCliente(req.body.dni, req.body.nombre, req.body.telefono);
+    } catch(e){
+        res.json({agregado: false, error: e})
+    }
+    res.status(200).json({agregado: true})
 })
 
 module.exports = router;

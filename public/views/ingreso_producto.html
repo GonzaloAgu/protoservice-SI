@@ -20,12 +20,10 @@
         <h3>Información del cliente</h3>
         <div class="input-container" id="nombre-form">
           <label class="third">DNI(*)<input id="dni-input" type="number" required max="99999999"></label>
-          <!--<label class="third">Nombre<input id="nombre-input" type="text" maxlength="50"></label>
-          <label class="third">Telefono <input id="telefono-input" type="number" maxlength="12"></label> -->
       </fieldset>
     </form>
-    <form id="survey-form">
-      <fieldset disabled>
+    <form id="producto-form">
+      <fieldset id="producto-fieldset" disabled>
         <h3>Información de producto</h3>
         <div class="input-container">
           <label class="third">Tipo
@@ -44,7 +42,7 @@
           <label>Fallo
             <textarea class="texto-input" id="falla-input" required maxlength="140"></textarea>
           </label>
-          <input type="submit" id="submit" value="Ingresar">
+          <input type="submit" class="submit" value="Ingresar">
         </div>
       </fieldset>
     </form>
