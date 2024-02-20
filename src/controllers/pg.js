@@ -67,7 +67,7 @@ module.exports = class Db {
   }
 
   async agregarCliente(dni, nombre, telefono) {
-    let result = (await this.pool.query(`SELECT nombre FROM cliente WHERE dni=${dni}`));
+    let result = (await this.pool.query(`SELECT nombre FROM cliente WHERE dni=$1`, [dni]));
     if (result.rowCount === 0) {
       try {
         (await this.pool.query('INSERT INTO cliente(dni, nombre, telefono) VALUES($1, $2, $3)',

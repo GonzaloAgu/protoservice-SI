@@ -5,6 +5,7 @@
   <title>Electroservice - Ingresar electrodoméstico</title>
   <link rel="stylesheet" href="./styles/styles.css">
   <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="./views/ingreso_producto.js"></script>
 </head>
 
@@ -16,10 +17,11 @@
   </div>
   <div class="maincontainer">
     <form id="cliente-form">
-      <fieldset>
-        <h3>Información del cliente</h3>
+      <fieldset id="cliente-fieldset">
+        <h3>Información del cliente</i></h3>
         <div class="input-container" id="nombre-form">
-          <label class="third">DNI(*)<input id="dni-input" type="number" required max="99999999"></label>
+          <label id="dni-label" class="third">DNI(*) <input id="dni-input" type="number" required max="99999999"></label>
+          <input type="submit" style="display: none;"> <!--Permite usar Enter para submitear-->
       </fieldset>
     </form>
     <form id="producto-form">
@@ -42,12 +44,14 @@
           <label>Fallo
             <textarea class="texto-input" id="falla-input" required maxlength="140"></textarea>
           </label>
-          <input type="submit" class="submit" value="Ingresar">
+          <input type="submit" id="main-submit" class="submit" value="Ingresar">
         </div>
       </fieldset>
     </form>
   </div>
-  
+  <div id="successPopup" class="popup">
+    La operación ha sido procesada con éxito.
+  </div>
 </body>
 
 </html>

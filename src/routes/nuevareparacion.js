@@ -25,9 +25,9 @@ router.get('/', (req, res) => {
     res.json(await pg.nuevaReparacion(req.body));
 }).post('/obtenercliente', async(req, res) => {
     res.json(await pg.buscarCliente(req.body.dni))
-}).post('agregarcliente', async(req, res) => {
+}).post('/agregarcliente', async(req, res) => {
     try {
-        pg.agregarCliente(req.body.dni, req.body.nombre, req.body.telefono);
+        pg.agregarCliente(req.body.cliente.dni, req.body.cliente.nombre, req.body.cliente.telefono);
     } catch(e){
         res.json({agregado: false, error: e})
     }
