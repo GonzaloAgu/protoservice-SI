@@ -82,7 +82,7 @@ module.exports = class Db {
   }
 
   async buscarCliente(dni){
-    let result = (await this.pool.query('SELECT nombre FROM cliente WHERE dni=$1', [dni]));
+    let result = (await this.pool.query('SELECT nombre, telefono FROM cliente WHERE dni=$1', [dni]));
     return {
       existe: result.rowCount !== 0,
       cliente: result.rows[0] || false

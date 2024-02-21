@@ -5,6 +5,7 @@ function tildarElemento(id){
 }
 
 function mostrarInfoCliente(nodoPadre, nodoHijo, data) {
+  console.log(data)
   nodoHijo.style.display = "flex";
   nodoHijo.style.alignItems = "center";
   nodoHijo.style.padding = '0 30px';
@@ -120,89 +121,91 @@ fetch('/tipo-productos/fabricante')
     console.error('Error:', error);
   });
 
-/* PROCESAMIENTO DE DATOS DEL FORMULARIO */
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('cliente-form').addEventListener('submit', event => {
-    event.preventDefault();
-    let dni = document.getElementById('dni-input');
-    if (!dniCliente) {
-      dni.setAttribute('disabled', 'true');
-      dniCliente = dni.value;
-      fetch('/nuevareparacion/obtenercliente', {
+function main(){
+    document.getElementById('cliente-form').addEventListener('submit', event => {
+      event.preventDefault();
+      let dni = document.getElementById('dni-input');
+      if (!dniCliente) {
+        dni.setAttribute('disabled', 'true');
+        dniCliente = dni.value;
+        fetch('/nuevareparacion/obtenercliente', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ dni: dniCliente })
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            let nodoPadre = document.getElementById('nombre-form');
+            let nodoHijo = document.createElement('div');
+            if (data.existe) {
+              // indicar que se encontro cliente, mostrar nombre y telefono (si existen)
+              tildarElemento('dni-label')
+              mostrarInfoCliente(nodoPadre, nodoHijo, data);
+              const fieldsetProducto = document.getElementById('producto-fieldset');
+              fieldsetProducto.removeAttribute('disabled');
+            } else {
+              // indicar que el cliente no existe y añadir los campos para rellenar con datos de nuevo cliente
+              popupIngresarCliente();
+            }
+          })
+          .catch(error => {
+            console.error('Error al enviar la solicitud de cliente:', error);
+          })
+      }
+    })
+  
+    let formData;
+  
+    document.getElementById('producto-form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evita que el formulario se envíe automáticamente
+  
+      // Obtiene los valores de los campos del formulario
+      let tipo = document.getElementById('tipo-input').value;
+      let fabricante = document.getElementById('fabricante-input').value;
+      let modelo = document.getElementById('modelo-input').value;
+      let falla = document.getElementById('falla-input').value;
+  
+      // Crea un objeto con los datos del formulario
+      formData = {
+        dni: dniCliente,
+        tipo,
+        fabricante,
+        modelo,
+        falla
+      };
+  
+      // Realiza una solicitud POST al servidor Node.js
+      fetch('/nuevareparacion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ dni: dniCliente })
+        body: JSON.stringify(formData)
       })
-        .then(response => {
+        .then(function (response) {
           return response.json();
         })
-        .then(data => {
-          let nodoPadre = document.getElementById('nombre-form');
-          let nodoHijo = document.createElement('div');
-          if (data.existe) {
-            // indicar que se encontro cliente, mostrar nombre y telefono (si existen)
-            tildarElemento('dni-label')
-            mostrarInfoCliente(nodoPadre, nodoHijo, data);
-            const fieldsetProducto = document.getElementById('producto-fieldset');
-            fieldsetProducto.removeAttribute('disabled');
-          } else {
-            // indicar que el cliente no existe y añadir los campos para rellenar con datos de nuevo cliente
-            popupIngresarCliente();
-          }
+        .then(function (data) {
+          console.log('Respuesta del servidor:', data);
+          document.getElementById('producto-fieldset').setAttribute('disabled', 'true');
+          const popup = document.getElementById('successPopup');
+          popup.classList.add('show');
+          setTimeout(() => {
+            window.location.href = '../'
+          }, 1000);
+          ;
         })
-        .catch(error => {
-          console.error('Error al enviar la solicitud de cliente:', error);
-        })
-    }
-  })
+        .catch(function (error) {
+          const popup = document.getElementById('successPopup');
+          popup.classList.add('fail');
+          console.error('Error al enviar la solicitud:', error);
+        });
+    });
+  }
 
-  let formData;
-
-  document.getElementById('producto-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita que el formulario se envíe automáticamente
-
-    // Obtiene los valores de los campos del formulario
-    let tipo = document.getElementById('tipo-input').value;
-    let fabricante = document.getElementById('fabricante-input').value;
-    let modelo = document.getElementById('modelo-input').value;
-    let falla = document.getElementById('falla-input').value;
-
-    // Crea un objeto con los datos del formulario
-    formData = {
-      dni: dniCliente,
-      tipo,
-      fabricante,
-      modelo,
-      falla
-    };
-
-    // Realiza una solicitud POST al servidor Node.js
-    fetch('/nuevareparacion', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        console.log('Respuesta del servidor:', data);
-        document.getElementById('producto-fieldset').setAttribute('disabled', 'true');
-        const popup = document.getElementById('successPopup');
-        popup.classList.add('show');
-        setTimeout(() => {
-          window.location.href = '../'
-        }, 1000);
-        ;
-      })
-      .catch(function (error) {
-        const popup = document.getElementById('successPopup');
-        popup.classList.add('fail');
-        console.error('Error al enviar la solicitud:', error);
-      });
-  });
-});
+/* PROCESAMIENTO DE DATOS DEL FORMULARIO */
+document.addEventListener('DOMContentLoaded', main);
