@@ -80,7 +80,11 @@ module.exports = class Db {
       throw `El cliente con DNI ${dni} ya existe.`
     }
   }
-
+/**
+ * Devuelve un cliente mediante su DNI
+ * @param {*} dni 
+ * @returns {existe, cliente}
+ */
   async buscarCliente(dni){
     let result = (await this.pool.query('SELECT nombre, telefono FROM cliente WHERE dni=$1', [dni]));
     return {
@@ -88,7 +92,11 @@ module.exports = class Db {
       cliente: result.rows[0] || false
     }
   }
-
+/**
+ * Busca reparaciones en base a término de búsqueda ingresado
+ * @param {*} termino 
+ * @returns resultado de query
+ */
   async buscarReparaciones(termino){
 
     function isNumeric(str) {
@@ -106,10 +114,9 @@ module.exports = class Db {
     OR Fx.descripcion ILIKE $1 OR Rx.desc_falla ILIKE $1`;
 
     if(isNumeric(termino)){
-      console.log('es numero')
       query += ` OR Cx.dni::TEXT LIKE $1`
     }
-    query += ';'
+    query += ' ORDER BY Rx.fecha_recepcion, Cx.nombre;'
 
     let result = (await this.pool.query(query, ['%' + termino + '%']))
     return result;
