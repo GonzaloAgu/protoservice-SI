@@ -72,9 +72,6 @@ const popupIngresarCliente = () => {
         alert('Se produjo un error al agregar un cliente. Recargue e intente nuevamente.')
         console.log(error)
       });
-
-
-
   })
 }
 

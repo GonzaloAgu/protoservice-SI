@@ -5,7 +5,7 @@
   <title>Electroservice - Ingresar electrodoméstico</title>
   <link rel="stylesheet" href="./styles/styles.css">
   <link rel="icon" type="image/x-icon" href="../styles/icon.png">
-  <script src=""></script>
+  <script src="./views/consultas.js"></script>
 </head>
 
 <!DOCTYPE html>
@@ -22,10 +22,11 @@
       <a href="/consulta">Consultar Reparaciones</a>
     </div>
     <div class="maincontainer">
-        <form action="#" method="GET">
-            <label for="search">Buscar Reparaciones:</label>
-            <input type="text" id="search" name="search" placeholder="Ingrese término de búsqueda...">
-        </form>
+      <form id="search-form" action="/buscar" method="GET">
+        <label for="search">Buscar Reparaciones:
+          <input type="text" name="search" id="search" autocomplete="on" placeholder="Buscar por DNI, nombre, marca, modelo o fallo...">
+        </label>
+      </form>
         <br>
         <table>
             <thead>
@@ -39,18 +40,7 @@
                     <th>Estado</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Aquí se mostrarán los resultados de la búsqueda -->
-                <!-- Por ahora, los dejamos vacíos -->
-                <tr>
-                  <td>37298732</td>
-                  <td>Gimenez, Alberto</td>
-                  <td>LG</td>
-                  <td>WT2990</td>
-                  <td>03/02/2024</td>
-                  <td>No enciende</td>
-                  <td>Pendiente</td>
-                </tr>
+            <tbody id="tabla-resultados">
             </tbody>
         </table>
     </div>

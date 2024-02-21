@@ -19,8 +19,12 @@ app.get('/consulta', (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/consultas.html'))
 })
 
+
+
 app.use('/tipo-productos', require(path.join(__dirname,'./src/routes/tipos_electro.js')))
 app.use('/nuevareparacion', require(path.join(__dirname,'./src/routes/nuevareparacion.js')))
+app.use('/buscar', require(path.join(__dirname,'./src/routes/buscar.js')))
+
 
 
 app.listen(PORT);
