@@ -8,8 +8,10 @@ router.get('/', async(req, res) => {
     let response;
     if(req.query.search){
         response = await pg.buscarReparaciones(req.query.search);
+        res.json(response.rows);
+    } else {
+        res.json([])
     }
-    res.json(response.rows);
 })
 
 module.exports = router;
