@@ -31,7 +31,7 @@ function main (){
                 res = JSON.parse(xhr.responseText);
                 const tabla = document.getElementById('tabla-resultados')
                 tabla.innerHTML = '';
-                res.rows.forEach(fila => {
+                res.forEach(fila => {
                     agregarFilaATabla(fila, tabla);
                 })
             }
