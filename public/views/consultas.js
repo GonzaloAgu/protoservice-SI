@@ -1,10 +1,15 @@
+function dirigirAReparacion(id){
+    window.location.href = "/reparacion?id=" + id;
+}
+
 function agregarFilaATabla(datosFila, tabla){
     const fila = document.createElement('tr');
+    fila.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`)
+    fila.setAttribute('class', 'hover-fila')
     fila.innerHTML = `
     <td>${datosFila.dni}</td>
     <td>${datosFila.nombre}</td>
-    <td>${datosFila.marca}</td>
-    <td>${datosFila.modelo}</td>
+    <td>${datosFila.marca} ${datosFila.modelo}</td>
     <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
     <td>${datosFila.desc_falla}</td>
     <td>${datosFila.estado}</td>

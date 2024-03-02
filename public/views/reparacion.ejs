@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Electroservice - Ingresar electrodoméstico</title>
+  <link rel="stylesheet" href="./styles/styles.css">
+  <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+  <script src="./views/consultas.js"></script>
+</head>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Búsqueda de Reparaciones</title>
+</head>
+<body>
+  <h1>ELECTROSERVICE</h1>
+    <div class="navbar">
+      <a href="/nuevareparacion">Nueva Reparación</a>
+      <a href="/consulta">Consultar Reparaciones</a>
+    </div>
+    <div class="maincontainer">
+      <table class="third">
+          <tr>
+            <th>
+              DNI
+            </th>
+            <td>
+              <%= reparacion.dni %>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Producto
+            </th>
+            <td>
+              <%= reparacion.marca %> <%=reparacion.modelo%>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Fecha de recepción
+            </th>
+            <td>
+              <%=reparacion.fecha_recepcion.getDate()%>/<%=reparacion.fecha_recepcion.getMonth() + 1%>/<%=reparacion.fecha_recepcion.getFullYear()%>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Estado
+            </th>
+            <td>
+              <%= reparacion.estado %>
+            </td>
+          </tr>
+      </table>
+    </div>
+</body>
+</html>
+</html>

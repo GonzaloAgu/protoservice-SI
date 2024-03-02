@@ -195,7 +195,7 @@ function main(){
           const popup = document.getElementById('successPopup');
           popup.classList.add('show');
           setTimeout(() => {
-            window.location.href = '../'
+            window.location.href = '/reparacion?id=' + (data.id);
           }, 1000);
           ;
         })

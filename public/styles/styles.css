@@ -190,3 +190,8 @@ th {
 .fail {
   background-color: #af4c4c;
 }
+
+.hover-fila:hover {
+  cursor: pointer;
+  background-color: #d6d6d6;
+}
