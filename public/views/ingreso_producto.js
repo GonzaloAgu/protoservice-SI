@@ -23,7 +23,7 @@ function agregarCampos() {
 
   const campoTelefono = document.createElement('label');
   campoTelefono.setAttribute('class', 'third');
-  campoTelefono.innerHTML = `Teléfono <input id="telefono-input" type="number" maxlength="12">`;
+  campoTelefono.innerHTML = `Teléfono(*) <input id="telefono-input" type="number" maxlength="12" required>`;
 
   form.appendChild(campoNombre);
   form.appendChild(campoTelefono);
