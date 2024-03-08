@@ -24,14 +24,22 @@ app.get('/consulta', (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/consultas.html'))
 })
 
-app.get('/reparacion', async(req, res) => {
-    const result = (await pg.obtenerReparacionPorId(req.query.id));
-    if(result.rowCount === 0){
-        res.status(404).send("Error: Reparación no encontrada.");
-    } else {
-        res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: result[0] });
-    }
-})
+app.route('/reparacion')
+    .get(async (req, res) => {
+        const result = await pg.obtenerReparacionPorId(req.query.id);
+        if (result.rowCount === 0) {
+            res.status(404).send("Error: Reparación no encontrada.");
+        } else {
+            res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: result[0] });
+        }
+    })
+    .delete(async (req, res) => {
+        const result = await pg.eliminarReparacionPorId(req.body.id);
+        const response = {
+            ok: result.rowCount === 1,
+        }
+        res.json(response);
+    });
 
 app.use('/tipo-productos', require(path.join(__dirname,'./src/routes/tipos_electro.js')))
 app.use('/nuevareparacion', require(path.join(__dirname,'./src/routes/nuevareparacion.js')))

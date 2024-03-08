@@ -121,7 +121,7 @@ input::-webkit-inner-spin-button {
   width: 90%;
 }
 
-.submit {
+.submit,button {
   font-weight: 700;
   height: 50px;
   font-size: 20px;
@@ -129,7 +129,7 @@ input::-webkit-inner-spin-button {
   padding: 10px;
 }
 
-#submit:hover {
+#submit, button:hover {
   background-color: rgb(233, 233, 233);
   cursor: pointer;
 }
@@ -200,13 +200,12 @@ th {
   width: fit-content;
 }
 
-.red-button {
+.red-btn {
   background-color: #ff38387a;
-  border: 0;
   padding: 2px;
 }
 
-.red-button:hover {
+.red-btn:hover {
   cursor: pointer;
   background-color: #af4c4c;
 }
@@ -214,5 +213,4 @@ th {
 .titulo {
   text-align: left;
   padding: 10px 0;
-  margin-bottom: 30px;
 }

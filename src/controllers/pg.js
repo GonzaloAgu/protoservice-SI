@@ -144,6 +144,12 @@ module.exports = class Db {
     return result;
   }
 
+  async eliminarReparacionPorId(id){
+    const query = `DELETE FROM reparacion WHERE id=$1`
+    const result = (await this.pool.query(query, [id]));
+    return result;
+  }
+
 }
 
 

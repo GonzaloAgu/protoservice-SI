@@ -1,76 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>Electroservice - Ingresar electrodoméstico</title>
-  <link rel="stylesheet" href="./styles/styles.css">
-  <link rel="icon" type="image/x-icon" href="../styles/icon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <scrip></script>
-</head>
-
-<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfaz de Búsqueda de Reparaciones</title>
+    <title>Electroservice - Ingresar electrodoméstico</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-  <h1>ELECTROSERVICE</h1>
+    <h1>ELECTROSERVICE</h1>
     <div class="navbar">
-      <a href="/nuevareparacion">Nueva Reparación</a>
-      <a href="/consulta">Consultar Reparaciones</a>
+        <a href="/nuevareparacion">Nueva Reparación</a>
+        <a href="/consulta">Consultar Reparaciones</a>
     </div>
     <div class="maincontainer">
-      <div class="titulo"><h2>Producto Nº<%=reparacion.id %></h2> 
-        <button><i class="fa fa-sign-out" aria-hidden="true"></i> Cliente retira</button> |
-        <button class="red-button"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button></div>
-      
-      <table class="tabla-rep">
-          <tr>
-            <th class="third">
-              Cliente
-            </th>
-            <td>
-              <%=reparacion.nombre%> (<%= reparacion.dni %>)
-            </td>
-          </tr>
-          <tr>
-            <th>
-              Producto
-            </th>
-            <td>
-              <%= reparacion.marca %> <%=reparacion.modelo%>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              Fecha de recepción
-            </th>
-            <td>
-              <%=reparacion.fecha_recepcion.getDate()%>/<%=reparacion.fecha_recepcion.getMonth() + 1%>/<%=reparacion.fecha_recepcion.getFullYear()%>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              Estado
-            </th>
-            <td>
-              <%= reparacion.estado %> <button onclick=""><i class="fa fa-check" aria-hidden="true"></i> Reparado</button>
-              <button><i class="fa fa-search" aria-hidden="true"></i> En revisión</button>
-              <button><i class="fa fa-ban" aria-hidden="true"></i> Sin arreglo</button>
-              <button><i class="fa fa-user-times" aria-hidden="true"></i> Abandonado por cliente</button>
-            </td>
-          </tr>
-          <tr>
-            <th>Falla</th>
-            <td><%= reparacion.desc_falla %></td> 
-          </tr>
-      </table>
-      <form id="reparado-form">
-        <label class="third">Monto ($)<input type="number" min="0"></label>
-      </form>
+        <div class="titulo">
+            <h2>Producto: <%= reparacion.marca %> <%= reparacion.modelo %></h2>
+        </div>
+
+        <table class="tabla-rep">
+            <tr>
+                <th class="third">
+                    Cliente
+                </th>
+                <td>
+                    <%= reparacion.nombre %> (<%= reparacion.dni %>)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Fecha de recepción
+                </th>
+                <td>
+                    <%= reparacion.fecha_recepcion.getDate() %>/<%= reparacion.fecha_recepcion.getMonth() + 1 %>/<%= reparacion.fecha_recepcion.getFullYear() %>
+                </td>
+            </tr>
+            <tr>
+                <th>Falla</th>
+                <td><%= reparacion.desc_falla %></td>
+            </tr>
+            <tr>
+                <th>
+                    Estado
+                </th>
+                <td>
+                      <select class="estado-select">
+                        <option value="pendiente" <%= reparacion.estado === "pendiente" ? "selected" : "" %>>Pendiente</option>
+                        <option value="en-revision" <%= reparacion.estado === "en revision" ? "selected" : "" %>>En revisión</option>
+                        <option value="reparado" <%= reparacion.estado === "reparado" ? "selected" : "" %>>Reparado</option>
+                        <option value="sin-arreglo" <%= reparacion.estado === "sin arreglo" ? "selected" : "" %>>Sin arreglo</option>
+                        <option value="abandonado" <%= reparacion.estado === "no disponible" ? "selected" : "" %>>Abandonado</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>"><i class="fa fa-check" aria-hidden="true"></i> Aplicar cambios</button>
+        <button id="retiro-btn" class="retirar-cliente-btn" value="<%=reparacion.id%>"><i class="fa fa-sign-out" aria-hidden="true"></i> Cliente retira</button>
+        <button id="eliminar-btn" class="red-btn" value="<%=reparacion.id%>"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+        <form id="reparado-form" style="display: none;">
+            <label class="third">Monto ($)<input type="number" min="0"></label>
+        </form>
+    </div>
+
+    <script>
+      function main(){
+        const retirarClienteBtn = document.getElementById("retiro-btn")
+        const eliminarBtn = document.getElementById('eliminar-btn');
+        const reparadoForm = document.getElementById('reparado-form');
+
+        retirarClienteBtn.addEventListener('click', function() {
+            // Aquí puedes implementar la lógica para abrir el formulario de retiro de cliente
+            reparadoForm.style.display = 'block';
+        });
+
+        eliminarBtn.addEventListener('click', function() {
+            fetch("/reparacion", {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: this.value })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Estado cambiado correctamente.');
+                        alert('Producto eliminado con éxito.')
+                        setTimeout(() => {
+                          window.location.href = "/";
+                        }, 500)
+                        
+                    } else {
+                        console.error('Error al eliminar el producto.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        });
+      }
+       document.addEventListener('DOMContentLoaded', main)
+    </script>
 </body>
-</html>
+
 </html>
