@@ -5,7 +5,8 @@
   <title>Electroservice - Ingresar electrodoméstico</title>
   <link rel="stylesheet" href="./styles/styles.css">
   <link rel="icon" type="image/x-icon" href="../styles/icon.png">
-  <script src="./views/consultas.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <scrip></script>
 </head>
 
 <!DOCTYPE html>
@@ -22,13 +23,17 @@
       <a href="/consulta">Consultar Reparaciones</a>
     </div>
     <div class="maincontainer">
-      <table class="third">
+      <div class="titulo"><h2>Producto Nº<%=reparacion.id %></h2> 
+        <button><i class="fa fa-sign-out" aria-hidden="true"></i> Cliente retira</button> |
+        <button class="red-button"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button></div>
+      
+      <table class="tabla-rep">
           <tr>
-            <th>
-              DNI
+            <th class="third">
+              Cliente
             </th>
             <td>
-              <%= reparacion.dni %>
+              <%=reparacion.nombre%> (<%= reparacion.dni %>)
             </td>
           </tr>
           <tr>
@@ -52,11 +57,20 @@
               Estado
             </th>
             <td>
-              <%= reparacion.estado %>
+              <%= reparacion.estado %> <button onclick=""><i class="fa fa-check" aria-hidden="true"></i> Reparado</button>
+              <button><i class="fa fa-search" aria-hidden="true"></i> En revisión</button>
+              <button><i class="fa fa-ban" aria-hidden="true"></i> Sin arreglo</button>
+              <button><i class="fa fa-user-times" aria-hidden="true"></i> Abandonado por cliente</button>
             </td>
           </tr>
+          <tr>
+            <th>Falla</th>
+            <td><%= reparacion.desc_falla %></td> 
+          </tr>
       </table>
-    </div>
+      <form id="reparado-form">
+        <label class="third">Monto ($)<input type="number" min="0"></label>
+      </form>
 </body>
 </html>
 </html>

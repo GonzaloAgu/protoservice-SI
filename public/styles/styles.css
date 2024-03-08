@@ -195,3 +195,24 @@ th {
   cursor: pointer;
   background-color: #d6d6d6;
 }
+
+.tabla-rep {
+  width: fit-content;
+}
+
+.red-button {
+  background-color: #ff38387a;
+  border: 0;
+  padding: 2px;
+}
+
+.red-button:hover {
+  cursor: pointer;
+  background-color: #af4c4c;
+}
+
+.titulo {
+  text-align: left;
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
