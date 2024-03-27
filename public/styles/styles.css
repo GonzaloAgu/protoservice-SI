@@ -202,7 +202,6 @@ th {
 
 .red-btn {
   background-color: #ff38387a;
-  padding: 2px;
 }
 
 .red-btn:hover {
@@ -213,4 +212,32 @@ th {
 .titulo {
   text-align: left;
   padding: 10px 0;
+}
+
+.flex {
+  display: flex;
+}
+
+#retiro-btn {
+  margin-right: 20px;
+}
+
+#btn-container {
+  display: flex;
+  align-items: start;
+}
+
+.estado-select{
+  width: fit-content;
+}
+
+#aplicar-btn {
+  height: 32px;
+  font-size: 16px;
+  padding:0 8px;
+  margin: 0;
+}
+
+#estado-cell {
+  display: flex;
 }

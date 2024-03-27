@@ -37,11 +37,13 @@ module.exports = class Db {
       JOIN cliente Cx ON Rx.dni_cliente = Cx.dni
       JOIN electrodomestico Ex ON Rx.electrodomestico_id = Ex.id
       JOIN fabricante Fx ON Ex.fabricante_id = Fx.id
-      WHERE Rx.id=$1;`
-      return (await this.pool.query(query, [id])).rows;
-
+      WHERE Rx.id=$1;`;
+      const result = (await this.pool.query(query, [id]));
+      return result.rows;
     } catch(e){
-      return {rows: [], rowCount: 0}
+      console.error("Error al buscar la reparación con id " + id);
+      console.error(e);
+      return {rows: [], rowCount: 0};
     }
   }
 
@@ -145,7 +147,7 @@ module.exports = class Db {
   }
 
   async eliminarReparacionPorId(id){
-    const query = `DELETE FROM reparacion WHERE id=$1`
+    const query = `DELETE FROM reparacion WHERE id=$1`;
     const result = (await this.pool.query(query, [id]));
     return result;
   }

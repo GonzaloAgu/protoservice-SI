@@ -25,13 +25,18 @@ app.get('/consulta', (req, res) => {
 })
 
 app.route('/reparacion')
-    .get(async (req, res) => {
-        const result = await pg.obtenerReparacionPorId(req.query.id);
-        if (result.rowCount === 0) {
-            res.status(404).send("Error: Reparación no encontrada.");
-        } else {
-            res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: result[0] });
-        }
+    .get((req, res) => {
+        pg.obtenerReparacionPorId(req.query.id)
+        .then(result => {
+            if(result.length > 0)
+                res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: result[0] });
+            else
+                throw "Sin resultados para la id " + req.query.id;
+        })
+        .catch(e => {
+            res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + e);
+
+        })
     })
     .delete(async (req, res) => {
         const result = await pg.eliminarReparacionPorId(req.body.id);
