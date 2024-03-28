@@ -1,5 +1,6 @@
 function mostrarPopup(mensaje) {
     const popup = document.getElementById("successPopup");
+    //popup.textContent(mensaje);
     popup.classList.add('show');
     setTimeout(() => {
         popup.classList.remove('show')

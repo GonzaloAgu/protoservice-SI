@@ -54,7 +54,7 @@
                             <option value="en revision" <%= reparacion.estado === "en revision" ? "selected" : "" %>>En revisión</option>
                             <option value="reparado" <%= reparacion.estado === "reparado" ? "selected" : "" %>>Reparado</option>
                             <option value="sin arreglo" <%= reparacion.estado === "sin arreglo" ? "selected" : "" %>>Sin arreglo</option>
-                            <option value="abandonado" <%= reparacion.estado === "no disponible" ? "selected" : "" %>>Abandonado</option>
+                            <option value="abandonado" <%= reparacion.estado === "abandonado" ? "selected" : "" %>>Abandonado</option>
                         </select>
                         <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>" onclick="actualizarEstado()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </div>
