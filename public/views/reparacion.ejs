@@ -49,14 +49,14 @@
                 </th>
                 <td>
                     <div id="estado-cell">
-                        <select class="estado-select">
+                        <select id="estado-select">
                             <option value="pendiente" <%= reparacion.estado === "pendiente" ? "selected" : "" %>>Pendiente</option>
-                            <option value="en-revision" <%= reparacion.estado === "en revision" ? "selected" : "" %>>En revisión</option>
+                            <option value="en revision" <%= reparacion.estado === "en revision" ? "selected" : "" %>>En revisión</option>
                             <option value="reparado" <%= reparacion.estado === "reparado" ? "selected" : "" %>>Reparado</option>
-                            <option value="sin-arreglo" <%= reparacion.estado === "sin arreglo" ? "selected" : "" %>>Sin arreglo</option>
+                            <option value="sin arreglo" <%= reparacion.estado === "sin arreglo" ? "selected" : "" %>>Sin arreglo</option>
                             <option value="abandonado" <%= reparacion.estado === "no disponible" ? "selected" : "" %>>Abandonado</option>
                         </select>
-                        <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                        <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>" onclick="actualizarEstado()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </div>
                 </td>
             </tr>
@@ -69,6 +69,9 @@
             <label class="third">Monto ($)<input type="number" min="0"></label>
         </form>
     </div>
+    <div id="successPopup" class="popup">
+        La operación ha sido procesada con éxito.
+      </div>
 </body>
 
 </html>

@@ -152,6 +152,12 @@ module.exports = class Db {
     return result;
   }
 
+  async actualizarEstado(id, estado) {
+    const query = `UPDATE reparacion SET estado=$2 WHERE id=$1`;
+    const result = (await this.pool.query(query, [id, estado]));
+    return result;
+  }
+
 }
 
 

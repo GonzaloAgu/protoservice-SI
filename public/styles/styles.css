@@ -121,10 +121,13 @@ input::-webkit-inner-spin-button {
   width: 90%;
 }
 
-.submit,button {
+/* Botones */
+
+.submit, button {
   font-weight: 700;
   height: 50px;
-  font-size: 20px;
+  width: fit-content;
+  font-size: 18px;
   margin: 15px 0;
   padding: 10px;
 }
@@ -133,6 +136,19 @@ input::-webkit-inner-spin-button {
   background-color: rgb(233, 233, 233);
   cursor: pointer;
 }
+
+.red-btn {
+  background-color: #ff38387a;
+  border-width: 1px;
+  box-sizing: border-box;
+}
+
+.red-btn:hover {
+  cursor: pointer;
+  background-color: #ff38387a;
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
 
 /* Interfaz de busqueda */
 
@@ -200,14 +216,7 @@ th {
   width: fit-content;
 }
 
-.red-btn {
-  background-color: #ff38387a;
-}
 
-.red-btn:hover {
-  cursor: pointer;
-  background-color: #af4c4c;
-}
 
 .titulo {
   text-align: left;
@@ -227,7 +236,7 @@ th {
   align-items: start;
 }
 
-.estado-select{
+#estado-select{
   width: fit-content;
 }
 
