@@ -1,6 +1,6 @@
 function mostrarPopup(mensaje) {
     const popup = document.getElementById("successPopup");
-    //popup.textContent(mensaje);
+    popup.textContent = mensaje;
     popup.classList.add('show');
     setTimeout(() => {
         popup.classList.remove('show')
@@ -40,6 +40,12 @@ function main() {
     });
 
     eliminarBtn.addEventListener('click', function () {
+        const confirm = window.confirm("¿Seguro que desea eliminar esta reparación del sistema? Es posible que sólo requieras cambiarle su estado.");
+
+        if(!confirm){
+            return;
+        }
+
         fetch("/reparacion", {
             method: 'DELETE',
             headers: {
@@ -48,10 +54,10 @@ function main() {
             body: JSON.stringify({ id: this.value })
         }).then(response => {
             if (response.ok) {
-                alert('Producto eliminado con éxito.');
+                mostrarPopup('Producto eliminado con éxito.');
                 setTimeout(() => {
                     window.location.href = "/";
-                }, 500)
+                }, 2000)
 
             } else {
                 console.error('Error al eliminar el producto.');
