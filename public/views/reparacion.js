@@ -29,15 +29,20 @@ function actualizarEstado() {
 }
 
 
+function toggleFormularioRetiro(){
+    const retiroForm = document.getElementById('formulario-retiro');
+
+    if( retiroForm.style.display === 'none')
+        retiroForm.style.display = 'block';
+    else
+        retiroForm.style.display = 'none'
+}
+
 function main() {
     const retirarClienteBtn = document.getElementById("retiro-btn")
     const eliminarBtn = document.getElementById('eliminar-btn');
-    const reparadoForm = document.getElementById('reparado-form');
-
-    retirarClienteBtn.addEventListener('click', function () {
-        // Aquí puedes implementar la lógica para abrir el formulario de retiro de cliente
-        reparadoForm.style.display = 'block';
-    });
+    const retiroForm = document.getElementById('formulario-retiro');
+    retirarClienteBtn.addEventListener('click', toggleFormularioRetiro);
 
     eliminarBtn.addEventListener('click', function () {
         const confirm = window.confirm("¿Seguro que desea eliminar esta reparación del sistema? Es posible que sólo requieras cambiarle su estado.");

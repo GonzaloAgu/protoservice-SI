@@ -19,9 +19,12 @@
     </div>
     <div class="maincontainer">
         <div class="titulo flex">
-            <h2><i class="fa fa-wrench" aria-hidden="true"></i> <i class="fa fa-television" aria-hidden="true"></i> <%= reparacion.marca %> <%= reparacion.modelo %></h2> 
+            <h2><i class="fa fa-wrench" aria-hidden="true"></i>
+                <%= reparacion.marca %>
+                    <%= reparacion.modelo %>
+            </h2>
         </div>
-       
+
         <table class="tabla-rep">
             <tr>
                 <th class="third">
@@ -36,12 +39,15 @@
                     Fecha de recepción
                 </th>
                 <td>
-                    <%= reparacion.fecha_recepcion.getDate() %>/<%= reparacion.fecha_recepcion.getMonth() + 1 %>/<%= reparacion.fecha_recepcion.getFullYear() %>
+                    <%= reparacion.fecha_recepcion.getDate() %>/<%= reparacion.fecha_recepcion.getMonth() + 1 %>/<%=
+                                reparacion.fecha_recepcion.getFullYear() %>
                 </td>
             </tr>
             <tr>
                 <th>Falla</th>
-                <td><%= reparacion.desc_falla %></td>
+                <td>
+                    <%= reparacion.desc_falla %>
+                </td>
             </tr>
             <tr>
                 <th>
@@ -50,28 +56,66 @@
                 <td>
                     <div id="estado-cell">
                         <select id="estado-select">
-                            <option value="pendiente" <%= reparacion.estado === "pendiente" ? "selected" : "" %>>Pendiente</option>
-                            <option value="en revision" <%= reparacion.estado === "en revision" ? "selected" : "" %>>En revisión</option>
-                            <option value="reparado" <%= reparacion.estado === "reparado" ? "selected" : "" %>>Reparado</option>
-                            <option value="sin arreglo" <%= reparacion.estado === "sin arreglo" ? "selected" : "" %>>Sin arreglo</option>
-                            <option value="abandonado" <%= reparacion.estado === "abandonado" ? "selected" : "" %>>Abandonado</option>
+                            <option value="pendiente" <%=reparacion.estado==="pendiente" ? "selected" : "" %>>Pendiente
+                            </option>
+                            <option value="en revision" <%=reparacion.estado==="en revision" ? "selected" : "" %>>En
+                                revisión</option>
+                            <option value="reparado" <%=reparacion.estado==="reparado" ? "selected" : "" %>>Reparado
+                            </option>
+                            <option value="sin arreglo" <%=reparacion.estado==="sin arreglo" ? "selected" : "" %>>Sin
+                                arreglo</option>
+                            <option value="abandonado" <%=reparacion.estado==="abandonado" ? "selected" : "" %>
+                                >Abandonado</option>
                         </select>
-                        <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>" onclick="actualizarEstado()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                        <button id="aplicar-btn" class="submit" value="<%=reparacion.id%>" onclick="actualizarEstado()"
+                            title="Actualizar"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </div>
                 </td>
             </tr>
         </table>
         <div id="btn-container">
-            <button id="retiro-btn" value="<%=reparacion.id%>"><i class="fa fa-sign-out" aria-hidden="true"></i>Retirar producto</button>
-            <button id="eliminar-btn" class="red-btn" value="<%=reparacion.id%>"><i class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+            <button id="retiro-btn" value="<%=reparacion.id%>"><i class="fa fa-sign-out" aria-hidden="true"></i>Retirar
+                producto</button>
+            <button id="eliminar-btn" class="red-btn" value="<%=reparacion.id%>"><i class="fa fa-trash-o"
+                    aria-hidden="true"></i> Eliminar</button>
         </div>
-        <form id="reparado-form" style="display: none;">
-            <label class="third">Monto ($)<input type="number" min="0"></label>
-        </form>
     </div>
     <div id="successPopup" class="popup">
         La operación ha sido procesada con éxito.
-      </div>
+    </div>
+
+    <div id="formulario-retiro" class="formulario" style="display: none;">
+        <h3>Retiro de producto</h3> <i class="fa fa-times btn-cerrar" aria-hidden="true" onclick="toggleFormularioRetiro()"></i>
+        <label for="radius">Estado</label>
+        <div class="opciones-rad">
+            <label class="opcion-rad" for="reparado">
+                <input type="radio" id="reparado" name="radius" value="reparado"> Reparado</label>
+            <label class="opcion-rad" for="sin-arreglo">
+                <input type="radio" id="sin-arreglo" name="radius" value="sin-arreglo"> Sin arreglo
+            </label>
+        </div>
+
+        <label for="monto">Monto ($):</label>
+        <input type="number" id="monto" name="monto" placeholder="ARS">
+
+        <label for="metodo-pago">Selector de método de pago:</label>
+        <select id="metodo-pago" name="metodo-pago">
+            <option value="efectivo">Efectivo</option>
+            <option value="mercado-pago">Mercado Pago</option>
+            <option value="tarjeta-debito">Tarjeta de débito</option>
+            <option value="tarjeta-credito">Tarjeta de crédito</option>
+            <option value="otro">Otro</option>
+        </select>
+
+        <label for="tipo-factura">Tipo de factura:</label>
+        <select id="tipo-factura" name="tipo-factura">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select>
+
+        <button type="submit">Enviar</button>
+    </div>
 </body>
 
 </html>

@@ -4,7 +4,8 @@
   "description": "sistema de información para comercio de reparación de electrodomésticos",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"cls && node app.js"
   },
   "author": "gonzalo agu",
   "license": "ISC",

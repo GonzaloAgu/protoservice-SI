@@ -250,3 +250,66 @@ th {
 #estado-cell {
   display: flex;
 }
+
+/* Estilo para el formulario */
+.formulario {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  border: 1px solid black;
+  -webkit-box-shadow: 22px 17px 35px -34px rgba(0,0,0,0.75);
+-moz-box-shadow: 22px 17px 35px -34px rgba(0,0,0,0.75);
+box-shadow: 22px 17px 35px -34px rgba(0,0,0,0.75);
+}
+
+/* Estilo para los campos del formulario */
+.formulario label,
+.formulario select {
+  display: block;
+  margin: 10px 0;
+}
+
+.opcion-rad {
+  height: 30px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.opcion-rad input {
+  width: 20px;
+  height: 20px;
+  display: inline;
+  margin: 0;
+}
+
+.formulario select {
+  width: 100%;
+}
+
+/* Estilo para el botón de enviar */
+.formulario button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.opciones-rad {
+  display: flex;
+    align-items: center;
+}
+
+.btn-cerrar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
