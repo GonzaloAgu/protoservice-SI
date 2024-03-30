@@ -58,7 +58,6 @@ module.exports = class Db {
       if(!idElectro) throw 'Nuevo electrodoméstico a agregar.'
     } catch(e){
       // Si no existe, lo agrego y obtengo su id autogenerado
-      console.log(e);
       const res = await this.pool.query('INSERT INTO electrodomestico(tipo_electro_id, fabricante_id, modelo) VALUES($1, $2, $3) RETURNING id', 
       [reqbody.tipo, reqbody.fabricante, reqbody.modelo])
       idElectro = res.rows[0].id;

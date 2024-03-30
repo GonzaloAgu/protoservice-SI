@@ -4,7 +4,7 @@ function mostrarPopup(mensaje) {
     popup.classList.add('show');
     setTimeout(() => {
         popup.classList.remove('show')
-    }, 5000);
+    }, 2000);
 }
 
 function actualizarEstado() {
