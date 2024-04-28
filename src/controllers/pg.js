@@ -27,7 +27,7 @@ module.exports = class Db {
   }
 
   async query(msg, valores){
-    return await this.pool.query(msg, valores);
+    return this.pool.query(msg, valores);
   }
 
   validarParametrosQuery(columnas, valores){

@@ -1,28 +1,37 @@
 require('dotenv').config();
+const chai = require('chai');
+const assert = chai.assert;
+require('mocha');
+require('../src/utils/log.js');
+
+
+
 const Cliente = require('../src/models/cliente.js');
-const { logTS } = require('../src/utils/log.js');
+const { loggerOn } = require('../src/utils/log.js');
 
-const cl = new Cliente(545334);
+loggerOn(false);
 
-async function testGuardar(){
-    cl.setNombre("Ramon Abila");
+const cl = new Cliente(Math.floor(10000 * Math.random()));
+describe('ABM Cliente', () => {
+    cl.setNombre("test_nombre");
     cl.setTelefono(8934832);
+
+    it("Inserción", async() => {
+        const res = await cl.guardar();
+        assert.equal(res, 1);
+    });
+
+    it("Modificacion", async () => {
+        cl.setNombre("Matias");
+        cl.setTelefono("Bertolotti");
+        const res = await cl.guardar();
+        assert.equal(res, 0);
+    })
+
+    it("Eliminar", async () => {
+        const res = await cl.eliminar();
+        assert.equal(res, 1);
+    })
+
+})
     
-    await cl.guardar();
-}
-
-async function testEliminar(){
-    await cl.eliminar();
-}
-
-testGuardar()
-.then( () => {
-    testEliminar();
-})
-.catch(e => {
-    console.error(e);
-    process.exit(-1);
-})
-//.finally(() => process.exit(0))
-
-

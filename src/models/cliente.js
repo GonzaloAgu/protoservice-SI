@@ -74,6 +74,7 @@ module.exports = class Cliente {
         try {
             const result = await pool.query("DELETE FROM cliente WHERE dni=$1;", [this._dni]);
             logTS(result.command + " finalizado.");
+            return 1;
         } catch (e) {
             logTS("Error al eliminar cliente.", this.toString(), e);
         }
