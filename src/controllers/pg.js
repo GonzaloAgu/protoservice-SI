@@ -26,6 +26,10 @@ module.exports = class Db {
     return this.pool;
   }
 
+  async query(msg, valores){
+    return await this.pool.query(msg, valores);
+  }
+
   validarParametrosQuery(columnas, valores){
     if(columnas.length !== valores.length) throw 'Distinto numero de columnas y valores enviados.';
     if(!columnas.length) throw 'Parametros inválidos (Arreglos vacíos o no son arreglos).';
