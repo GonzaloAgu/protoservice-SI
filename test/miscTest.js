@@ -13,8 +13,8 @@ loggerOn(false);
 
 const cl = new Cliente(Math.floor(10000 * Math.random()));
 describe('ABM Cliente', () => {
-    cl.setNombre("test_nombre");
-    cl.setTelefono(8934832);
+    cl.nombre = "test_nombre";
+    cl.telefono = 8934832;
 
     it("Inserción", async() => {
         const res = await cl.guardar();
@@ -22,8 +22,8 @@ describe('ABM Cliente', () => {
     });
 
     it("Modificacion", async () => {
-        cl.setNombre("Matias");
-        cl.setTelefono("Bertolotti");
+        cl.nombre = "Matias";
+        cl.telefono = "Bertolotti";
         const res = await cl.guardar();
         assert.equal(res, 0);
     })
