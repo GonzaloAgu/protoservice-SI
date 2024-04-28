@@ -22,6 +22,58 @@ module.exports = class Db {
     }
   }
 
+  getPool(){
+    return this.pool;
+  }
+
+  validarParametrosQuery(columnas, valores){
+    if(columnas.length !== valores.length) throw 'Distinto numero de columnas y valores enviados.';
+    if(!columnas.length) throw 'Parametros inválidos (Arreglos vacíos o no son arreglos).';
+    return true;
+  }
+
+  async insert(nombreTabla, columnas, valores){
+    
+    this.validarParametrosQuery(columnas, valores);
+    const colNum = columnas.length;
+
+    let query = `INSERT INTO ${nombreTabla}(`;
+    let i;
+    for(i=1; i <= colNum; i++){
+      query += `$${i}, `;
+    }
+
+    query = query.slice(0, -2);
+    query += ") VALUES(";
+    for(; i <= 2*colNum; i++){
+      query += `$${i}, `;
+    }
+    query = query.slice(0, -2);
+    query += ");";
+    return await this.pool.query(query, columnas.concat(valores));
+  }
+
+  async update(nombreTabla, columnas, valores){
+    if(columnas.length !== valores.length) throw 'Distinto numero de columnas y valores enviados.';
+
+    const colNum = columnas.length;
+
+    let query = `UPDATE ${nombreTabla} SET `;
+    let i;
+    for(i=1; i <= colNum; i++){
+      query += `$${i}, `;
+    }
+
+    query = query.slice(0, -2);
+    query += ") VALUES(";
+    for(; i <= 2*colNum; i++){
+      query += `$${i}, `;
+    }
+    query = query.slice(0, -2);
+    query += ");";
+    return await this.pool.query(query, columnas.concat(valores)).rows;
+  }
+
   async obtenerTiposElectro() {
     return (await this.pool.query('SELECT * FROM tipo_electro WHERE id<>0 ORDER BY descripcion;')).rows;
   }
