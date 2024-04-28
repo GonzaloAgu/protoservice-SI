@@ -9,23 +9,23 @@ module.exports = class Cliente {
         this._telefono = null;
     }
     
-    get Dni(){
+    get dni(){
         return this._dni;
     }
 
-    get Nombre() {
+    get nombre() {
         return this._nombre;
     }
 
-    get Telefono() {
+    get telefono() {
         return this._telefono;
     }
 
-    set Nombre(nombre){
+    set nombre(nombre){
         this._nombre = nombre;
     }
 
-    set Telefono(tel){
+    set telefono(tel){
         this._telefono = tel;
     }
     /**

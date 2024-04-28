@@ -4,7 +4,7 @@
   "description": "sistema de información para comercio de reparación de electrodomésticos",
   "main": "app.js",
   "scripts": {
-    "test": "node test/miscTest.js",
+    "test": "node test/test_abm.js",
     "mocha": "mocha --exit",
     "start": "cls && node app.js"
   },

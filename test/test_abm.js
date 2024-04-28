@@ -1,7 +1,6 @@
 require('dotenv').config();
 const chai = require('chai');
 const assert = chai.assert;
-require('mocha');
 require('../src/utils/log.js');
 
 
@@ -12,14 +11,22 @@ const { loggerOn } = require('../src/utils/log.js');
 loggerOn(false);
 
 const cl = new Cliente(Math.floor(10000 * Math.random()));
-describe('ABM Cliente', () => {
+describe('Cliente', () => {
     cl.nombre = "test_nombre";
     cl.telefono = 8934832;
 
     it("Inserción", async() => {
         const res = await cl.guardar();
-        assert.equal(res, 1);
+        
+        assert.equal(res, 1, "No se agregó.");
     });
+    
+    it("Obtencion", async() => {
+        cl2 = new Cliente(cl.dni);
+        await cl2.obtener();
+        assert.equal(cl.nombre, cl2.nombre);
+        assert.equal(cl.telefono, cl2.telefono);
+    })
 
     it("Modificacion", async () => {
         cl.nombre = "Matias";
