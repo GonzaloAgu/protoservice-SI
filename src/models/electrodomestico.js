@@ -1,9 +1,12 @@
 const { logTS } = require('../utils/log');
-const { TipoElectrodomestico, Fabricante, IModelo } = require("./models");
+const { TipoElectrodomestico, Fabricante } = require("./models");
 const pool = require("../controllers/pg").getInstance();
+
+const IModelo = require("./Imodelo.js");
 
 module.exports = class Electrodomestico extends IModelo {
     constructor(id){
+        super();
         this._id = id;
         this._tipo_electro_id = undefined;
         this._fabricante_id = undefined;

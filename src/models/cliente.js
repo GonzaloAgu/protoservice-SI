@@ -1,10 +1,11 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
-const { IModelo } = require("./models");
+const IModelo = require("./Imodelo.js");
 
 
 module.exports = class Cliente extends IModelo {
     constructor(dni) {
+        super();
         this._dni = dni;
         this._nombre = null;
         this._telefono = null;
