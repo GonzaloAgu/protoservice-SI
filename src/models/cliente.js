@@ -93,9 +93,6 @@ module.exports = class Cliente extends IModelo {
         }
     }
 
-    
-    
-
     toString(){
         return `DNI: ${this._dni} - ${this._nombre} - Tel: ${this._telefono}`;
     }

@@ -75,4 +75,8 @@ module.exports = class TipoElectrodomestico extends IModelo {
         }
     }
 
+    toString() {
+        return `ID: ${this.id} - ${this.descripcion}`;
+    }
+
 }

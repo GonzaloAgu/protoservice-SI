@@ -115,5 +115,9 @@ module.exports = class Electrodomestico extends IModelo {
             return -1;
         }
     }
+
+    toString() {
+        return `${this.tipoElectroObj.toString} - ${this.fabricanteObj.toString} ${this.modelo}`;
+    }
     
 }
