@@ -2,43 +2,72 @@ require('dotenv').config();
 const chai = require('chai');
 const assert = chai.assert;
 require('../src/utils/log.js');
+const db = require('../src/controllers/pg.js').getInstance();
 
+const models = require('../src/models/models.js');
 
-
-const Cliente = require('../src/models/cliente.js');
 const { loggerOn } = require('../src/utils/log.js');
 
 loggerOn(false);
 
-const cl = new Cliente(Math.floor(10000 * Math.random()));
+const cl = new models.Cliente(Math.floor(10000 * Math.random()));
 describe('Cliente', () => {
     cl.nombre = "test_nombre";
     cl.telefono = 8934832;
 
     it("Inserción", async() => {
         const res = await cl.guardar();
-        
         assert.equal(res, 1, "No se agregó.");
     });
     
-    it("Obtencion", async() => {
-        cl2 = new Cliente(cl.dni);
+    it("Obtención", async() => {
+        cl2 = new models.Cliente(cl.dni);
         await cl2.obtener();
+        assert.isNotNull(cl.nombre);
         assert.equal(cl.nombre, cl2.nombre);
+        assert.isNotNull(cl.telefono);
         assert.equal(cl.telefono, cl2.telefono);
     })
 
-    it("Modificacion", async () => {
+    it("Modificación", async () => {
         cl.nombre = "Matias";
         cl.telefono = "Bertolotti";
         const res = await cl.guardar();
         assert.equal(res, 0);
     })
 
-    it("Eliminar", async () => {
+    it("Eliminación", async () => {
         const res = await cl.eliminar();
         assert.equal(res, 1);
     })
 
+});
+
+fab = new models.Fabricante();
+describe("Fabricante", () => {
+    fab.descripcion = "test descripcion";
+    it("Inserción", async() => {
+        const res = await fab.guardar();
+        assert.equal(res, 1, "No se agregó.");
+    });
+    
+    it("Obtención", async() => {
+        fab2 = new models.Fabricante(fab.id);
+        await fab2.obtener();
+        assert.isNotNull(fab.descripcion);
+        assert.equal(fab.descripcion, fab2.descripcion);
+    })
+
+    it("Modificación", async () => {
+        fab.descripcion = "test descripcion2";
+        const res = await fab.guardar();
+        assert.equal(res, 0);
+    })
+
+    it("Eliminación", async () => {
+        const res = await fab.eliminar();
+        db.query("ALTER SEQUENCE fabricante_id_seq RESTART WITH $1", [fab.id]); // restaurar secuencia de id's
+        assert.equal(res, 1);
+    })
 })
     

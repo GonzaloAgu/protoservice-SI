@@ -1,8 +1,9 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
+const { IModelo } = require("./models");
 
 
-module.exports = class Cliente {
+module.exports = class Cliente extends IModelo {
     constructor(dni) {
         this._dni = dni;
         this._nombre = null;
@@ -42,6 +43,17 @@ module.exports = class Cliente {
         }
         return false;
     }
+    /**
+     * Obtiene todos los clientes de la base.
+     * @returns array con los clientes
+     */
+    static async obtenerTodos(){
+        return await pool.query("SELECT * FROM cliente").rows;
+    }
+
+    static async obtenerTodos(query){
+        return await pool.query("SELECT * FROM cliente WHERE ", query).rows;
+    }
 
     /**
      * Almacena datos del cliente en la base de datos. Si no existia, lo agrega.
@@ -79,6 +91,8 @@ module.exports = class Cliente {
             logTS("Error al eliminar cliente.", this.toString(), e);
         }
     }
+
+    
     
 
     toString(){

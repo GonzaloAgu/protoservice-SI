@@ -1,7 +1,8 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
+const { IModelo } = require("./models");
 
-module.exports = class Fabricante {
+module.exports = class Fabricante extends IModelo {
     constructor(id){
         this._id = id;
         this._descripcion = undefined;
@@ -26,11 +27,26 @@ module.exports = class Fabricante {
     async obtener(){
         let result = await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this._id]);
         if(result.rows.length){
-            const fab = result.rows[0];
-            this._descripcion = fab.nombre;
+            this._descripcion = result.rows[0].descripcion;
             return true;
         }
         return false;
+    }
+
+    /**
+     * Obtiene todos los fabricantes de la base.
+     * @returns array con los resultados.
+     */
+    static async obtenerTodos(){
+        return await pool.query("SELECT * FROM fabricante").rows;
+    }
+
+    /**
+     * Obtiene todos los fabricantes de la base.
+     * @returns array con los resultados.
+     */
+    static async obtenerTodos(query){
+        return await pool.query("SELECT * FROM fabricante WHERE ", query).rows;
     }
 
     /**
@@ -39,17 +55,18 @@ module.exports = class Fabricante {
      */
     async guardar() {
         try {
-            const values = [this._descripcion];
+            const values = [this._id || -1, this._descripcion];
             const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this._id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando fabricante ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO fabricante(descripcion) VALUES($1)", values);
+                const result = await pool.query("INSERT INTO fabricante(descripcion) VALUES($1) RETURNING id;", [this._descripcion]);
+                this._id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando fabricante ${this.toString()}...`);
-                const result = await pool.query("UPDATE fabricante SET descripcion=$1 WHERE id=$1", values);
+                const result = await pool.query("UPDATE fabricante SET descripcion=$2 WHERE id=$1", values);
                 logTS(result.command + " finalizado.");
                 return 0;
             }
