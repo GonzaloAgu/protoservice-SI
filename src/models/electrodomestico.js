@@ -42,17 +42,17 @@ module.exports = class Electrodomestico extends IModelo {
     }
 
 
-    get tipoElectroObj(){
+    async getTipoElectroObj(){
         const tipoElectro = new TipoElectrodomestico(this._tipo_electro_id);
-        if(tipoElectro.obtener())
+        if(await tipoElectro.obtener())
             return tipoElectro;
         logTS("No se encontró tipo de electrodoméstico con id ", this._tipo_electro_id);
         return null;
     }
 
-    get fabricanteObj(){
+    async getFabricanteObj(){
         const fabricante = new Fabricante(this._fabricante_id);
-        if(fabricante.obtener())
+        if(await fabricante.obtener())
             return fabricante;
         logTS("No se encontró fabricante con id ", this._tipo_electro_id);
         return null;
@@ -63,7 +63,16 @@ module.exports = class Electrodomestico extends IModelo {
      * @returns array con los resultados
      */
     static async obtenerTodos() {
-        return await pool.query("SELECT * FROM electrodomestico").rows;
+        const result = await pool.query("SELECT * FROM electrodomestico").rows;
+        const lista = [];
+        result.array.forEach(electro => {
+            const obj = new Electrodomestico(electro.dni);
+            obj.tipo_electro_id = electro.tipo_electro_id;
+            obj.fabricante_id = electro.fabricante_id;
+            obj.modelo = electro.modelo;
+            lista.push(obj)
+        });
+        return lista;
     }
 
     /**
@@ -71,7 +80,16 @@ module.exports = class Electrodomestico extends IModelo {
      * @returns array con los resultados
      */
     static async obtenerTodos(query) {
-        return await pool.query("SELECT * FROM electrodomestico WHERE", query).rows;
+        const result = await pool.query("SELECT * FROM electrodomestico WHERE ", query).rows;
+        const lista = [];
+        result.array.forEach(electro => {
+            const obj = new Electrodomestico(electro.dni);
+            obj.tipo_electro_id = tipo_electro_id;
+            obj.fabricante_id = electro.fabricante_id;
+            obj.modelo = electro.modelo;
+            lista.push(cl)
+        });
+        return lista;
     }
 
 

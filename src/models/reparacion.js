@@ -1,7 +1,17 @@
-module.exports = class IModelo {
+const { logTS } = require('../utils/log');
+const pool = require("../controllers/pg").getInstance();
+const IModelo = require("./Imodelo.js");
+
+module.exports = class Reparacion extends IModelo {
     constructor(){
         super();
         this._id = null;
+        this._electrodomestico_id = null;
+        this._desc_falla = null;
+        this._fecha_recepcion;
+        this._dni_cliente;
+        this._factura_id;
+        this._estado;
     }
 
     /**
@@ -14,7 +24,6 @@ module.exports = class IModelo {
 
     /**
      * Obtiene todos los electrodomésticos de la base.
-     * @param {string} query busqueda SQL.
      * @returns array con los resultados
      */
     static async obtenerTodos(query) {

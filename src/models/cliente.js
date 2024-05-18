@@ -49,11 +49,27 @@ module.exports = class Cliente extends IModelo {
      * @returns array con los clientes
      */
     static async obtenerTodos(){
-        return await pool.query("SELECT * FROM cliente").rows;
+        const result = await pool.query("SELECT * FROM cliente").rows;
+        const lista = [];
+        result.array.forEach(cliente => {
+            const cl = new Cliente(cliente.dni);
+            cl.nombre = cliente.nombre;
+            cl.telefono = cliente.telefono;
+            lista.push(cl)
+        });
+        return lista;
     }
 
     static async obtenerTodos(query){
-        return await pool.query("SELECT * FROM cliente WHERE ", query).rows;
+        let result = await pool.query("SELECT * FROM cliente WHERE ", query).rows;
+        const lista = [];
+        result.array.forEach(cliente => {
+            const cl = new Cliente(cliente.dni);
+            cl.nombre = cliente.nombre;
+            cl.telefono = cliente.telefono;
+            lista.push(cl)
+        });
+        return lista;
     }
 
     /**

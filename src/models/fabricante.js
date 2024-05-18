@@ -39,7 +39,14 @@ module.exports = class Fabricante extends IModelo {
      * @returns array con los resultados.
      */
     static async obtenerTodos(){
-        return await pool.query("SELECT * FROM fabricante").rows;
+        const result = await pool.query("SELECT * FROM fabricante").rows;
+        const lista = [];
+        result.array.forEach(item => {
+            const obj = new Fabricante(item.dni);
+            obj.descripcion = item.descripcion;
+            lista.push(obj)
+        });
+        return lista;
     }
 
     /**
@@ -47,7 +54,14 @@ module.exports = class Fabricante extends IModelo {
      * @returns array con los resultados.
      */
     static async obtenerTodos(query){
-        return await pool.query("SELECT * FROM fabricante WHERE ", query).rows;
+        const result = await pool.query("SELECT * FROM fabricante WHERE ", query).rows;
+        const lista = [];
+        result.array.forEach(item => {
+            const obj = new Fabricante(item.dni);
+            obj.descripcion = item.descripcion;
+            lista.push(obj)
+        });
+        return lista;
     }
 
     /**
