@@ -41,7 +41,7 @@ module.exports = class TipoElectrodomestico extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        const result = await pool.query("SELECT descripcion FROM tipo_electro WHERE id=$1", [this._id]);
+        const result = await pool.query("SELECT * FROM tipo_electro WHERE id=$1", [this._id]);
         if(result.rows.length) {
             this._descripcion = result.rows[0].descripcion;
             return true;
@@ -60,7 +60,8 @@ module.exports = class TipoElectrodomestico extends IModelo {
     
             if (!existe) {
                 logTS(`Insertando tipo de electrodoméstico ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO tipo_electro(descripcion) VALUES($2)", values);
+                const result = await pool.query("INSERT INTO tipo_electro(descripcion) VALUES($1) RETURNING id", [this.descripcion]);
+                this._id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
@@ -72,6 +73,17 @@ module.exports = class TipoElectrodomestico extends IModelo {
         } catch (error) {
             console.error("Error al guardar tipo de electrodoméstico:", error);
             return -1;
+        }
+    }
+
+    async eliminar() {
+        logTS("Eliminando tipo de electrodoméstico " + this.toString());
+        try {
+            const result = await pool.query("DELETE FROM tipo_electro WHERE id=$1;", [this._id]);
+            logTS(result.command + " finalizado.");
+            return 1;
+        } catch (e) {
+            logTS("Error al eliminar tipo de electrodomestico.", this.toString(), e);
         }
     }
 

@@ -8,7 +8,7 @@ const models = require('../src/models/models.js');
 
 const { loggerOn } = require('../src/utils/log.js');
 
-loggerOn(false);
+loggerOn(true);
 
 const cl = new models.Cliente(Math.floor(10000 * Math.random()));
 describe('Cliente', () => {
@@ -67,6 +67,35 @@ describe("Fabricante", () => {
     it("Eliminación", async () => {
         const res = await fab.eliminar();
         db.query("ALTER SEQUENCE fabricante_id_seq RESTART WITH $1", [fab.id]); // restaurar secuencia de id's
+        assert.equal(res, 1);
+    })
+})
+
+te = new models.TipoElectrodomestico();
+describe("Tipo electrodomestico", () => {
+    te.descripcion = "test descripcion";
+    it("Inserción", async() => {
+        const res = await te.guardar();
+        assert.equal(res, 1, "No se agregó.");
+    });
+    
+    it("Obtención", async() => {
+        te2 = new models.TipoElectrodomestico(te.id);
+        const res = await te2.obtener();
+        assert.isTrue(res, "No se encontró al objeto");
+        assert.isNotNull(te.descripcion);
+        assert.equal(te.descripcion, te2.descripcion);
+    })
+
+    it("Modificación", async () => {
+        te.descripcion = "test descripcion2";
+        const res = await te.guardar();
+        assert.equal(res, 0);
+    })
+
+    it("Eliminación", async () => {
+        const res = await te.eliminar();
+        db.query("ALTER SEQUENCE tipo_electro_id_seq RESTART WITH $1", [te.id]); // restaurar secuencia de id's
         assert.equal(res, 1);
     })
 })
