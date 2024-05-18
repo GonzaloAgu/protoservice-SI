@@ -6,7 +6,7 @@ const db = require('../src/controllers/pg.js').getInstance();
 
 const models = require('../src/models/models.js');
 
-const { loggerOn } = require('../src/utils/log.js');
+const { loggerOn, logTS } = require('../src/utils/log.js');
 
 loggerOn(true);
 
@@ -99,4 +99,15 @@ describe("Tipo electrodomestico", () => {
         assert.equal(res, 1);
     })
 })
-    
+
+describe("Obtencion", async () => {
+    it("Medios de pago", async() => {
+        const lista = await models.MedioPago.obtenerTodos();
+        assert.isAtLeast(lista.length, 1, "Obtención de lista vacia");
+    })
+
+    it("Fabricantes", async() => {
+        const lista = await models.Fabricante.obtenerTodos();
+        assert.isAtLeast(lista.length, 1, "Obtención de lista vacia");
+    })
+})

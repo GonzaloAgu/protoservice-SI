@@ -62,32 +62,21 @@ module.exports = class Electrodomestico extends IModelo {
      * Obtiene todos los electrodomésticos de la base.
      * @returns array con los resultados
      */
-    static async obtenerTodos() {
-        const result = await pool.query("SELECT * FROM electrodomestico").rows;
-        const lista = [];
-        result.array.forEach(electro => {
-            const obj = new Electrodomestico(electro.dni);
-            obj.tipo_electro_id = electro.tipo_electro_id;
-            obj.fabricante_id = electro.fabricante_id;
-            obj.modelo = electro.modelo;
-            lista.push(obj)
-        });
-        return lista;
-    }
-
-    /**
-     * Obtiene todos los electrodomésticos de la base.
-     * @returns array con los resultados
-     */
     static async obtenerTodos(query) {
-        const result = await pool.query("SELECT * FROM electrodomestico WHERE ", query).rows;
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM electrodomestico WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM electrodomestico")).rows;
+
+        if(!result || result.length === 0)
+            return [];
+
         const lista = [];
-        result.array.forEach(electro => {
-            const obj = new Electrodomestico(electro.dni);
-            obj.tipo_electro_id = tipo_electro_id;
-            obj.fabricante_id = electro.fabricante_id;
-            obj.modelo = electro.modelo;
-            lista.push(cl)
+        result.forEach(item => {
+            const obj = new Electrodomestico(item.id);
+            obj.descripcion = item.descripcion;
+            lista.push(obj);
         });
         return lista;
     }

@@ -24,26 +24,24 @@ module.exports = class MedioPago extends IModelo {
      * Obtiene todos los medios de pago de la base.
      * @returns array con los resultados.
      */
-    static async obtenerTodos() {
-        const result = await pool.query("SELECT * FROM medio_pago").rows;
-        const lista = [];
-        result.array.forEach(item => {
-            const obj = new MedioPago(item.id);
-            obj.descripcion = item.descripcion;
-            lista.push(obj);
-        });
-        return lista;
-    }
-
+    
     /**
      * Obtiene todos los medios de pago de la base.
      * @param {string} query busqueda SQL.
      * @returns array con los resultados.
      */
     static async obtenerTodos(query) {
-        const result = await pool.query("SELECT * FROM medio_pago WHERE ", query).rows;
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM medio_pago WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM medio_pago")).rows;
+
+        if(!result || result.length === 0)
+            return [];
+
         const lista = [];
-        result.array.forEach(item => {
+        result.forEach(item => {
             const obj = new MedioPago(item.id);
             obj.descripcion = item.descripcion;
             lista.push(obj);

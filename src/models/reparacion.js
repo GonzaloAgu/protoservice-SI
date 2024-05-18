@@ -14,20 +14,28 @@ module.exports = class Reparacion extends IModelo {
         this._estado;
     }
 
-    /**
-     * Obtiene todos los electrodomésticos de la base.
-     * @returns array con los resultados
-     */
-    static async obtenerTodos() {
-        throw "Metodo obtenerTodos no implementado."
-    }
 
     /**
      * Obtiene todos los electrodomésticos de la base.
      * @returns array con los resultados
      */
     static async obtenerTodos(query) {
-        throw "Metodo obtenerTodos(query) no implementado."
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM reparacion WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM reparacion")).rows;
+
+        if(!result || result.length === 0)
+            return [];
+
+        const lista = [];
+        result.forEach(item => {
+            const obj = new Reparacion(item.id);
+            obj.descripcion = item.descripcion;
+            lista.push(obj);
+        });
+        return lista;
     }
 
 

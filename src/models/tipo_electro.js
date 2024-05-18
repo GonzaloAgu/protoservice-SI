@@ -20,29 +20,24 @@ module.exports = class TipoElectrodomestico extends IModelo {
     set descripcion(desc) {
         this._descripcion = desc;
     }
-    /**
-     * Obtiene todos los tipos de electrodomésticos de la base.
-     * @returns array con los resultados.
-     */
-    static async obtenerTodos() {
-        const result = await pool.query("SELECT * FROM tipo_electro").rows;
-        const lista = [];
-        result.array.forEach(item => {
-            const obj = new TipoElectrodomestico(item.id);
-            obj.descripcion = item.descripcion;
-            lista.push(obj);
-        });
-        return lista;
-    }
+    
 
     /**
      * Obtiene todos los tipos de electrodomésticos de la base.
      * @returns array con los resultados.
      */
     static async obtenerTodos(query) {
-        const result = await pool.query("SELECT * FROM tipo_electro WHERE ", query).rows;
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM tipo_electro WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM tipo_electro")).rows;
+
+        if(!result || result.length === 0)
+            return [];
+
         const lista = [];
-        result.array.forEach(item => {
+        result.forEach(item => {
             const obj = new TipoElectrodomestico(item.id);
             obj.descripcion = item.descripcion;
             lista.push(obj);

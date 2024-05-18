@@ -1,6 +1,5 @@
 module.exports = class IModelo {
     constructor(){
-        super();
         this._id = null;
     }
 

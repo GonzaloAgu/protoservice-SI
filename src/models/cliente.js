@@ -48,30 +48,24 @@ module.exports = class Cliente extends IModelo {
      * Obtiene todos los clientes de la base.
      * @returns array con los clientes
      */
-    static async obtenerTodos(){
-        const result = await pool.query("SELECT * FROM cliente").rows;
+    static async obtenerTodos(query) {
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM cliente WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM cliente")).rows;
+
+        if(!result || result.length === 0)
+            return [];
+
         const lista = [];
-        result.array.forEach(cliente => {
-            const cl = new Cliente(cliente.dni);
-            cl.nombre = cliente.nombre;
-            cl.telefono = cliente.telefono;
-            lista.push(cl)
+        result.forEach(item => {
+            const obj = new Cliente(item.id);
+            obj.descripcion = item.descripcion;
+            lista.push(obj);
         });
         return lista;
     }
-
-    static async obtenerTodos(query){
-        let result = await pool.query("SELECT * FROM cliente WHERE ", query).rows;
-        const lista = [];
-        result.array.forEach(cliente => {
-            const cl = new Cliente(cliente.dni);
-            cl.nombre = cliente.nombre;
-            cl.telefono = cliente.telefono;
-            lista.push(cl)
-        });
-        return lista;
-    }
-
     /**
      * Almacena datos del cliente en la base de datos. Si no existia, lo agrega.
      * @returns 1 si lo agrego en la base. 0 si lo modifico. -1 si se produjo un error.

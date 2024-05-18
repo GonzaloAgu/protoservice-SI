@@ -38,28 +38,21 @@ module.exports = class Fabricante extends IModelo {
      * Obtiene todos los fabricantes de la base.
      * @returns array con los resultados.
      */
-    static async obtenerTodos(){
-        const result = await pool.query("SELECT * FROM fabricante").rows;
-        const lista = [];
-        result.array.forEach(item => {
-            const obj = new Fabricante(item.dni);
-            obj.descripcion = item.descripcion;
-            lista.push(obj)
-        });
-        return lista;
-    }
+    static async obtenerTodos(query) {
+        let result;
+        if(query)
+            result = (await pool.query("SELECT * FROM fabricante WHERE " + query)).rows;
+        else
+            result = (await pool.query("SELECT * FROM fabricante")).rows;
 
-    /**
-     * Obtiene todos los fabricantes de la base.
-     * @returns array con los resultados.
-     */
-    static async obtenerTodos(query){
-        const result = await pool.query("SELECT * FROM fabricante WHERE ", query).rows;
+        if(!result || result.length === 0)
+            return [];
+
         const lista = [];
-        result.array.forEach(item => {
-            const obj = new Fabricante(item.dni);
+        result.forEach(item => {
+            const obj = new Fabricante(item.id);
             obj.descripcion = item.descripcion;
-            lista.push(obj)
+            lista.push(obj);
         });
         return lista;
     }
