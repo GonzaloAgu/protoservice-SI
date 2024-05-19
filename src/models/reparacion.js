@@ -4,57 +4,22 @@ const IModelo = require("./Imodelo.js");
 
 module.exports = class Reparacion extends IModelo {
 
+    #id;
     static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
-    
-    get id() {
-        return this._id;
-    }
-    get electrodomestico_id() {
-        return this._electrodomestico_id;
-    }
-    set electrodomestico_id(e) {
-        this._electrodomestico_id = e;
-    }
-    get desc_falla() {
-        return this._desc_falla;
-    }
-    set desc_falla(e) {
-        this._desc_falla = e;
-    }
-    get fecha_recepcion() {
-        return this._fecha_recepcion;
-    }
-    set fecha_recepcion(e) {
-        this._fecha_recepcion = e;
-    }
-    get dni_cliente() {
-        return this._dni_cliente;
-    }
-    set dni_cliente(e) {
-        this._dni_cliente = e;
-    }
-    get factura_id() {
-        return this._factura_id;
-    }
-    set factura_id(e) {
-        this._factura_id = e;
-    }
-    get estado() {
-        return this._estado;
-    }
-    set estado(e) {
-        this._estado = e;
-    }
     
     constructor(){
         super();
-        this._id = null;
-        this._electrodomestico_id = null;
-        this._desc_falla = null;
-        this._fecha_recepcion;
-        this._dni_cliente;
-        this._factura_id;
-        this._estado;
+        this.#id = null;
+        this.electrodomestico_id = null;
+        this.desc_falla = null;
+        this.fecha_recepcion;
+        this.dni_cliente;
+        this.factura_id;
+        this.estado;
+    }
+
+    get id() {
+        return this.#id;
     }
     
     /**

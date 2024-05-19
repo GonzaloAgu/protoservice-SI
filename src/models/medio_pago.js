@@ -3,23 +3,18 @@ const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
 
 module.exports = class MedioPago extends IModelo {
+    #id;
+    
     constructor(id) {
         super();
-        this._id = id;
-        this._descripcion = undefined;
+        this.#id = id;
+        this.descripcion = undefined;
     }
 
     get id() {
-        return this._id;
+        return this.#id;
     }
 
-    get descripcion() {
-        return this._descripcion;
-    }
-
-    set descripcion(desc) {
-        this._descripcion = desc;
-    }
     /**
      * Obtiene todos los medios de pago de la base.
      * @returns array con los resultados.
@@ -54,9 +49,9 @@ module.exports = class MedioPago extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        const result = await pool.query("SELECT * FROM medio_pago WHERE id=$1", [this._id]);
+        const result = await pool.query("SELECT * FROM medio_pago WHERE id=$1", [this.#id]);
         if(result.rows.length) {
-            this._descripcion = result.rows[0].descripcion;
+            this.descripcion = result.rows[0].descripcion;
             return true;
         }
         return false;
@@ -68,13 +63,13 @@ module.exports = class MedioPago extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this._id, this._descripcion];
-            const existe = (await pool.query("SELECT * FROM medio_pago WHERE id=$1;", [this._id])).rows.length == 1;
+            const values = [this.#id, this.descripcion];
+            const existe = (await pool.query("SELECT * FROM medio_pago WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando medio de pago ${this.toString()}...`);
                 const result = await pool.query("INSERT INTO medio_pago(descripcion) VALUES($1) RETURNING id", [this.descripcion]);
-                this._id = result.rows[0].id;
+                this.#id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
@@ -95,7 +90,7 @@ module.exports = class MedioPago extends IModelo {
     async eliminar() {
         logTS("Eliminando medio de pago " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM medio_pago WHERE id=$1;", [this._id]);
+            const result = await pool.query("DELETE FROM medio_pago WHERE id=$1;", [this.#id]);
             logTS(result.command + " finalizado.");
             return true;
         } catch (e) {

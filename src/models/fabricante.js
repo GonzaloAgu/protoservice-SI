@@ -3,32 +3,27 @@ const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
 
 module.exports = class Fabricante extends IModelo {
+    #id;
+
     constructor(id){
         super();
-        this._id = id;
-        this._descripcion = undefined;
+        this.#id = id;
+        this.descripcion = undefined;
     }
 
     get id() {
-        return this._id;
+        return this.#id;
     }
 
-    get descripcion() {
-        return this._descripcion;
-    }
-
-    set descripcion(desc) {
-        this._descripcion = desc;
-    }
 
     /**
      * Busca y obtiene al fabricante en la base de datos.
      * @returns true si lo encontró, false si no existe.
      */
     async obtener(){
-        let result = await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this._id]);
+        let result = await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id]);
         if(result.rows.length){
-            this._descripcion = result.rows[0].descripcion;
+            this.descripcion = result.rows[0].descripcion;
             return true;
         }
         return false;
@@ -63,13 +58,13 @@ module.exports = class Fabricante extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this._id || -1, this._descripcion];
-            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this._id])).rows.length == 1;
+            const values = [this.#id || -1, this.descripcion];
+            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando fabricante ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO fabricante(descripcion) VALUES($1) RETURNING id;", [this._descripcion]);
-                this._id = result.rows[0].id;
+                const result = await pool.query("INSERT INTO fabricante(descripcion) VALUES($1) RETURNING id;", [this.descripcion]);
+                this.#id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
@@ -87,7 +82,7 @@ module.exports = class Fabricante extends IModelo {
     async eliminar() {
         logTS("Eliminando fabricante " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM fabricante WHERE id=$1;", [this._id]);
+            const result = await pool.query("DELETE FROM fabricante WHERE id=$1;", [this.#id]);
             logTS(result.command + " finalizado.");
             return 1;
         } catch (e) {
@@ -97,6 +92,6 @@ module.exports = class Fabricante extends IModelo {
     
 
     toString(){
-        return `ID: ${this._id} - ${this._descripcion}`;
+        return `ID: ${this.#id} - ${this.descripcion}`;
     }
 }

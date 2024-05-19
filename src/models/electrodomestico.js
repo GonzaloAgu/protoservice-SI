@@ -5,56 +5,33 @@ const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
 
 module.exports = class Electrodomestico extends IModelo {
+
+    #id;
     constructor(id){
         super();
-        this._id = id;
-        this._tipo_electro_id = undefined;
-        this._fabricante_id = undefined;
-        this._modelo = undefined;
+        this.#id = id;
+        this.tipo_electro_id = undefined;
+        this.fabricante_id = undefined;
+        this.modelo = undefined;
     }
 
     get id() {
-        return this._id;
+        return this.#id;
     }
-
-    get modelo() {
-        return this._modelo;
-    }
-
-    set modelo(m) {
-        this._modelo = m;
-    }
-
-    get tipo_electro_id() {
-        return this._tipo_electro_id;
-    }
-
-    set tipo_electro_id(id) {
-        this._tipo_electro_id = id;
-    }
-
-    get fabricante_id() {
-        return this._fabricante_id;
-    }
-
-    set fabricante_id(id) {
-        this._fabricante_id = id;
-    }
-
 
     async getTipoElectroObj(){
-        const tipoElectro = new TipoElectrodomestico(this._tipo_electro_id);
+        const tipoElectro = new TipoElectrodomestico(this.tipo_electro_id);
         if(await tipoElectro.obtener())
             return tipoElectro;
-        logTS("No se encontró tipo de electrodoméstico con id ", this._tipo_electro_id);
+        logTS("No se encontró tipo de electrodoméstico con id ", this.tipo_electro_id);
         return null;
     }
 
     async getFabricanteObj(){
-        const fabricante = new Fabricante(this._fabricante_id);
+        const fabricante = new Fabricante(this.fabricante_id);
         if(await fabricante.obtener())
             return fabricante;
-        logTS("No se encontró fabricante con id ", this._tipo_electro_id);
+        logTS("No se encontró fabricante con id ", this.tipo_electro_id);
         return null;
     }
 
@@ -106,7 +83,7 @@ module.exports = class Electrodomestico extends IModelo {
     async guardar() {
         try {
             const values = [this.id, this.tipo_electro_id, this.fabricante_id, this.modelo];
-            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this._id])).rows.length == 1;
+            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando fabricante ${this.toString()}...`);

@@ -4,42 +4,29 @@ const IModelo = require("./Imodelo.js");
 
 
 module.exports = class Cliente extends IModelo {
+
+    #dni;
     constructor(dni) {
         super();
-        this._dni = dni;
-        this._nombre = null;
-        this._telefono = null;
+        this.#dni = dni;
+        this.nombre = null;
+        this.telefono = null;
     }
     
     get dni(){
-        return this._dni;
+        return this.#dni;
     }
-
-    get nombre() {
-        return this._nombre;
-    }
-
-    get telefono() {
-        return this._telefono;
-    }
-
-    set nombre(nombre){
-        this._nombre = nombre;
-    }
-
-    set telefono(tel){
-        this._telefono = tel;
-    }
+    
     /**
      * Busca y obtiene al cliente en la base de datos.
      * @returns true si lo encontró, false si no existe.
      */
     async obtener(){
-        let result = await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this._dni]);
+        let result = await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this.#dni]);
         if(result.rows.length){
             const cliente = result.rows[0];
-            this._nombre = cliente.nombre;
-            this._telefono = cliente.telefono;
+            this.nombre = cliente.nombre;
+            this.telefono = cliente.telefono;
             return true;
         }
         return false;
@@ -73,8 +60,8 @@ module.exports = class Cliente extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this._dni, this._nombre, this._telefono];
-            const existe = (await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this._dni])).rows.length == 1;
+            const values = [this.#dni, this.nombre, this.telefono];
+            const existe = (await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this.#dni])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando cliente ${this.toString()}...`);
@@ -96,7 +83,7 @@ module.exports = class Cliente extends IModelo {
     async eliminar() {
         logTS("Eliminando cliente " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM cliente WHERE dni=$1;", [this._dni]);
+            const result = await pool.query("DELETE FROM cliente WHERE dni=$1;", [this.#dni]);
             logTS(result.command + " finalizado.");
             return 1;
         } catch (e) {
@@ -105,6 +92,6 @@ module.exports = class Cliente extends IModelo {
     }
 
     toString(){
-        return `DNI: ${this._dni} - ${this._nombre} - Tel: ${this._telefono}`;
+        return `DNI: ${this.#dni} - ${this.nombre} - Tel: ${this.telefono}`;
     }
 }
