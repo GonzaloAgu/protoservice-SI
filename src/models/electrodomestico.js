@@ -75,7 +75,9 @@ module.exports = class Electrodomestico extends IModelo {
         const lista = [];
         result.forEach(item => {
             const obj = new Electrodomestico(item.id);
-            obj.descripcion = item.descripcion;
+            obj.tipo_electro_id = item.tipo_electro_id;
+            obj.fabricante_id = item.fabricante_id;
+            obj.modelo = item.modelo;
             lista.push(obj);
         });
         return lista;

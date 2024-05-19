@@ -3,6 +3,49 @@ const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
 
 module.exports = class Reparacion extends IModelo {
+
+    static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
+    
+    get id() {
+        return this._id;
+    }
+    get electrodomestico_id() {
+        return this._electrodomestico_id;
+    }
+    set electrodomestico_id(e) {
+        this._electrodomestico_id = e;
+    }
+    get desc_falla() {
+        return this._desc_falla;
+    }
+    set desc_falla(e) {
+        this._desc_falla = e;
+    }
+    get fecha_recepcion() {
+        return this._fecha_recepcion;
+    }
+    set fecha_recepcion(e) {
+        this._fecha_recepcion = e;
+    }
+    get dni_cliente() {
+        return this._dni_cliente;
+    }
+    set dni_cliente(e) {
+        this._dni_cliente = e;
+    }
+    get factura_id() {
+        return this._factura_id;
+    }
+    set factura_id(e) {
+        this._factura_id = e;
+    }
+    get estado() {
+        return this._estado;
+    }
+    set estado(e) {
+        this._estado = e;
+    }
+    
     constructor(){
         super();
         this._id = null;
@@ -13,8 +56,7 @@ module.exports = class Reparacion extends IModelo {
         this._factura_id;
         this._estado;
     }
-
-
+    
     /**
      * Obtiene todos los electrodomésticos de la base.
      * @returns array con los resultados
@@ -32,7 +74,12 @@ module.exports = class Reparacion extends IModelo {
         const lista = [];
         result.forEach(item => {
             const obj = new Reparacion(item.id);
-            obj.descripcion = item.descripcion;
+            obj.electrodomestico_id = item.electrodomestico_id;
+            obj.desc_falla = item.desc_falla;
+            obj.fecha_recepcion = item.fecha_recepcion;
+            obj.dni_cliente = item.dni_cliente;
+            obj.factura_id = item.factura_id;
+            obj.estado = item.estado;
             lista.push(obj);
         });
         return lista;
