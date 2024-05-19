@@ -47,7 +47,7 @@ module.exports = class Cliente extends IModelo {
 
         const lista = [];
         result.forEach(item => {
-            const obj = new Cliente(item.id);
+            const obj = new Cliente(item.dni);
             obj.telefono = item.telefono;
             obj.nombre = item.nombre;
             lista.push(obj);

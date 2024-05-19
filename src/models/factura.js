@@ -7,6 +7,7 @@ module.exports = class Factura extends IModelo {
     static tipos = ['A', 'B'];
     #id;
     constructor(id){
+        super();
         this.#id = id;
         this.tipo = undefined;
         this.fecha = undefined;
