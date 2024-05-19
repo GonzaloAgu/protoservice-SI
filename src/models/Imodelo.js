@@ -5,14 +5,6 @@ module.exports = class IModelo {
 
     /**
      * Obtiene todos los electrodomésticos de la base.
-     * @returns array con los resultados
-     */
-    static async obtenerTodos() {
-        throw "Metodo obtenerTodos no implementado."
-    }
-
-    /**
-     * Obtiene todos los electrodomésticos de la base.
      * @param {string} query busqueda SQL.
      * @returns array con los resultados
      */
