@@ -1,6 +1,7 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
+const Cliente = require('./cliente.js')
 
 module.exports = class Reparacion extends IModelo {
 
@@ -20,6 +21,12 @@ module.exports = class Reparacion extends IModelo {
 
     get id() {
         return this.#id;
+    }
+
+    async getClienteObj(){
+        let cliente = new Cliente(this.dni_cliente);
+        await cliente.obtener();
+        return cliente;
     }
     
     /**
@@ -56,7 +63,17 @@ module.exports = class Reparacion extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        throw "Metodo obtener no implementado."
+        const result = await pool.query("SELECT * FROM reparacion WHERE id=$1", [this.#id]);
+        if(result.rows.length) {
+            this.electrodomestico_id = result.rows[0].electrodomestico_id;
+            this.desc_falla = result.rows[0].desc_falla;
+            this.fecha_recepcion = result.rows[0].fecha_recepcion;
+            this.dni_cliente = result.rows[0].dni_cliente;
+            this.factura_id = result.rows[0].factura_id;
+            this.estado = result.rows[0].estado;
+            return true;
+        }
+        return false;
     }
 
      /**
@@ -64,17 +81,42 @@ module.exports = class Reparacion extends IModelo {
      * @returns 1 si lo agrego en la base. 0 si lo modifico. -1 si se produjo un error.
      */
     async guardar() {
-        throw "Metodo guardar no implementado."
+        try {
+            const values = [this.electrodomestico_id, this.desc_falla, this.fecha_recepcion, this.dni_cliente, this.factura_id, this.estado];
+            const existe = (await pool.query("SELECT * FROM reparacion WHERE id=$1;", [this.#id])).rows.length == 1;
+    
+            if (!existe) {
+                logTS(`Insertando reparación ${this.toString()}...`);
+                const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, dni_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
+                logTS(result.command + " finalizado.");
+                return 1;
+            } else {
+                logTS(`Actualizando reparacion ${this.toString()}...`);
+                const result = await pool.query("UPDATE reparacion SET electrodomestico_id=$2, desc_falla=$3, fecha_recepcion=$4, dni_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
+                logTS(result.command + " finalizado.");
+                return 0;
+            }
+        } catch (error) {
+            console.error("Error al guardar reparacion:", error);
+            return -1;
+        }
     }
     /**
      * Elimina objeto de la base de datos
      * @returns true si se elimina correctamente, false en caso contrario.
      */
     async eliminar() {
-        throw "Metodo eliminar no implementado.";
+        logTS("Eliminando reparación " + this.toString());
+        try {
+            const result = await pool.query("DELETE FROM reparacion WHERE id=$1;", [this.#id]);
+            logTS(result.command + " finalizado.");
+            return 1;
+        } catch (e) {
+            logTS("Error al eliminar reparación.", this.toString(), e);
+        }
     }
 
     toString(){
-        throw "Metodo toString no implementado.";
+        return `id: ${this.#id} - DNI ${this.dni_cliente}`;
     }
 }

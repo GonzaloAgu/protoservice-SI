@@ -25,6 +25,7 @@ module.exports = class Cliente extends IModelo {
         let result = await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this.#dni]);
         if(result.rows.length){
             const cliente = result.rows[0];
+            this.#dni = cliente.dni;
             this.nombre = cliente.nombre;
             this.telefono = cliente.telefono;
             return true;

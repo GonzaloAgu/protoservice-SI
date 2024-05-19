@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config();
 const ejs = require('ejs');
 const Db = require('./src/controllers/pg.js');
+const Reparacion = require('./src/models/reparacion.js')
 
 let pg = Db.getInstance();
 
@@ -24,23 +25,20 @@ app.get('/consulta', (req, res) => {
 })
 
 app.route('/reparacion')
-    .get((req, res) => {
-        pg.obtenerReparacionPorId(req.query.id)
-            .then(result => {
-                if (result.length > 0)
-                    res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: result[0] });
-                else
-                    throw "Sin resultados para la id " + req.query.id + ".";
-            })
-            .catch(e => {
-                res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + e + '\n<a href="/">Volver a la página principal.</a>');
-
-            })
+    .get(async (req, res) => {
+        let rep = new Reparacion(req.query.id);
+        if(await rep.obtener()){
+            const cliente = await rep.getClienteObj();
+            res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: rep, cliente });
+        } else {
+            res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + '\n<a href="/">Volver a la página principal.</a>');
+        }
     })
     .delete(async (req, res) => {
-        const result = await pg.eliminarReparacionPorId(req.body.id);
+        let reparacion = new Reparacion(req.body.id);
+        const result = await reparacion.eliminar();
         const response = {
-            ok: result.rowCount === 1,
+            ok: result,
         }
         res.json(response);
     });
