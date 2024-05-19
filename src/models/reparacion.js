@@ -7,9 +7,9 @@ module.exports = class Reparacion extends IModelo {
     #id;
     static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
     
-    constructor(){
+    constructor(id){
         super();
-        this.#id = null;
+        this.#id = id;
         this.electrodomestico_id = null;
         this.desc_falla = null;
         this.fecha_recepcion;
