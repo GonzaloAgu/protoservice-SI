@@ -103,6 +103,7 @@ module.exports = class Reparacion extends IModelo {
             if (!existe) {
                 logTS(`Insertando reparación ${this.toString()}...`);
                 const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, dni_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
+                this.#id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {

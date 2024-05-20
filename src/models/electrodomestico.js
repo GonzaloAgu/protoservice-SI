@@ -84,27 +84,28 @@ module.exports = class Electrodomestico extends IModelo {
     async guardar() {
         try {
             const values = [this.id, this.tipo_electro_id, this.fabricante_id, this.modelo];
-            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id])).rows.length == 1;
+            const existe = (await pool.query("SELECT * FROM electrodomestico WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
-                logTS(`Insertando fabricante ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO fabricante(tipo_electro_id, fabricante_id, modelo) VALUES($2, $3, $4)", values);
+                logTS(`Insertando electrodomestico ${this.toString()}...`);
+                const result = await pool.query("INSERT INTO electrodomestico(tipo_electro_id, fabricante_id, modelo) VALUES($1, $2, $3) RETURNING id", [this.tipo_electro_id, this.fabricante_id, this.modelo]);
+                this.#id = result.rows[0].id;
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
-                logTS(`Actualizando fabricante ${this.toString()}...`);
-                const result = await pool.query("UPDATE fabricante SET tipo_electro_id=$2, fabricante_id=$3, modelo=$4 WHERE id=$1", values);
+                logTS(`Actualizando electrodomestico ${this.toString()}...`);
+                const result = await pool.query("UPDATE electrodomestico SET tipo_electro_id=$2, fabricante_id=$3, modelo=$4 WHERE id=$1", values);
                 logTS(result.command + " finalizado.");
                 return 0;
             }
         } catch (error) {
-            console.error("Error al guardar fabricante:", error);
+            console.error("Error al guardar electrodomestico:", error);
             return -1;
         }
     }
 
     toString() {
-        return `${this.tipoElectroObj.toString} - ${this.fabricanteObj.toString} ${this.modelo}`;
+        return `id: ${this.id} - Modelo: ${this.modelo}`;
     }
     
 }

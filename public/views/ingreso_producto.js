@@ -163,23 +163,20 @@ function main(){
     document.getElementById('producto-form').addEventListener('submit', function (event) {
       event.preventDefault(); // Evita que el formulario se envíe automáticamente
   
-      // Obtiene los valores de los campos del formulario
-      let tipo = document.getElementById('tipo-input').value;
-      let fabricante = document.getElementById('fabricante-input').value;
-      let modelo = document.getElementById('modelo-input').value;
-      let falla = document.getElementById('falla-input').value;
-  
       // Crea un objeto con los datos del formulario
       formData = {
-        dni: dniCliente,
-        tipo,
-        fabricante,
-        modelo,
-        falla
+        dni_cliente: dniCliente,
+        fecha_recepcion: new Date(),
+        desc_falla: document.getElementById('falla-input').value,
+        electrodomestico: {
+          tipo_electro_id: document.getElementById('tipo-input').value,
+          fabricante_id: document.getElementById('fabricante-input').value,
+          modelo: document.getElementById('modelo-input').value
+        }
       };
   
       // Realiza una solicitud POST al servidor Node.js
-      fetch('/nuevareparacion', {
+      fetch('/reparacion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
