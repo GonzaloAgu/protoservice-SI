@@ -1,5 +1,6 @@
 const { logTS } = require('../utils/log');
-const { TipoElectrodomestico, Fabricante } = require("./models");
+const TipoElectrodomestico = require('./tipo_electro.js');
+const Fabricante = require('./fabricante.js');
 const pool = require("../controllers/pg").getInstance();
 
 const IModelo = require("./Imodelo.js");
@@ -66,7 +67,7 @@ module.exports = class Electrodomestico extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        const result = await pool.query("SELECT * FROM fabricante WHERE id=$1", [this.id]);
+        const result = await pool.query("SELECT * FROM electrodomestico WHERE id=$1", [this.id]);
         if(result.rows.length) {
             this.tipo_electro_id = result.rows[0].tipo_electro_id;
             this.fabricante_id = result.rows[0].fabricante_id;

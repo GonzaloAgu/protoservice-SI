@@ -1,8 +1,8 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
-const Cliente = require('./cliente.js')
-
+//const Cliente = require('./cliente.js')
+const { Cliente, Electrodomestico, Factura } = require('./models.js');
 module.exports = class Reparacion extends IModelo {
 
     #id;
@@ -25,8 +25,23 @@ module.exports = class Reparacion extends IModelo {
 
     async getClienteObj(){
         let cliente = new Cliente(this.dni_cliente);
-        await cliente.obtener();
-        return cliente;
+        if(await cliente.obtener())
+            return cliente;
+        return false;
+    }
+
+    async getElectrodomesticoObj() {
+        let electro = new Electrodomestico(this.electrodomestico_id);
+        if(await electro.obtener())
+            return electro;
+        return false;
+    }
+
+    async getFacturaObj() {
+        let factura = new Factura(this.factura_id);
+        if(await factura.obtener())
+            return factura;
+        return false;
     }
     
     /**

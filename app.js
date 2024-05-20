@@ -29,7 +29,11 @@ app.route('/reparacion')
         let rep = new Reparacion(req.query.id);
         if(await rep.obtener()){
             const cliente = await rep.getClienteObj();
-            res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: rep, cliente });
+            const electrodomestico = await rep.getElectrodomesticoObj();
+            const fabricante = await electrodomestico.getFabricanteObj();
+            if(!cliente || !electrodomestico || !fabricante)
+                res.status(500).send("<h1>Error 500</h1>\n<p>" + cliente + electrodomestico + '</p>\n<a href="/">Volver a la página principal.</a>');
+            res.render(path.join(__dirname, './public/views/reparacion.ejs'), { reparacion: rep, cliente, electrodomestico, fabricante });
         } else {
             res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + '\n<a href="/">Volver a la página principal.</a>');
         }
