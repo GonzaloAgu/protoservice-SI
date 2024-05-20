@@ -73,10 +73,10 @@ module.exports = class Factura extends IModelo {
             const existe = (await pool.query("SELECT * FROM factura WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
-                logTS(`Insertando factura ${this.toString()}...`);
+                logTS(`Insertando factura...`);
                 const result = await pool.query("INSERT INTO factura(tipo, fecha, monto, medio_pago_id) VALUES($1, $2, $3, $4) RETURNING id", [this.descripcion]);
                 this.#id = result.rows[0].id;
-                logTS(result.command + " finalizado.");
+                logTS(result.command + `  ${this.toString()}` + " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando factura ${this.toString()}...`);

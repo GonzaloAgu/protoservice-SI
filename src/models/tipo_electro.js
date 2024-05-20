@@ -61,10 +61,10 @@ module.exports = class TipoElectrodomestico extends IModelo {
             const existe = (await pool.query("SELECT * FROM tipo_electro WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
-                logTS(`Insertando tipo de electrodoméstico ${this.toString()}...`);
+                logTS(`Insertando tipo de electrodoméstico...`);
                 const result = await pool.query("INSERT INTO tipo_electro(descripcion) VALUES($1) RETURNING id", [this.descripcion]);
                 this.#id = result.rows[0].id;
-                logTS(result.command + " finalizado.");
+                logTS(result.command + `  ${this.toString()}` + " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando tipo de electrodoméstico ${this.toString()}...`);

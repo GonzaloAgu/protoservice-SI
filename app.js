@@ -65,7 +65,11 @@ app.route('/reparacion')
             objElectro.fabricante_id = electro.fabricante_id;
             objElectro.tipo_electro_id = electro.tipo_electro_id;
             await objElectro.guardar();
-        } 
+        } else {
+            const e = resultElectro[0];
+            objElectro = new Electrodomestico(e.id);
+            await objElectro.obtener();
+        }
 
         obj.electrodomestico_id = objElectro.id;
         obj.desc_falla = rep.desc_falla;
