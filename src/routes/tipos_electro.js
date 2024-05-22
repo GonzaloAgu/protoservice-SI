@@ -8,11 +8,25 @@ const db = Db.getInstance();
 
 router.get('/', async(req, res) => {
     let tipos = await TipoElectrodomestico.obtenerTodos();
-    res.json(tipos);
+    let array = [];
+    tipos.forEach(t => {
+        array.push({
+            id: t.id,
+            descripcion: t.descripcion
+        })
+    })
+    res.json(array);
 })
 .get('/fabricante', async(req, res) => {
     let fabricantes = await Fabricante.obtenerTodos();
-    res.json(fabricantes);
+    let array = [];
+    fabricantes.forEach(t => {
+        array.push({
+            id: t.id,
+            descripcion: t.descripcion
+        })
+    })
+    res.json(array);
 })
 
 module.exports = router;

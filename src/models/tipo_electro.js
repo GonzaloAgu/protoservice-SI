@@ -31,10 +31,9 @@ module.exports = class TipoElectrodomestico extends IModelo {
 
         const lista = [];
         result.forEach(item => {
-            lista.push({
-                id: item.id,
-                descripcion: item.descripcion
-            });
+            const obj = new TipoElectrodomestico(item.id);
+            obj.descripcion = item.descripcion;
+            lista.push(obj);
         });
 
         lista.sort((a, b) => {

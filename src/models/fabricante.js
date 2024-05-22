@@ -45,10 +45,9 @@ module.exports = class Fabricante extends IModelo {
 
         const lista = [];
         result.forEach(item => {
-            lista.push({
-                id: item.id,
-                descripcion: item.descripcion
-            });
+            const obj = new Fabricante(item.id);
+            obj.descripcion = item.descripcion;
+            lista.push(obj);
         });
         lista.sort((a, b) => {
             return a.descripcion.localeCompare(b.descripcion);
