@@ -29,23 +29,33 @@ module.exports = class Reparacion extends IModelo {
 
 
     async getClienteObj(){
+        if(this.clienteObj)
+            return this.clienteObj;
         let cliente = new Cliente(this.dni_cliente);
-        if(await cliente.obtener())
+        if(await cliente.obtener()){
+            this.clienteObj = cliente;
             return cliente;
+        }
         return false;
     }
 
     async getElectrodomesticoObj() {
+        if(this.electrodomesticoObj)
+            return this.electrodomesticoObj;
         let electro = new Electrodomestico(this.electrodomestico_id);
-        if(await electro.obtener())
+        if(await electro.obtener()){
+            this.electrodomesticoObj = electro;
             return electro;
+        }
         return false;
     }
 
     async getFacturaObj() {
         let factura = new Factura(this.factura_id);
-        if(await factura.obtener())
+        if(await factura.obtener()){
+            this.facturaObj = factura;
             return factura;
+        }
         return false;
     }
     
@@ -89,13 +99,11 @@ module.exports = class Reparacion extends IModelo {
         
         if(result.rows.length) {
             this.electrodomestico_id = result.rows[0].electrodomestico_id;
-            this.electrodomesticoObj = new Electrodomestico(this.electrodomestico_id);
-            await this.electrodomesticoObj.obtener();
+            this.electrodomesticoObj = await this.getElectrodomesticoObj();
             this.desc_falla = result.rows[0].desc_falla;
             this.fecha_recepcion = result.rows[0].fecha_recepcion;
             this.dni_cliente = result.rows[0].dni_cliente;
-            this.clienteObj = new Cliente(this.dni_cliente);
-            await this.clienteObj.obtener();
+            this.clienteObj = await this.getClienteObj();
             this.factura_id = result.rows[0].factura_id;
             this.estado = result.rows[0].estado;
             return true;

@@ -8,6 +8,9 @@ const IModelo = require("./Imodelo.js");
 module.exports = class Electrodomestico extends IModelo {
 
     #id;
+    tipoElectroObj;
+    fabricanteObj;
+
     constructor(id){
         super();
         this.#id = id;
@@ -22,16 +25,20 @@ module.exports = class Electrodomestico extends IModelo {
 
     async getTipoElectroObj(){
         const tipoElectro = new TipoElectrodomestico(this.tipo_electro_id);
-        if(await tipoElectro.obtener())
+        if(await tipoElectro.obtener()){
+            this.tipoElectroObj = tipoElectro;
             return tipoElectro;
+        }
         logTS("No se encontró tipo de electrodoméstico con id ", this.tipo_electro_id);
         return null;
     }
 
     async getFabricanteObj(){
         const fabricante = new Fabricante(this.fabricante_id);
-        if(await fabricante.obtener())
+        if(await fabricante.obtener()){
+            this.fabricanteObj = fabricante;
             return fabricante;
+        }
         logTS("No se encontró fabricante con id ", this.tipo_electro_id);
         return null;
     }

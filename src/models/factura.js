@@ -1,11 +1,14 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
+const MedioPago = require('./medio_pago.js')
 
 module.exports = class Factura extends IModelo {
 
     static tipos = ['A', 'B'];
     #id;
+    medioPagoObj;
+
     constructor(id){
         super();
         this.#id = id;
@@ -17,6 +20,17 @@ module.exports = class Factura extends IModelo {
 
     get id() {
         return this.#id;
+    }
+
+    async getMedioPagoObj() {
+        if(this.medioPagoObj)
+            return this.medioPagoObj;
+        let mp = new MedioPago(this.medio_pago_id);
+        if(await mp.obtener()){
+            this.medioPagoObj = mp;
+            return mp;
+        }
+        return false;
     }
 
     /**
@@ -58,6 +72,7 @@ module.exports = class Factura extends IModelo {
             this.fecha = result.rows[0].fecha;
             this.monto = result.rows[0].monto;
             this.medio_pago_id = result.rows[0].medio_pago_id;
+            this.medioPagoObj = await this.getMedioPagoObj();
             return true;
         }
         return false;
