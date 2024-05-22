@@ -49,6 +49,9 @@ module.exports = class Fabricante extends IModelo {
             obj.descripcion = item.descripcion;
             lista.push(obj);
         });
+        lista.sort((a, b) => {
+            return a.descripcion.localeCompare(b.descripcion);
+        })
         return lista;
     }
 
