@@ -116,6 +116,8 @@ module.exports = class Reparacion extends IModelo {
                 logTS(`Insertando reparación...`);
                 const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, dni_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
                 this.#id = result.rows[0].id;
+                this.clienteObj = await this.getClienteObj();
+                this.electrodomesticoObj = await this.getElectrodomesticoObj();
                 logTS(result.command + ` ${this.toString()}` +  " finalizado.");
                 return 1;
             } else {
@@ -146,7 +148,7 @@ module.exports = class Reparacion extends IModelo {
 
     toString(){
         if(this.dni_cliente)
-            return `id: ${this.#id} - DNI ${this.dni_cliente}`;
+            return `[id ${this.#id}] - Cliente: ${this.clienteObj.nombre} [DNI ${this.dni_cliente}]`;
         else
             return `id: ${this.#id}`;
     }
