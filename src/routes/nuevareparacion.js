@@ -32,14 +32,17 @@ router.get('/', (req, res) => {
         cliente
     };
     res.json(response);
-    //res.json(await pg.buscarCliente(req.body.dni))
 }).post('/agregarcliente', async(req, res) => {
     try {
-        pg.agregarCliente(req.body.cliente.dni, req.body.cliente.nombre, req.body.cliente.telefono);
+        let cliente = new Cliente(req.body.cliente.dni);
+        cliente.nombre = req.body.cliente.nombre;
+        cliente.telefono = req.body.cliente.telefono;
+        const result = await cliente.guardar();
+        res.status(200).json({ agregado: result == 1 });
+        //pg.agregarCliente(req.body.cliente.dni, req.body.cliente.nombre, req.body.cliente.telefono);
     } catch(e){
         res.json({agregado: false, error: e})
     }
-    res.status(200).json({agregado: true})
 })
 
 module.exports = router;

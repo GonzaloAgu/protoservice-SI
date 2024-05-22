@@ -78,10 +78,6 @@ module.exports = class Db {
     return await this.pool.query(query, columnas.concat(valores)).rows;
   }
 
-  async obtenerTiposElectro() {
-    return (await this.pool.query('SELECT * FROM tipo_electro WHERE id<>0 ORDER BY descripcion;')).rows;
-  }
-
   async obtenerFabricantes() {
     return (await this.pool.query('SELECT * FROM fabricante WHERE id<>0 ORDER BY descripcion;')).rows;
   }
@@ -145,32 +141,6 @@ module.exports = class Db {
 
   }
 
-  async agregarCliente(dni, nombre, telefono) {
-    let result = (await this.pool.query(`SELECT nombre FROM cliente WHERE dni=$1`, [dni]));
-    if (result.rowCount === 0) {
-      try {
-        (await this.pool.query('INSERT INTO cliente(dni, nombre, telefono) VALUES($1, $2, $3)',
-        [dni, nombre, telefono]));
-        console.log(`Nuevo cliente en base de datos - DNI: ${dni} - Nombre: ${nombre}`)
-      } catch(e){
-        console.error('Hubo un problema al añadir un cliente. \n', e);
-      }
-    } else {
-      throw `El cliente con DNI ${dni} ya existe.`
-    }
-  }
-/**
- * Devuelve un cliente mediante su DNI
- * @param {*} dni 
- * @returns {existe, cliente}
- */
-  async buscarCliente(dni){
-    let result = (await this.pool.query('SELECT nombre, telefono FROM cliente WHERE dni=$1', [dni]));
-    return {
-      existe: result.rowCount !== 0,
-      cliente: result.rows[0] || false
-    }
-  }
 /**
  * Busca reparaciones en base a término de búsqueda ingresado
  * @param {*} termino 
