@@ -57,7 +57,6 @@ app.route('/reparacion')
         // electrodomestico
         let resultElectro = await Electrodomestico.obtenerTodos(`modelo='${rep.electrodomestico.modelo}' AND fabricante_id=${rep.electrodomestico.fabricante_id}`);
         
-        console.log(resultElectro);
         let objElectro;
         if(resultElectro.length === 0){
             objElectro = new Electrodomestico();

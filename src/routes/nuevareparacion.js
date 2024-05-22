@@ -27,7 +27,6 @@ router.get('/', (req, res) => {
 }).post('/obtenercliente', async(req, res) => {
     let cliente = new Cliente(req.body.dni);
     let existe = await cliente.obtener();
-    console.log(cliente);
     const response = {
         existe,
         cliente

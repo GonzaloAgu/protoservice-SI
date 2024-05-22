@@ -87,6 +87,7 @@ fetch('/tipo-productos')
     return response.json();
   })
   .then(data => {
+    console.log(data)
     const datalist = document.getElementById('tipo-input');
     data.forEach(option => {
       const optionElement = document.createElement('option');

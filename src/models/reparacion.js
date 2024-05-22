@@ -98,8 +98,6 @@ module.exports = class Reparacion extends IModelo {
             await this.clienteObj.obtener();
             this.factura_id = result.rows[0].factura_id;
             this.estado = result.rows[0].estado;
-            console.log(this);
-            console.log(this.electrodomesticoObj);
             return true;
         }
         return false;
