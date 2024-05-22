@@ -86,11 +86,16 @@ app.route('/reparacion')
     })
     .delete(async (req, res) => {
         let reparacion = new Reparacion(req.body.id);
-        const result = await reparacion.eliminar();
-        const response = {
-            ok: result,
+        let result;
+        if(await reparacion.obtener()){
+            result = await reparacion.eliminar();
+            res.json({
+                ok: result,
+            })
+        } else {
+            logTS(`No se pudo eliminar la reparación con id ${req.body.id} porque no existe.`)
+            res.json({ok: false});
         }
-        res.json(response);
     });
 
 app.post('/actualizarestado', async (req, res) => {

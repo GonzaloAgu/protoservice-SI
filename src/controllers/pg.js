@@ -78,9 +78,6 @@ module.exports = class Db {
     return await this.pool.query(query, columnas.concat(valores)).rows;
   }
 
-  async obtenerFabricantes() {
-    return (await this.pool.query('SELECT * FROM fabricante WHERE id<>0 ORDER BY descripcion;')).rows;
-  }
   async obtenerReparacionPorId(id){
     try{
       const query = `SELECT Rx.id, Cx.dni, Cx.nombre, Fx.descripcion AS marca, Ex.modelo,
