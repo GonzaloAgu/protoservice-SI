@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const Db = require('../controllers/pg.js');
 const { Cliente } = require('../models/models');
 
-let pg = Db.getInstance();
 
 // Middleware para validar los datos de req.body
 function validarReqBody(req, res, next) {
@@ -22,9 +20,7 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname
         , '../../public/views/ingreso_producto.html'))
 })
-.post('/', validarReqBody, async (req, res) => {
-    res.json(await pg.nuevaReparacion(req.body));
-}).post('/obtenercliente', async(req, res) => {
+.post('/obtenercliente', async(req, res) => {
     let cliente = new Cliente(req.body.dni);
     let existe = await cliente.obtener();
     const response = {
