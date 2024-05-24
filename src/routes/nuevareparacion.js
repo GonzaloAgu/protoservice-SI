@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const Db = require('../controllers/pg.js');
+const { Cliente } = require('../models/models');
 
 let pg = Db.getInstance();
 
@@ -24,14 +25,23 @@ router.get('/', (req, res) => {
 .post('/', validarReqBody, async (req, res) => {
     res.json(await pg.nuevaReparacion(req.body));
 }).post('/obtenercliente', async(req, res) => {
-    res.json(await pg.buscarCliente(req.body.dni))
+    let cliente = new Cliente(req.body.dni);
+    let existe = await cliente.obtener();
+    const response = {
+        existe,
+        cliente
+    };
+    res.json(response);
 }).post('/agregarcliente', async(req, res) => {
     try {
-        pg.agregarCliente(req.body.cliente.dni, req.body.cliente.nombre, req.body.cliente.telefono);
+        let cliente = new Cliente(req.body.cliente.dni);
+        cliente.nombre = req.body.cliente.nombre;
+        cliente.telefono = req.body.cliente.telefono;
+        const result = await cliente.guardar();
+        res.status(200).json({ agregado: result == 1 });
     } catch(e){
         res.json({agregado: false, error: e})
     }
-    res.status(200).json({agregado: true})
 })
 
 module.exports = router;

@@ -4,8 +4,9 @@
   "description": "sistema de información para comercio de reparación de electrodomésticos",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"cls && node app.js"
+    "test": "node test/test_abm.js",
+    "mocha": "mocha --exit",
+    "start": "cls && node app.js"
   },
   "author": "gonzalo agu",
   "license": "ISC",
@@ -16,5 +17,9 @@
     "express": "^4.18.2",
     "path": "^0.12.7",
     "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^10.4.0"
   }
 }

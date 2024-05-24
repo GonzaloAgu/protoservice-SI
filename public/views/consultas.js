@@ -36,9 +36,17 @@ function main (){
                 res = JSON.parse(xhr.responseText);
                 const tabla = document.getElementById('tabla-resultados')
                 tabla.innerHTML = '';
-                res.forEach(fila => {
-                    agregarFilaATabla(fila, tabla);
-                })
+                if(res.length)
+                    res.forEach(fila => {
+                        agregarFilaATabla(fila, tabla);
+                    })
+                else {
+                    const fila = document.createElement('td');
+                    fila.setAttribute('colspan', 6);
+                    fila.style['text-align'] = 'center';
+                    fila.innerHTML = "No se encontraron resultados.";
+                    tabla.appendChild(fila);
+                }
             }
         }
         xhr.send();
