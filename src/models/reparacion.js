@@ -1,7 +1,6 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
-//const Cliente = require('./cliente.js')
 const { Cliente, Electrodomestico, Factura } = require('./models.js');
 module.exports = class Reparacion extends IModelo {
 

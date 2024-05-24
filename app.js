@@ -3,12 +3,8 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 require('dotenv').config();
-const ejs = require('ejs');
-const Db = require('./src/controllers/pg.js');
 const Reparacion = require('./src/models/reparacion.js');
-const { Electrodomestico } = require('./src/models/models.js');
-
-let pg = Db.getInstance();
+const Electrodomestico = require('./src/models/electrodomestico.js');
 
 const PORT = process.env.PORT || 3000;
 
