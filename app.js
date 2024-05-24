@@ -21,16 +21,6 @@ app.get('/consulta', (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/consultas.html'))
 })
 
-app.route('/electrodomestico')
-    .post(async (req, res) => {
-        const elec = req.body;
-        const obj = new Electrodomestico();
-        obj.tipo_electro_id = elec.tipo_electro_id;
-        obj.fabricante_id = elec.fabricante_id;
-        obj.modelo = elec.modelo;
-        // sin hacer
-    })
-
 app.route('/reparacion')
     .get(async (req, res) => {
         let rep = new Reparacion(req.query.id);
