@@ -65,12 +65,6 @@ module.exports = class Db {
     let result = (await this.pool.query(query, ['%' + termino + '%']))
     return result;
   }
-
-  async eliminarReparacionPorId(id){
-    const query = `DELETE FROM reparacion WHERE id=$1`;
-    const result = (await this.pool.query(query, [id]));
-    return result;
-  }
 }
 
 
