@@ -23,12 +23,6 @@ module.exports = class Db {
     return this.pool.query(msg, valores);
   }
 
-  validarParametrosQuery(columnas, valores){
-    if(columnas.length !== valores.length) throw 'Distinto numero de columnas y valores enviados.';
-    if(!columnas.length) throw 'Parametros inválidos (Arreglos vacíos o no son arreglos).';
-    return true;
-  }
-
 /**
  * Busca reparaciones en base a término de búsqueda ingresado
  * @param {*} termino 
