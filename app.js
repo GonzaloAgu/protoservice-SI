@@ -98,14 +98,27 @@ app.route('/reparacion')
     });
 
 app.post('/actualizarestado', async (req, res) => {
-    pg.actualizarEstado(req.body.id, req.body.estado)
-        .then(response => {
-            const resp = {
-                ok: true,
-                response
-            }
-            res.json(resp);
+    const reparacion = new Reparacion(req.body.id);
+    await reparacion.obtener();
+    reparacion.estado = req.body.estado;
+    let result = await reparacion.guardar();
+    if( result == 0 ){
+        const resp = {
+            ok: true
+        }
+        res.json(resp);
+    } else if(result == 1) {
+        await reparacion.eliminar();
+        res.json({
+            ok: false,
+            error: "Se insertó una modificación cuando debía modificarse una existente."
         })
+    } else {
+        res.json({
+            ok: false,
+            error: "Se produjo un error"
+        })
+    }
 })
 
 app.use('/tipo-productos', require(path.join(__dirname, './src/routes/tipos_electro.js')))

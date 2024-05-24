@@ -39,7 +39,6 @@ router.get('/', (req, res) => {
         cliente.telefono = req.body.cliente.telefono;
         const result = await cliente.guardar();
         res.status(200).json({ agregado: result == 1 });
-        //pg.agregarCliente(req.body.cliente.dni, req.body.cliente.nombre, req.body.cliente.telefono);
     } catch(e){
         res.json({agregado: false, error: e})
     }
