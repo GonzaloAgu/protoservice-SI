@@ -22,10 +22,6 @@ module.exports = class Db {
     }
   }
 
-  getPool(){
-    return this.pool;
-  }
-
   async query(msg, valores){
     return this.pool.query(msg, valores);
   }
