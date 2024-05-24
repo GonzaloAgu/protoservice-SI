@@ -14,12 +14,9 @@ module.exports = class Db {
   }
 
   static getInstance() {
-    if (Db.instanciaCreada)
-      return Db.instanciaCreada;
-    else {
+    if(!Db.instanciaCreada)
       new Db();
-      return Db.instanciaCreada;
-    }
+    return Db.instanciaCreada;
   }
 
   async query(msg, valores){
