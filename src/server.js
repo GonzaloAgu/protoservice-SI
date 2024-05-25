@@ -1,22 +1,43 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { getReparacion, postReparacion, deleteReparacion, putReparacion } = require('./controllers/reparacion.js');
 
 module.exports = class Server {
     constructor() {
         this.app = express();
-        middlewares();
-        routes();
+        this.middlewares();
+        this.routes();
     }
 
     middlewares() {
-        app.use(express.static(path.join(__dirname, "public")));
-        app.use(cors());
-        app.use(express.json());
-        app.set('view engine', 'ejs');
+        this.app.use(express.static(path.join(__dirname, "../public")));
+        this.app.use(cors());
+        this.app.use(express.json());
+        this.app.set('view engine', 'ejs');
     }
 
     routes() {
+        this.app.use('/tipo-productos', require(path.join(__dirname, './routes/tipos_electro.js')))
+        this.app.use('/nuevareparacion', require(path.join(__dirname, './routes/nuevareparacion.js')))
+        this.app.use('/buscar', require(path.join(__dirname, './routes/buscar.js')))
+        this.app.get('/', (req, res) => {
+            res.redirect('/nuevareparacion');
+        })
         
+        this.app.get('/consulta', (req, res) => {
+            res.sendFile(path.join(__dirname, '../public/views/consultas.html'))
+        })
+        
+        this.app.route('/reparacion')
+            .get(getReparacion)
+            .post(postReparacion)
+            .put(putReparacion)
+            .delete(deleteReparacion);
+    }
+
+    listen(port) {
+        this.app.listen(port);
+        console.log("Servidor abierto en puerto ", port);
     }
 }
