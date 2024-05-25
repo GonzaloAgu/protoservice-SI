@@ -66,7 +66,7 @@ describe("Fabricante", () => {
 
     it("Eliminación", async () => {
         const res = await fab.eliminar();
-        db.query("ALTER SEQUENCE fabricante_id_seq RESTART WITH $1", [fab.id]); // restaurar secuencia de id's
+        db.query("ALTER SEQUENCE fabricante_id_seq RESTART WITH $1", [fab.id - 1]); // restaurar secuencia de id's
         assert.equal(res, 1);
     })
 })
@@ -95,7 +95,7 @@ describe("Tipo electrodomestico", () => {
 
     it("Eliminación", async () => {
         const res = await te.eliminar();
-        db.query("ALTER SEQUENCE tipo_electro_id_seq RESTART WITH $1", [te.id]); // restaurar secuencia de id's
+        db.query("ALTER SEQUENCE tipo_electro_id_seq RESTART WITH $1", [te.id - 1]); // restaurar secuencia de id's
         assert.equal(res, 1);
     })
 })

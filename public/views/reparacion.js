@@ -11,13 +11,13 @@ function actualizarEstado() {
     const parametros = new URLSearchParams(window.location.search);
     const id = parametros.get("id");
 
-    fetch("/actualizarestado", {
-        method: 'POST',
+    fetch("/reparacion", {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ estado: document.getElementById("estado-select").value, id: id })
-    })
+        body: JSON.stringify({ id: id, estado: document.getElementById("estado-select").value })
+        })
         .then(response => {
             if (response.ok) {
                 mostrarPopup("Estado de reparación cambiado correctamente.");
