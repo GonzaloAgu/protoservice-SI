@@ -3,7 +3,6 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 require('dotenv').config();
-const Reparacion = require('./src/models/reparacion.js');
 const { getReparacion, postReparacion, deleteReparacion, putReparacion } = require('./src/controllers/reparacion.js');
 
 const PORT = process.env.PORT || 3000;
