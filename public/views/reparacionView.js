@@ -65,13 +65,13 @@ function main() {
             body: JSON.stringify({ id: this.value })
         }).then(response => {
             if (response.ok) {
-                mostrarPopup('Producto eliminado con éxito.');
+                mostrarPopup('Producto eliminado con éxito.', false);
                 setTimeout(() => {
                     window.location.href = "/";
                 }, 2000)
 
             } else {
-                console.error('Error al eliminar el producto.');
+                console.error('Error al eliminar el producto.', true);
             }
         })
             .catch(error => {
