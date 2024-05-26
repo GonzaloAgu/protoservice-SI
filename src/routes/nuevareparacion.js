@@ -4,10 +4,7 @@ const path = require('path');
 const { Cliente } = require('../models/models');
 
 
-router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname
-        , '../../public/views/ingreso_producto.html'))
-})
+router
 .post('/obtenercliente', async(req, res) => {
     let cliente = new Cliente(req.body.dni);
     let existe = await cliente.obtener();

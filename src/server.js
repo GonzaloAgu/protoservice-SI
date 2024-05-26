@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { getReparacion, postReparacion, deleteReparacion, putReparacion } = require('./controllers/reparacion.js');
+const { getReparacion, postReparacion, deleteReparacion, putReparacion } = require('./controllers/reparaciones.js');
 
 module.exports = class Server {
     constructor() {
@@ -18,16 +18,21 @@ module.exports = class Server {
     }
 
     routes() {
-        this.app.use('/tipo-productos', require(path.join(__dirname, './routes/tipos_electro.js')))
-        this.app.use('/nuevareparacion', require(path.join(__dirname, './routes/nuevareparacion.js')))
-        this.app.use('/buscar', require(path.join(__dirname, './routes/buscar.js')))
+        // RUTAS A VIEWS
         this.app.get('/', (req, res) => {
-            res.redirect('/nuevareparacion');
-        })
-        
+            res.redirect('/nuevareparacion')
+        });
         this.app.get('/consulta', (req, res) => {
             res.sendFile(path.join(__dirname, '../public/views/consultas.html'))
+        });
+        this.app.get('/nuevareparacion', (req, res) => {
+            res.sendFile(path.join(__dirname, '../public/views/ingreso_producto.html'))
         })
+
+        // RUTAS A APIs
+        this.app.use('/nuevareparacion', require(path.join(__dirname, './routes/nuevareparacion.js')));
+        this.app.use('/tipo-productos', require(path.join(__dirname, './routes/tipos_electro.js')));
+        this.app.use('/buscar', require(path.join(__dirname, './routes/buscar.js')));
         
         this.app.route('/reparacion')
             .get(getReparacion)

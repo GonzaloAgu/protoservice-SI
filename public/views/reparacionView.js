@@ -1,6 +1,10 @@
-function mostrarPopup(mensaje) {
-    const popup = document.getElementById("successPopup");
+function mostrarPopup(mensaje, huboError = false) {
+    const popup = document.getElementById("popup");
     popup.textContent = mensaje;
+    if(huboError)
+        popup.style.backgroundColor = '#CD5C5D';
+    else
+        popup.style.backgroundColor = '#4CAF50';
     popup.classList.add('show');
     setTimeout(() => {
         popup.classList.remove('show')
@@ -19,9 +23,11 @@ function actualizarEstado() {
         body: JSON.stringify({ id: id, estado: document.getElementById("estado-select").value })
         })
         .then(response => {
-            if (response.ok) {
-                mostrarPopup("Estado de reparación cambiado correctamente.");
-            }
+            console.log(response);
+            if (response.ok)
+                mostrarPopup("Estado de reparación cambiado correctamente.", false);
+            else
+                mostrarPopup("ERROR: No se pudo actualizar el estado del producto.", true)
         })
         .catch(e => {
             alert("Error: ", e)
