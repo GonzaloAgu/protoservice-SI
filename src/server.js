@@ -20,7 +20,7 @@ module.exports = class Server {
     routes() {
         // RUTAS A VIEWS
         this.app.get('/', (req, res) => {
-            res.redirect('/nuevareparacion')
+            res.redirect('/consulta')
         });
         this.app.get('/consulta', (req, res) => {
             res.sendFile(path.join(__dirname, '../public/views/consultas.html'))
@@ -28,15 +28,17 @@ module.exports = class Server {
         this.app.get('/nuevareparacion', (req, res) => {
             res.sendFile(path.join(__dirname, '../public/views/ingreso_producto.html'))
         })
+        this.app.get('/reparacion', getReparacion);
+        
+
+        // RUTAS A APIs
         this.app.route('/reparacion')
-            .get(getReparacion)
             .post(postReparacion)
             .put(putReparacion)
             .delete(deleteReparacion);
 
-        // RUTAS A APIs
         this.app.use('/cliente', require(path.join(__dirname, './controllers/clientes.js')));
-        this.app.use('/tipo-productos', require(path.join(__dirname, './routes/tipos_electro.js')));
+        this.app.use('/electrodomesticos', require(path.join(__dirname, './routes/electrodomesticos.js')));
         this.app.use('/buscar', require(path.join(__dirname, './routes/buscar.js')));
         
     }

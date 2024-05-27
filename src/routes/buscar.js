@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Db = require('../controllers/pg.js');
-
-let pg = Db.getInstance();
+const Reparacion = require('../models/reparacion')
 
 router.get('/', async(req, res) => {
     let response;
     if(req.query.search){
-        response = await pg.buscarReparaciones(req.query.search);
+        response = await Reparacion.buscarPorPalabra(req.query.search);
         res.json(response.rows);
     } else {
         res.json([])

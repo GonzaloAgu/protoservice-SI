@@ -79,7 +79,7 @@ const popupIngresarCliente = () => {
 /* BUSQUEDA DE OPCIONES */
 
 // Tipos de producto
-fetch('/tipo-productos')
+fetch('/electrodomesticos/tipos')
   .then(response => {
     if (!response.ok) {
       throw new Error('Error al obtener las opciones');
@@ -102,7 +102,7 @@ fetch('/tipo-productos')
 
 
 // Fabricantes
-fetch('/tipo-productos/fabricante')
+fetch('/electrodomesticos/fabricantes')
   .then(response => {
     if (!response.ok) {
       throw new Error('Error al obtener las opciones');
