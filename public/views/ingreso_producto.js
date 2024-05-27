@@ -33,7 +33,7 @@ function agregarCampos() {
 
 async function agregarCliente(cliente) {
   try {
-    const response = await fetch('nuevareparacion/agregarcliente', {
+    const response = await fetch('/cliente', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -129,12 +129,11 @@ function main(){
       if (!dniCliente) {
         dni.setAttribute('disabled', 'true');
         dniCliente = dni.value;
-        fetch('/nuevareparacion/obtenercliente', {
-          method: 'POST',
+        fetch(`/cliente?dni=${dniCliente}`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ dni: dniCliente })
+          }
         })
           .then(response => {
             return response.json();

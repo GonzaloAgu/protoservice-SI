@@ -5,15 +5,15 @@ const { Cliente } = require('../models/models');
 
 
 router
-.post('/obtenercliente', async(req, res) => {
-    let cliente = new Cliente(req.body.dni);
+.get('/', async(req, res) => {
+    let cliente = new Cliente(req.query.dni);
     let existe = await cliente.obtener();
     const response = {
         existe,
         cliente
     };
     res.json(response);
-}).post('/agregarcliente', async(req, res) => {
+}).post('/', async(req, res) => {
     try {
         let cliente = new Cliente(req.body.cliente.dni);
         cliente.nombre = req.body.cliente.nombre;
