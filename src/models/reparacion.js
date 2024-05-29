@@ -53,6 +53,7 @@ module.exports = class Reparacion extends IModelo {
     }
 
     async getFacturaObj() {
+        if(this.facturaObj) return this.facturaObj;
         let factura = new Factura(this.factura_id);
         if(await factura.obtener()){
             this.facturaObj = factura;

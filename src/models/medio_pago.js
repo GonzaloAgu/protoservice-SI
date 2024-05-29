@@ -38,6 +38,7 @@ module.exports = class MedioPago extends IModelo {
         const lista = [];
         result.forEach(item => {
             const obj = new MedioPago(item.id);
+            obj._id = item.id;
             obj.descripcion = item.descripcion;
             lista.push(obj);
         });

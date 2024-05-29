@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { getReparacion, postReparacion, deleteReparacion, putReparacion } = require('./controllers/reparaciones.js');
+const { postFactura, getAllMediosPago } = require('./controllers/facturas.js');
 
 module.exports = class Server {
     constructor() {
@@ -36,6 +37,11 @@ module.exports = class Server {
             .post(postReparacion)
             .put(putReparacion)
             .delete(deleteReparacion);
+
+        this.app.route('/factura')
+            .post(postFactura)
+            
+        this.app.get('/mediospago', getAllMediosPago);
 
         this.app.use('/cliente', require(path.join(__dirname, './controllers/clientes.js')));
         this.app.use('/electrodomesticos', require(path.join(__dirname, './routes/electrodomesticos.js')));

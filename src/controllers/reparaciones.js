@@ -1,14 +1,16 @@
 const path = require('path');
-const { Reparacion, Electrodomestico } = require('../models/models.js')
+const { Reparacion, Electrodomestico, MedioPago } = require('../models/models.js')
 
 const getReparacion = async (req, res) => {
     let rep = new Reparacion(req.query.id);
     if(await rep.obtener()){
         const [cliente, electrodomestico] = await Promise.all([rep.getClienteObj(), rep.getElectrodomesticoObj()]);
         const fabricante = await electrodomestico.getFabricanteObj();
+        const mediosPago = await MedioPago.obtenerTodos();
+        const factura = await rep.getFacturaObj();
         if(!cliente || !electrodomestico || !fabricante)
             res.status(500).send("<h1>Error 500</h1>\n<p>" + cliente + electrodomestico + '</p>\n<a href="/">Volver a la página principal.</a>');
-        res.render(path.join(__dirname, '../../public/views/reparacionView.ejs'), { reparacion: rep, cliente, electrodomestico, fabricante });
+        res.render(path.join(__dirname, '../../public/views/reparacionView.ejs'), { reparacion: rep, cliente, electrodomestico, fabricante, mediosPago, factura });
     } else {
         res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + '\n<a href="/">Volver a la página principal.</a>');
     }
@@ -51,6 +53,7 @@ const postReparacion = async (req, res) => {
 }
 
 const putReparacion = async (req, res) => {
+    console.log("reqbody recibido en putReparacion:", req.body)
     const { id, ...updates } = req.body;
     const reparacion = new Reparacion(id);
     await reparacion.obtener();
@@ -63,7 +66,7 @@ const putReparacion = async (req, res) => {
 
     let result = await reparacion.guardar();
     if (result === 0) {
-        res.json({ ok: true });
+        res.json({ ok: true, reparacion });
     } else if (result === 1) {
         await reparacion.eliminar();
         res.json({

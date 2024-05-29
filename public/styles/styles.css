@@ -295,16 +295,6 @@ box-shadow: 22px 17px 35px -34px rgba(0,0,0,0.75);
   width: 100%;
 }
 
-/* Estilo para el botón de enviar */
-.formulario button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .opciones-rad {
   display: flex;
     align-items: center;

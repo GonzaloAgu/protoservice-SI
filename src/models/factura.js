@@ -1,7 +1,7 @@
 const { logTS } = require('../utils/log');
 const pool = require("../controllers/pg").getInstance();
 const IModelo = require("./Imodelo.js");
-const MedioPago = require('./medio_pago.js')
+const MedioPago = require('./medio_pago.js');
 
 module.exports = class Factura extends IModelo {
 
@@ -9,7 +9,7 @@ module.exports = class Factura extends IModelo {
     #id;
     medioPagoObj;
 
-    constructor(id){
+    constructor(id = undefined){
         super();
         this.#id = id;
         this.tipo = undefined;
@@ -66,7 +66,7 @@ module.exports = class Factura extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        const result = await pool.query("SELECT * FROM medio_pago WHERE id=$1", [this.#id]);
+        const result = await pool.query("SELECT * FROM factura WHERE id=$1", [this.#id]);
         if(result.rows.length) {
             this.tipo = result.rows[0].tipo;
             this.fecha = result.rows[0].fecha;
@@ -89,8 +89,10 @@ module.exports = class Factura extends IModelo {
     
             if (!existe) {
                 logTS(`Insertando factura...`);
-                const result = await pool.query("INSERT INTO factura(tipo, fecha, monto, medio_pago_id) VALUES($1, $2, $3, $4) RETURNING id", [this.descripcion]);
+                const result = await pool.query("INSERT INTO factura(tipo, fecha, monto, medio_pago_id) VALUES($1, $2, $3, $4) RETURNING id"
+                        , [this.tipo, this.fecha, this.monto, this.medio_pago_id]);
                 this.#id = result.rows[0].id;
+                this._id = this.#id;
                 logTS(result.command + `  ${this.toString()}` + " finalizado.");
                 return 1;
             } else {
