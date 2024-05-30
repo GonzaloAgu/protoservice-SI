@@ -87,7 +87,6 @@ fetch('/electrodomesticos/tipos')
     return response.json();
   })
   .then(data => {
-    console.log(data)
     const datalist = document.getElementById('tipo-input');
     data.forEach(option => {
       const optionElement = document.createElement('option');
@@ -187,7 +186,6 @@ function main(){
           return response.json();
         })
         .then(function (data) {
-          console.log('Respuesta del servidor:', data);
           document.getElementById('producto-fieldset').setAttribute('disabled', 'true');
           const popup = document.getElementById('successPopup');
           popup.classList.add('show');

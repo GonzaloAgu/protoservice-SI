@@ -4,7 +4,7 @@ const { TipoElectrodomestico, Fabricante } = require('../models/models');
 
 
 router.get('/tipos', async(req, res) => {
-    let tipos = await TipoElectrodomestico.obtenerTodos();
+    let tipos = await TipoElectrodomestico.obtenerTodos("id<>0");
     let array = [];
     tipos.forEach(t => {
         array.push({
@@ -15,7 +15,7 @@ router.get('/tipos', async(req, res) => {
     res.json(array);
 })
 .get('/fabricantes', async(req, res) => {
-    let fabricantes = await Fabricante.obtenerTodos();
+    let fabricantes = await Fabricante.obtenerTodos("id<>0");
     let array = [];
     fabricantes.forEach(t => {
         array.push({
