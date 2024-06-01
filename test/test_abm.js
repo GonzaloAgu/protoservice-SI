@@ -2,7 +2,7 @@ require('dotenv').config();
 const chai = require('chai');
 const assert = chai.assert;
 require('../src/utils/log.js');
-const db = require('../src/controllers/pg.js').getInstance();
+const db = require('../src/utils/pg.js').getInstance();
 
 const models = require('../src/models/models.js');
 
