@@ -1,3 +1,4 @@
+"use strict";
 const { Factura, MedioPago } = require('../models/models')
 
 module.exports.postFactura = async (req, res) => {

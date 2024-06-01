@@ -1,3 +1,5 @@
+"use strict";
+
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
 const IModelo = require("./Imodelo.js");

@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
     Cliente: require('./cliente.js'),
     Fabricante: require('./fabricante.js'),

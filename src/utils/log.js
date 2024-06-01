@@ -1,3 +1,5 @@
+"use strict";
+
 let isOn = true;
 
 function loggerOn(on){

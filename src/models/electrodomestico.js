@@ -1,3 +1,5 @@
+"use strict";
+
 const { logTS } = require('../utils/log');
 const TipoElectrodomestico = require('./tipo_electro.js');
 const Fabricante = require('./fabricante.js');

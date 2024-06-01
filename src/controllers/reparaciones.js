@@ -1,3 +1,5 @@
+"use strict";
+
 const path = require('path');
 const { Reparacion, Electrodomestico, MedioPago } = require('../models/models.js')
 
