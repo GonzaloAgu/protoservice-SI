@@ -1,7 +1,7 @@
 const { logTS } = require('../utils/log');
 const TipoElectrodomestico = require('./tipo_electro.js');
 const Fabricante = require('./fabricante.js');
-const pool = require("../controllers/pg").getInstance();
+const pool = require("../utils/pg.js").getInstance();
 
 const IModelo = require("./Imodelo.js");
 

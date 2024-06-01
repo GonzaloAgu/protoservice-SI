@@ -1,5 +1,5 @@
 const { logTS } = require('../utils/log');
-const pool = require("../controllers/pg").getInstance();
+const pool = require("../utils/pg.js").getInstance();
 const IModelo = require("./Imodelo.js");
 
 module.exports = class MedioPago extends IModelo {

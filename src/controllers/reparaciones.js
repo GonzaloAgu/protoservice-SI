@@ -53,7 +53,6 @@ const postReparacion = async (req, res) => {
 }
 
 const putReparacion = async (req, res) => {
-    console.log("reqbody recibido en putReparacion:", req.body)
     const { id, ...updates } = req.body;
     const reparacion = new Reparacion(id);
     await reparacion.obtener();
