@@ -4,14 +4,12 @@ const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
 const IModelo = require("./Imodelo.js");
 const Cliente = require('./cliente.js');
-const Electrodomestico = require('./electrodomestico.js');
 const Factura = require('./factura.js');
 
 module.exports = class Reparacion extends IModelo {
 
     #id;
     clienteObj;
-    electrodomesticoObj;
     facturaObj;
 
     static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
@@ -19,7 +17,7 @@ module.exports = class Reparacion extends IModelo {
     constructor(id){
         super();
         this.#id = id;
-        this.electrodomestico_id = null;
+        this.modelo_electro = null;
         this.desc_falla = null;
         this.fecha_recepcion;
         this.id_cliente;
@@ -39,17 +37,6 @@ module.exports = class Reparacion extends IModelo {
         if(await cliente.obtener()){
             this.clienteObj = cliente;
             return cliente;
-        }
-        return false;
-    }
-
-    async getElectrodomesticoObj() {
-        if(this.electrodomesticoObj)
-            return this.electrodomesticoObj;
-        let electro = new Electrodomestico(this.electrodomestico_id);
-        if(await electro.obtener()){
-            this.electrodomesticoObj = electro;
-            return electro;
         }
         return false;
     }
@@ -74,13 +61,12 @@ module.exports = class Reparacion extends IModelo {
             return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
                    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
           }
-          let query = `SELECT Rx.id, Cx.id, Cx.nombre, Fx.descripcion AS marca, Ex.modelo,
+          let query = `SELECT Rx.id, Cx.id, Cx.nombre, Fx.descripcion AS marca, Rx.modelo_electro,
           Rx.fecha_recepcion,Rx.desc_falla, Rx.estado
           FROM reparacion Rx
           JOIN cliente Cx ON Rx.id_cliente = Cx.id
-          JOIN electrodomestico Ex ON Rx.electrodomestico_id = Ex.id
           JOIN fabricante Fx ON Ex.fabricante_id = Fx.id
-          WHERE Cx.nombre ILIKE $1 OR Ex.modelo ILIKE $1
+          WHERE Cx.nombre ILIKE $1 OR Rx.modelo_electro ILIKE $1
           OR Fx.descripcion ILIKE $1 OR Rx.desc_falla ILIKE $1`;
       
           if(isNumeric(termino)){
@@ -93,7 +79,7 @@ module.exports = class Reparacion extends IModelo {
     }
     
     /**
-     * Obtiene todos los electrodomésticos de la base.
+     * Obtiene todas las reparaciones de la base.
      * @returns array con los resultados
      */
     static async obtenerTodos(query) {
@@ -109,7 +95,7 @@ module.exports = class Reparacion extends IModelo {
         const lista = [];
         result.forEach( item => {
             const obj = new Reparacion(item.id);
-            obj.electrodomestico_id = item.electrodomestico_id;
+            obj.modelo_electro = item.modelo_electro;
             obj.desc_falla = item.desc_falla;
             obj.fecha_recepcion = item.fecha_recepcion;
             obj.id_cliente = item.id_cliente;
@@ -124,15 +110,14 @@ module.exports = class Reparacion extends IModelo {
 
 
     /**
-     * Busca y obtiene al tipo de electrodoméstico en la base de datos.
+     * Busca y obtiene a la reparación en la base de datos.
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
         const result = await pool.query("SELECT * FROM reparacion WHERE id=$1", [this.#id]);
         
         if(result.rows.length) {
-            this.electrodomestico_id = result.rows[0].electrodomestico_id;
-            this.electrodomesticoObj = await this.getElectrodomesticoObj();
+            this.modelo_electro = result.rows[0].modelo_electro;
             this.desc_falla = result.rows[0].desc_falla;
             this.fecha_recepcion = result.rows[0].fecha_recepcion;
             this.id_cliente = result.rows[0].id_cliente;
@@ -145,25 +130,24 @@ module.exports = class Reparacion extends IModelo {
     }
 
      /**
-     * Almacena datos del tipo de electrodomestico en la base de datos. Si no existia, lo agrega.
+     * Almacena datos de la reparación en la base de datos. Si no existia, lo agrega.
      * @returns 1 si lo agrego en la base. 0 si lo modifico. -1 si se produjo un error.
      */
     async guardar() {
         try {
-            const values = [this.electrodomestico_id, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado];
+            const values = [this.modelo_electro, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado];
             const existe = (await pool.query("SELECT * FROM reparacion WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando reparación...`);
-                const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, id_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
+                const result = await pool.query("INSERT INTO reparacion(modelo_electro, desc_falla, fecha_recepcion, id_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
                 this.#id = result.rows[0].id;
                 this.clienteObj = await this.getClienteObj();
-                this.electrodomesticoObj = await this.getElectrodomesticoObj();
                 logTS(result.command + ` ${this.toString()}` +  " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando reparacion ${this.toString()}...`);
-                const result = await pool.query("UPDATE reparacion SET electrodomestico_id=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
+                const result = await pool.query("UPDATE reparacion SET modelo_electro=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
                 logTS(result.command + " finalizado.");
                 return 0;
             }
