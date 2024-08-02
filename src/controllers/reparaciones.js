@@ -43,7 +43,7 @@ const postReparacion = async (req, res) => {
     obj.electrodomestico_id = objElectro.id;
     obj.desc_falla = rep.desc_falla;
     obj.fecha_recepcion = rep.fecha_recepcion;
-    obj.dni_cliente = rep.dni_cliente;
+    obj.id_cliente = rep.id_cliente;
     obj.factura_id = rep.factura_id;
     obj.estado = 'pendiente';
 

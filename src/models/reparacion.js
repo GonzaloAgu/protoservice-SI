@@ -22,7 +22,7 @@ module.exports = class Reparacion extends IModelo {
         this.electrodomestico_id = null;
         this.desc_falla = null;
         this.fecha_recepcion;
-        this.dni_cliente;
+        this.id_cliente;
         this.factura_id;
         this.estado;
     }
@@ -35,7 +35,7 @@ module.exports = class Reparacion extends IModelo {
     async getClienteObj(){
         if(this.clienteObj)
             return this.clienteObj;
-        let cliente = new Cliente(this.dni_cliente);
+        let cliente = new Cliente(this.id_cliente);
         if(await cliente.obtener()){
             this.clienteObj = cliente;
             return cliente;
@@ -74,17 +74,17 @@ module.exports = class Reparacion extends IModelo {
             return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
                    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
           }
-          let query = `SELECT Rx.id, Cx.dni, Cx.nombre, Fx.descripcion AS marca, Ex.modelo,
+          let query = `SELECT Rx.id, Cx.id, Cx.nombre, Fx.descripcion AS marca, Ex.modelo,
           Rx.fecha_recepcion,Rx.desc_falla, Rx.estado
           FROM reparacion Rx
-          JOIN cliente Cx ON Rx.dni_cliente = Cx.dni
+          JOIN cliente Cx ON Rx.id_cliente = Cx.id
           JOIN electrodomestico Ex ON Rx.electrodomestico_id = Ex.id
           JOIN fabricante Fx ON Ex.fabricante_id = Fx.id
           WHERE Cx.nombre ILIKE $1 OR Ex.modelo ILIKE $1
           OR Fx.descripcion ILIKE $1 OR Rx.desc_falla ILIKE $1`;
       
           if(isNumeric(termino)){
-            query += ` OR Cx.dni::TEXT LIKE $1`
+            query += ` OR Cx.id::TEXT LIKE $1`
           }
           query += ' ORDER BY Rx.fecha_recepcion, Cx.nombre;'
       
@@ -112,7 +112,7 @@ module.exports = class Reparacion extends IModelo {
             obj.electrodomestico_id = item.electrodomestico_id;
             obj.desc_falla = item.desc_falla;
             obj.fecha_recepcion = item.fecha_recepcion;
-            obj.dni_cliente = item.dni_cliente;
+            obj.id_cliente = item.id_cliente;
             
             obj.factura_id = item.factura_id;
             obj.estado = item.estado;
@@ -135,7 +135,7 @@ module.exports = class Reparacion extends IModelo {
             this.electrodomesticoObj = await this.getElectrodomesticoObj();
             this.desc_falla = result.rows[0].desc_falla;
             this.fecha_recepcion = result.rows[0].fecha_recepcion;
-            this.dni_cliente = result.rows[0].dni_cliente;
+            this.id_cliente = result.rows[0].id_cliente;
             this.clienteObj = await this.getClienteObj();
             this.factura_id = result.rows[0].factura_id;
             this.estado = result.rows[0].estado;
@@ -150,12 +150,12 @@ module.exports = class Reparacion extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this.electrodomestico_id, this.desc_falla, this.fecha_recepcion, this.dni_cliente, this.factura_id, this.estado];
+            const values = [this.electrodomestico_id, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado];
             const existe = (await pool.query("SELECT * FROM reparacion WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando reparación...`);
-                const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, dni_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
+                const result = await pool.query("INSERT INTO reparacion(electrodomestico_id, desc_falla, fecha_recepcion, id_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
                 this.#id = result.rows[0].id;
                 this.clienteObj = await this.getClienteObj();
                 this.electrodomesticoObj = await this.getElectrodomesticoObj();
@@ -163,7 +163,7 @@ module.exports = class Reparacion extends IModelo {
                 return 1;
             } else {
                 logTS(`Actualizando reparacion ${this.toString()}...`);
-                const result = await pool.query("UPDATE reparacion SET electrodomestico_id=$2, desc_falla=$3, fecha_recepcion=$4, dni_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
+                const result = await pool.query("UPDATE reparacion SET electrodomestico_id=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
                 logTS(result.command + " finalizado.");
                 return 0;
             }
@@ -188,8 +188,8 @@ module.exports = class Reparacion extends IModelo {
     }
 
     toString(){
-        if(this.dni_cliente)
-            return `[id ${this.#id}] - Cliente: ${this.clienteObj.nombre} [DNI ${this.dni_cliente}]`;
+        if(this.id_cliente)
+            return `[id ${this.#id}] - Cliente: ${this.clienteObj.nombre} [id ${this.id_cliente}]`;
         else
             return `id: ${this.#id}`;
     }

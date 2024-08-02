@@ -7,16 +7,16 @@ const IModelo = require("./Imodelo.js");
 
 module.exports = class Cliente extends IModelo {
 
-    #dni;
-    constructor(dni) {
+    #id;
+    constructor(id) {
         super();
-        this.#dni = dni;
+        this.#id = id;
         this.nombre = null;
         this.telefono = null;
     }
     
-    get dni(){
-        return this.#dni;
+    get id(){
+        return this.#id;
     }
     
     /**
@@ -24,10 +24,10 @@ module.exports = class Cliente extends IModelo {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener(){
-        let result = await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this.#dni]);
+        let result = await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.#id]);
         if(result.rows.length){
             const cliente = result.rows[0];
-            this.#dni = cliente.dni;
+            this.#id = cliente.id;
             this.nombre = cliente.nombre;
             this.telefono = cliente.telefono;
             return true;
@@ -50,7 +50,7 @@ module.exports = class Cliente extends IModelo {
 
         const lista = [];
         result.forEach(item => {
-            const obj = new Cliente(item.dni);
+            const obj = new Cliente(item.id);
             obj.telefono = item.telefono;
             obj.nombre = item.nombre;
             lista.push(obj);
@@ -63,17 +63,17 @@ module.exports = class Cliente extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this.#dni, this.nombre, this.telefono];
-            const existe = (await pool.query("SELECT * FROM cliente WHERE dni=$1;", [this.#dni])).rows.length == 1;
+            const values = [this.#id, this.nombre, this.telefono];
+            const existe = (await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando cliente ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO cliente(dni, nombre, telefono) VALUES($1, $2, $3)", values);
+                const result = await pool.query("INSERT INTO cliente(id, nombre, telefono) VALUES($1, $2, $3)", values);
                 logTS(result.command + " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando cliente ${this.toString()}...`);
-                const result = await pool.query("UPDATE cliente SET nombre=$2, telefono=$3 WHERE dni=$1", values);
+                const result = await pool.query("UPDATE cliente SET nombre=$2, telefono=$3 WHERE id=$1", values);
                 logTS(result.command + " finalizado.");
                 return 0;
             }
@@ -86,7 +86,7 @@ module.exports = class Cliente extends IModelo {
     async eliminar() {
         logTS("Eliminando cliente " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM cliente WHERE dni=$1;", [this.#dni]);
+            const result = await pool.query("DELETE FROM cliente WHERE id=$1;", [this.#id]);
             logTS(result.command + " finalizado.");
             return 1;
         } catch (e) {
@@ -95,6 +95,6 @@ module.exports = class Cliente extends IModelo {
     }
 
     toString(){
-        return `DNI: ${this.#dni} - ${this.nombre} - Tel: ${this.telefono}`;
+        return `id: ${this.#id} - ${this.nombre} - Tel: ${this.telefono}`;
     }
 }

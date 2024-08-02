@@ -7,7 +7,7 @@ const { Cliente } = require('../models/models');
 
 router
 .get('/', async(req, res) => {
-    let cliente = new Cliente(req.query.dni);
+    let cliente = new Cliente(req.query.id);
     let existe = await cliente.obtener();
     const response = {
         existe,
@@ -16,7 +16,7 @@ router
     res.json(response);
 }).post('/', async(req, res) => {
     try {
-        let cliente = new Cliente(req.body.cliente.dni);
+        let cliente = new Cliente(req.body.cliente.id);
         cliente.nombre = req.body.cliente.nombre;
         cliente.telefono = req.body.cliente.telefono;
         const result = await cliente.guardar();
