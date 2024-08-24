@@ -26,7 +26,7 @@ function main (){
 
         const searchTerm = searchInput.value;
 
-        const url = '/buscar?search=' + encodeURIComponent(searchTerm);
+        const url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
 
         const xhr = new XMLHttpRequest();
 
