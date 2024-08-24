@@ -1,22 +1,42 @@
 "use strict";
 
-const path = require('path');
-const { Reparacion, MedioPago } = require('../models/models.js')
+const { Cliente, Factura, Reparacion, TipoElectrodomestico, Fabricante  } = require('./models/models');
 
-const getReparacion = async (req, res) => {
-    let rep = new Reparacion(req.query.id);
-    if(await rep.obtener()){
-        const [cliente, electrodomestico] = await Promise.all([rep.getClienteObj(), rep.getElectrodomesticoObj()]);
-        const fabricante = await electrodomestico.getFabricanteObj();
-        const mediosPago = await MedioPago.obtenerTodos();
-        const factura = await rep.getFacturaObj();
-        if(!cliente || !electrodomestico || !fabricante)
-            res.status(500).send("<h1>Error 500</h1>\n<p>" + cliente + electrodomestico + '</p>\n<a href="/">Volver a la página principal.</a>');
-        res.render(path.join(__dirname, '../../public/views/reparacionView.ejs'), { reparacion: rep, cliente, electrodomestico, fabricante, mediosPago, factura });
-    } else {
-        res.status(404).send("<h1>Error 404: Reparación no encontrada.</h1>\n" + '\n<a href="/">Volver a la página principal.</a>');
+const getCliente = async(req, res) => {
+    let cliente = new Cliente(req.query.id);
+    let existe = await cliente.obtener();
+    const response = {
+        existe,
+        cliente
+    };
+    res.json(response);
+}
+
+const postCliente = async(req, res) => {
+    try {
+        let cliente = new Cliente(req.body.cliente.id);
+        cliente.nombre = req.body.cliente.nombre;
+        cliente.telefono = req.body.cliente.telefono;
+        const result = await cliente.guardar();
+        res.status(200).json({ agregado: result == 1 });
+    } catch(e){
+        res.json({agregado: false, error: e})
     }
 }
+
+const postFactura = async (req, res) => {
+    const form = req.body;
+    let factura = new Factura();
+    factura.tipo = form.tipo_factura;
+    factura.fecha = new Date();
+    factura.monto = form.monto;
+    factura.medio_pago_id = form.medio_pago;
+    await factura.guardar();
+
+    const response = {ok: true, factura_id: factura._id};
+    res.json(response)
+}
+
 
 const postReparacion = async (req, res) => {
     const rep = req.body;
@@ -96,5 +116,48 @@ const deleteReparacion = async (req, res) => {
     }
 }
 
+const getAllReparacion = async(req, res) => {
+    let response;
+    if(req.query.search){
+        response = await Reparacion.buscarPorPalabra(req.query.search);
+        res.json(response.rows);
+    } else {
+        res.json([])
+    }
+}
 
-module.exports = { getReparacion, postReparacion, deleteReparacion, putReparacion };
+const getAllTiposElectrodomestico = async(req, res) => {
+    let tipos = await TipoElectrodomestico.obtenerTodos("id<>0");
+    let array = [];
+    tipos.forEach(t => {
+        array.push({
+            id: t.id,
+            descripcion: t.descripcion
+        })
+    })
+    res.json(array);
+}
+
+const getAllFabricantes = async(req, res) => {
+    let fabricantes = await Fabricante.obtenerTodos("id<>0");
+    let array = [];
+    fabricantes.forEach(t => {
+        array.push({
+            id: t.id,
+            descripcion: t.descripcion
+        })
+    })
+    res.json(array);
+}
+
+module.exports = {
+    deleteReparacion,
+    getAllFabricantes,
+    getAllReparacion,
+    getAllTiposElectrodomestico,
+    getCliente,
+    postCliente,
+    postFactura,
+    postReparacion,
+    putReparacion
+}
