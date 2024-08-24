@@ -14,9 +14,9 @@ const getCliente = async(req, res) => {
 
 const postCliente = async(req, res) => {
     try {
-        let cliente = new Cliente(req.body.cliente.id);
-        cliente.nombre = req.body.cliente.nombre;
-        cliente.telefono = req.body.cliente.telefono;
+        let cliente = new Cliente();
+        cliente.nombre = req.body.nombre;
+        cliente.telefono = req.body.telefono;
         const result = await cliente.guardar();
         res.status(200).json({ agregado: result == 1 });
     } catch(e){

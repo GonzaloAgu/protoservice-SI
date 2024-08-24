@@ -3,6 +3,7 @@
 const router = require('express').Router();
 const ctrls = require('./controllers.js');
 const path = require('path');
+const validate = require('./schemas.js');
 
 // Rutas de API
 router.get('/api/buscar', ctrls.getAllReparacion);
@@ -11,7 +12,7 @@ router.put('/api/reparacion', ctrls.putReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
 router.post('/api/factura', ctrls.postFactura);
 router.get('/api/cliente', ctrls.getCliente);
-router.post('/api/cliente', ctrls.postCliente);
+router.post('/api/cliente', validate.clienteCreate, ctrls.postCliente);
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 
