@@ -7,7 +7,7 @@ const router = require('./routes.js')
 module.exports = class Server {
     constructor() {
         this.app = express();
-        middlewares();
+        this.middlewares();
         this.app.use(router);
     }
 
