@@ -65,7 +65,7 @@ module.exports = class Reparacion extends IModelo {
           Rx.fecha_recepcion,Rx.desc_falla, Rx.estado
           FROM reparacion Rx
           JOIN cliente Cx ON Rx.id_cliente = Cx.id
-          JOIN fabricante Fx ON Ex.fabricante_id = Fx.id
+          JOIN fabricante Fx ON Rx.fabricante_id = Fx.id
           WHERE Cx.nombre ILIKE $1 OR Rx.modelo_electro ILIKE $1
           OR Fx.descripcion ILIKE $1 OR Rx.desc_falla ILIKE $1`;
       

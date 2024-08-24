@@ -63,13 +63,14 @@ module.exports = class Cliente extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this.#id, this.nombre, this.telefono];
-            const existe = (await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.#id])).rows.length == 1;
+            const values = [this.nombre, this.telefono];
+            const existe = (await pool.query("SELECT * FROM cliente WHERE telefono=$1;", [this.telefono])).rows.length == 1;
     
-            if (!existe) {
+            if (!this.#id || !existe) {
                 logTS(`Insertando cliente ${this.toString()}...`);
-                const result = await pool.query("INSERT INTO cliente(id, nombre, telefono) VALUES($1, $2, $3)", values);
+                const result = await pool.query("INSERT INTO cliente(nombre, telefono) VALUES($1, $2) RETURNING id", values);
                 logTS(result.command + " finalizado.");
+                this.#id = result.rows[0].id;
                 return 1;
             } else {
                 logTS(`Actualizando cliente ${this.toString()}...`);
