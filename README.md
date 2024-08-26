@@ -1,12 +1,15 @@
-# Requerimientos
-Se requiere un sistema que permita mantener un registro organizado de los trabajos realizados en el comercio de reparación de electrodomésticos.
+![preview](/docs/preview.png)
 
-Se requiere:
+## Objetivo
 
-- Almacenar a los clientes, su información básica y contacto.
-- Ingresar reparaciones y poder realizar un seguimiento de su trabajo. Algunos pueden no tener arreglo plausible.
-- Almacenar el monto cobrado por cada reparación.
-- Distinguir las reparaciones según el tipo de electrodoméstico.
-- Buscar reparaciones por modelo de electrodoméstico, filtrando por tipo de electrodoméstico y su marca de fabricante.
-- Obtener un listado de ingresos generados por mes.
-- Obtener un listado de reparaciones realizadas en determinado periodo de tiempo.
+Protoservice se trata de un **sistema de gestión de información** en desarrollo para un local de reparación de electrodomésticos, donde se podrá tener un seguimiento de los electrodomésticos ingresados y retirados. La idea es reemplazar el uso del papel en el comercio y tener un historial de las transacciones realizadas de modo que luego se puedan analizar por el comerciante.
+
+El producto está en proceso de reconstrucción, ya que en la medida que voy aprendiendo conceptos en la universidad intento ir puliendo su arquitectura, y además han surgido nuevos requerimientos luego de enseñar el primer prototipo.
+
+## Modelo de datos
+
+El modelo de datos de este sistema es representado por el siguiente diagrama UML.
+
+![Modelo UML de datos](/docs/MD.png)
+
+Para esto se diseñó una base de datos relacional que se implementa en **postgreSQL**. 
