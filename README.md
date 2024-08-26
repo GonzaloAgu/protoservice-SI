@@ -1,6 +1,4 @@
-# 
-
-![preview](/docs/preview.png)
+# PROTOSERVICE
 
 ## Objetivo
 
@@ -15,3 +13,9 @@ El modelo de datos de este sistema es representado por el siguiente diagrama UML
 ![Modelo UML de datos](/docs/MD.png)
 
 Para esto se diseñó una base de datos relacional que se implementa en **postgreSQL**. 
+
+## Vista previa
+
+El frontend es la parte por ahora menos elaborada en el proyecto. La prioridad es hacer una arquitectura prolija en el back.
+
+![preview](/docs/preview.png)
