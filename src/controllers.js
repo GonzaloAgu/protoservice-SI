@@ -7,7 +7,11 @@ const getCliente = async(req, res) => {
     let existe = await cliente.obtener();
     const response = {
         existe,
-        cliente
+        cliente: {
+            id: cliente.id,
+            nombre: cliente.nombre,
+            telefono: cliente.telefono
+        }
     };
     res.json(response);
 }
@@ -150,9 +154,17 @@ const getAllFabricantes = async(req, res) => {
     res.json(array);
 }
 
+const getAllFacturas = async(req, res) => {
+    let facturas = await Factura.obtenerTodos();
+    return facturas;
+}
+
+
+
 module.exports = {
     deleteReparacion,
     getAllFabricantes,
+    getAllFacturas,
     getAllReparacion,
     getAllTiposElectrodomestico,
     getCliente,
