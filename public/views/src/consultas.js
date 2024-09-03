@@ -7,7 +7,6 @@ function agregarFilaATabla(datosFila, tabla){
     fila.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`)
     fila.setAttribute('class', 'hover-fila')
     fila.innerHTML = `
-    <td>${datosFila.dni}</td>
     <td>${datosFila.nombre}</td>
     <td>${datosFila.marca} ${datosFila.modelo}</td>
     <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
@@ -26,18 +25,19 @@ function main (){
 
         const searchTerm = searchInput.value;
 
-        const url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
+        let url;
+        if(searchTerm)
+            url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
+        else
+            url = '/api/buscar';
 
-        const xhr = new XMLHttpRequest();
-
-        xhr.open('GET', url, true);
-        xhr.onload = () => {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                res = JSON.parse(xhr.responseText);
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
                 const tabla = document.getElementById('tabla-resultados')
                 tabla.innerHTML = '';
-                if(res.length)
-                    res.forEach(fila => {
+                if(data.length)
+                    data.forEach(fila => {
                         agregarFilaATabla(fila, tabla);
                     })
                 else {
@@ -47,9 +47,8 @@ function main (){
                     fila.innerHTML = "No se encontraron resultados.";
                     tabla.appendChild(fila);
                 }
-            }
-        }
-        xhr.send();
+            })
+            .catch(err => console.error(err));
     })
 }
 
