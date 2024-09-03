@@ -129,10 +129,10 @@ const getAllReparacion = async(req, res) => {
     let response;
     if(req.query.search){
         response = await Reparacion.buscarPorPalabra(req.query.search);
-        res.json(response.rows);
     } else {
-        res.json([])
+        response = await Reparacion.obtenerTodos();
     }
+    res.json(response);
 }
 
 const getAllTiposElectrodomestico = async(req, res) => {

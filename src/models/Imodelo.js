@@ -2,7 +2,7 @@
 
 module.exports = class IModelo {
     constructor(){
-        this._id = null;
+        this.id = null;
     }
 
     /**
