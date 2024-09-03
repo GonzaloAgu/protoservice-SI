@@ -57,39 +57,30 @@ const postFactura = async (req, res) => {
 
 
 const postReparacion = async (req, res) => {
-    const rep = req.body;
-    const electro = req.body.electrodomestico;
-    const obj = new Reparacion();
-    obj.desc_falla = rep.desc_falla;
+    const form = req.body;
+    const reparacion = new Reparacion();
+    reparacion.modelo_electro = form.modelo_electro;
+    reparacion.desc_falla = form.desc_falla;
+    reparacion.fecha_recepcion = new Date();
+    reparacion.id_cliente = form.id_cliente;
+    reparacion.factura_id = form.factura_id;
+    reparacion.fabricante_id = form.fabricante_id;
+    reparacion.tipo_electro_id = form.tipo_electro_id;
+    reparacion.estado = 'pendiente';
 
-    // electrodomestico
-    let resultElectro = await Electrodomestico.obtenerTodos(`modelo='${rep.electrodomestico.modelo}' AND fabricante_id=${rep.electrodomestico.fabricante_id}`);
-    
-    let objElectro;
-    if(resultElectro.length === 0){
-        objElectro = new Electrodomestico();
-        objElectro.modelo = electro.modelo;
-        objElectro.fabricante_id = electro.fabricante_id;
-        objElectro.tipo_electro_id = electro.tipo_electro_id;
-        await objElectro.guardar();
-    } else {
-        const e = resultElectro[0];
-        objElectro = new Electrodomestico(e.id);
-        await objElectro.obtener();
+    const ok = await reparacion.guardar();
+
+    let response = {
+        ok: ok === 1
     }
 
-    obj.electrodomestico_id = objElectro.id;
-    obj.desc_falla = rep.desc_falla;
-    obj.fecha_recepcion = rep.fecha_recepcion;
-    obj.id_cliente = rep.id_cliente;
-    obj.factura_id = rep.factura_id;
-    obj.estado = 'pendiente';
-
-    if((await obj.guardar()) === 1){
-        res.json({id: obj.id})
+    if(ok !== 1){
+        response.error = ok.detail;
+        res.status(300);
     } else {
-        res.json({ error: 'No se insertó correctamente la reparación', id: obj.id })
-}
+        response.reparacion_id = reparacion.id;
+    }
+    res.json(response);
 }
 
 const putReparacion = async (req, res) => {

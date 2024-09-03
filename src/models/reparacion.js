@@ -20,6 +20,8 @@ module.exports = class Reparacion extends IModelo {
         this.modelo_electro = null;
         this.desc_falla = null;
         this.fecha_recepcion;
+        this.tipo_electro_id;
+        this.fabricante_id;
         this.id_cliente;
         this.factura_id;
         this.estado;
@@ -135,25 +137,25 @@ module.exports = class Reparacion extends IModelo {
      */
     async guardar() {
         try {
-            const values = [this.modelo_electro, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado];
+            const values = [this.modelo_electro, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado, this.tipo_electro_id, this.fabricante_id];
             const existe = (await pool.query("SELECT * FROM reparacion WHERE id=$1;", [this.#id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando reparación...`);
-                const result = await pool.query("INSERT INTO reparacion(modelo_electro, desc_falla, fecha_recepcion, id_cliente, factura_id, estado) VALUES($1, $2, $3, $4, $5, $6) RETURNING id", values);
+                const result = await pool.query("INSERT INTO reparacion(modelo_electro, desc_falla, fecha_recepcion, id_cliente, factura_id, estado, tipo_electro_id, fabricante_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", values);
                 this.#id = result.rows[0].id;
                 this.clienteObj = await this.getClienteObj();
                 logTS(result.command + ` ${this.toString()}` +  " finalizado.");
                 return 1;
             } else {
                 logTS(`Actualizando reparacion ${this.toString()}...`);
-                const result = await pool.query("UPDATE reparacion SET modelo_electro=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7 WHERE id=$1", [this.#id].concat(values));
+                const result = await pool.query("UPDATE reparacion SET modelo_electro=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7, tipo_electro_id=$8, fabricante_id=$9 WHERE id=$1", [this.#id].concat(values));
                 logTS(result.command + " finalizado.");
                 return 0;
             }
         } catch (error) {
             console.error("Error al guardar reparacion:", error);
-            return -1;
+            return error;
         }
     }
     /**

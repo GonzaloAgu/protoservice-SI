@@ -48,10 +48,33 @@ const facturaUpdate = Joi.object({
     medio_pago_id: Joi.number().min(0)
 })
 
+// SCHEMAS DE REPARACION
+
+const reparacionCreate = Joi.object({
+    desc_falla: Joi.string().max(140),
+    id_cliente: Joi.number().min(0).required(),
+    factura_id: Joi.number().min(0),
+    modelo_electro: Joi.string().max(100).required(),
+    tipo_electro_id: Joi.number().min(0),
+    fabricante_id: Joi.number().min(0).required()
+})
+
+const reparacionUpdate = Joi.object({
+    id: Joi.number().min(0).required(),
+    desc_falla: Joi.string().max(140),
+    id_cliente: Joi.number().min(0),
+    factura_id: Joi.number().min(0),
+    modelo_electro: Joi.string().max(100),
+    tipo_electro_id: Joi.number().min(0),
+    fabricante_id: Joi.number().min(0)
+})
 
 module.exports = {
     deleteSch,
     clienteCreate,
     clienteUpdate,
-    facturaCreate
+    facturaCreate,
+    facturaUpdate,
+    reparacionCreate,
+    reparacionUpdate
 }

@@ -21,8 +21,8 @@ const validateData = schema => {
 
 // Reparación
 router.get('/api/buscar', ctrls.getAllReparacion);
-router.post('/api/reparacion', ctrls.postReparacion);
-router.put('/api/reparacion', ctrls.putReparacion);
+router.post('/api/reparacion', validateData(schemas.reparacionCreate), ctrls.postReparacion);
+router.put('/api/reparacion', validateData(schemas.reparacionUpdate), ctrls.putReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
 
 // Factura
@@ -36,7 +36,9 @@ router.post('/api/cliente', validateData(schemas.clienteCreate), ctrls.postClien
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 
+
 // Rutas de vistas
+
 router.get('/', (req, res) => {
     res.redirect('/consulta');
 });
