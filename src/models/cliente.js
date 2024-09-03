@@ -6,7 +6,7 @@ const IModelo = require("./Imodelo.js");
 
 
 module.exports = class Cliente extends IModelo {
-
+    
     #id;
     constructor(id) {
         super();

@@ -27,10 +27,10 @@ const postCliente = async(req, res) => {
 const postFactura = async (req, res) => {
     const form = req.body;
     let factura = new Factura();
-    factura.tipo = form.tipo_factura;
+    factura.tipo = form.tipo;
     factura.fecha = new Date();
     factura.monto = form.monto;
-    factura.medio_pago_id = form.medio_pago;
+    factura.medio_pago_id = form.medio_pago_id;
     await factura.guardar();
 
     const response = {ok: true, factura_id: factura._id};

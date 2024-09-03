@@ -3,16 +3,35 @@
 const router = require('express').Router();
 const ctrls = require('./controllers.js');
 const path = require('path');
-const validate = require('./schemas.js');
+const schemas = require('./schemas.js');
+
+
+const validateData = schema => {
+    return (req, res, next) => {
+        console.log(req.body);
+        const { error } = schema.validate(req.body);
+        if (error)
+            return res.status(400).json({ error: error.details[0].message });
+        next();
+    }
+}
+
 
 // Rutas de API
+
+// Reparación
 router.get('/api/buscar', ctrls.getAllReparacion);
 router.post('/api/reparacion', ctrls.postReparacion);
 router.put('/api/reparacion', ctrls.putReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
-router.post('/api/factura', ctrls.postFactura);
+
+// Factura
+router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactura);
+
+
 router.get('/api/cliente', ctrls.getCliente);
-router.post('/api/cliente', validate.clienteCreate, ctrls.postCliente);
+router.post('/api/cliente', validateData(schemas.clienteCreate), ctrls.postCliente);
+
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 
