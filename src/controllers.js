@@ -3,6 +3,20 @@
 const { Cliente, Factura, Reparacion, TipoElectrodomestico, Fabricante  } = require('./models/models');
 
 const getCliente = async(req, res) => {
+    if(!req.query.id){
+        const clientes = await Cliente.obtenerTodos();
+        let array = [];
+        clientes.forEach(cliente => {
+            array.push({
+                id: cliente.id,
+                nombre: cliente.nombre,
+                telefono: cliente.telefono
+            })
+        })
+        res.json(array);
+        return;
+    }
+
     let cliente = new Cliente(req.query.id);
     let existe = await cliente.obtener();
     const response = {
@@ -154,9 +168,37 @@ const getAllFabricantes = async(req, res) => {
     res.json(array);
 }
 
-const getAllFacturas = async(req, res) => {
-    let facturas = await Factura.obtenerTodos();
-    return facturas;
+const getFactura = async(req, res) => {
+    if(!req.query.id){
+        let facturas = await Factura.obtenerTodos();
+        let array = [];
+        facturas.forEach(f => {
+            array.push({
+                id: f.id,
+                tipo: f.tipo,
+                monto: f.monto,
+                fecha: f.fecha,
+                medio_pago_id: f.medio_pago_id
+            })
+        })
+        res.json(array);
+        return;
+    }
+
+    let factura = new Factura(req.query.id);
+    let existe = await factura.obtener();
+    const response = {
+        existe,
+        factura: {
+            id: factura.id,
+            tipo: factura.tipo,
+            monto: factura.monto,
+            fecha: factura.fecha,
+            medio_pago_id: factura.medio_pago_id
+        }
+    };
+    res.json(response);
+
 }
 
 
@@ -164,7 +206,7 @@ const getAllFacturas = async(req, res) => {
 module.exports = {
     deleteReparacion,
     getAllFabricantes,
-    getAllFacturas,
+    getFactura,
     getAllReparacion,
     getAllTiposElectrodomestico,
     getCliente,

@@ -26,7 +26,7 @@ router.put('/api/reparacion', ctrls.putReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
 
 // Factura
-router.get('/api/factura', ctrls.getAllFacturas)
+router.get('/api/factura', ctrls.getFactura)
 router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactura);
 
 // Cliente
