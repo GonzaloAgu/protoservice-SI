@@ -2,11 +2,10 @@
 
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
-const IModelo = require("./Imodelo.js");
 const Cliente = require('./cliente.js');
 const Factura = require('./factura.js');
 
-module.exports = class Reparacion extends IModelo {
+module.exports = class Reparacion {
 
     
     clienteObj;
@@ -15,7 +14,6 @@ module.exports = class Reparacion extends IModelo {
     static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
     
     constructor(id){
-        super();
         this.id = id;
         this.modelo_electro = null;
         this.desc_falla = null;

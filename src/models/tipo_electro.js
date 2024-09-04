@@ -2,13 +2,11 @@
 
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
-const IModelo = require("./Imodelo.js");
 
-module.exports = class TipoElectrodomestico extends IModelo {
+module.exports = class TipoElectrodomestico {
     
     #id;
     constructor(id) {
-        super();
         this.#id = id;
         this.descripcion = undefined;
     }

@@ -2,17 +2,15 @@
 
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
-const IModelo = require("./Imodelo.js");
 const MedioPago = require('./medio_pago.js');
 
-module.exports = class Factura extends IModelo {
+module.exports = class Factura {
 
     static tipos = ['A', 'B'];
     #id;
     medioPagoObj;
 
     constructor(id = undefined){
-        super();
         this.#id = id;
         this.tipo = undefined;
         this.fecha = undefined;
