@@ -20,13 +20,15 @@ const getCliente = async(req, res) => {
     let cliente = new Cliente(req.query.id);
     let existe = await cliente.obtener();
     const response = {
-        existe,
-        cliente: {
+        existe
+    };
+
+    if(existe)
+        response.cliente = {
             id: cliente.id,
             nombre: cliente.nombre,
             telefono: cliente.telefono
         }
-    };
     res.json(response);
 }
 
