@@ -6,3 +6,7 @@
 #title {
   font-family: digital;
 }
+
+.hover-fila:hover {
+  cursor: pointer;
+}

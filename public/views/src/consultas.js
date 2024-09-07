@@ -8,9 +8,9 @@ function agregarFilaATabla(datosFila, tabla){
     fila.setAttribute('class', 'hover-fila')
     fila.innerHTML = `
     <td>${datosFila.nombre}</td>
-    <td>${datosFila.marca} ${datosFila.modelo}</td>
-    <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
+    <td>${datosFila.fabricante} ${datosFila.modelo_electro}</td>
     <td>${datosFila.desc_falla}</td>
+    <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
     <td>${datosFila.estado}</td>
     `;
     tabla.appendChild(fila);
@@ -24,6 +24,8 @@ function main (){
         event.preventDefault();
 
         const searchTerm = searchInput.value;
+
+        document.getElementById('loading-spinner').style.display = 'inline-block'
 
         let url;
         if(searchTerm)
@@ -48,7 +50,18 @@ function main (){
                     tabla.appendChild(fila);
                 }
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                const errorPopup =  document.getElementById('errorPopup');
+                errorPopup.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Se ha producido un error: ${err}`
+                errorPopup.classList.add('show')
+                setTimeout(() => {
+                    errorPopup.classList.remove('show');
+                }, 5000)
+            })
+            .finally(() => {
+                document.getElementById('loading-spinner').style.display = 'none'
+            })
     })
 }
 
