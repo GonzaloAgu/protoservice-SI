@@ -8,10 +8,9 @@ const schemas = require('./schemas.js');
 
 const validateData = schema => {
     return (req, res, next) => {
-        console.log(req.body);
         const { error } = schema.validate(req.body);
         if (error)
-            return res.status(400).json({ error: error.details[0].message });
+            return res.status(400).json({ error: error.details });
         next();
     }
 }
@@ -32,10 +31,11 @@ router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactu
 // Cliente
 router.get('/api/cliente', ctrls.getCliente);
 router.post('/api/cliente', validateData(schemas.clienteCreate), ctrls.postCliente);
+router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCliente)
 
+// Tipo de electrodomestico y fabricantes
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
-
 
 // Rutas de vistas
 

@@ -6,13 +6,9 @@ const deleteSch = Joi.object({
 
 // SCHEMAS DE CLIENTE
 
-const clienteBase = Joi.object({
+const clienteCreate = Joi.object({
     nombre: Joi.string().max(50).min(1).required(),
     telefono: Joi.string().max(12).min(5).required()
-})
-
-const clienteCreate = clienteBase.append({
-    id: Joi.number().min(0).required()
 });
 
 const clienteUpdate = Joi.object({

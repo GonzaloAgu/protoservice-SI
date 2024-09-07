@@ -6,15 +6,10 @@ const pool = require("../utils/pg.js").getInstance();
 
 module.exports = class Cliente  {
     
-    #id;
     constructor(id) {
-        this.#id = id;
+        this.id = id;
         this.nombre = null;
         this.telefono = null;
-    }
-    
-    get id(){
-        return this.#id;
     }
     
     /**
@@ -22,10 +17,10 @@ module.exports = class Cliente  {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener(){
-        let result = await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.#id]);
+        let result = await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.id]);
         if(result.rows.length){
             const cliente = result.rows[0];
-            this.#id = cliente.id;
+            this.id = cliente.id;
             this.nombre = cliente.nombre;
             this.telefono = cliente.telefono;
             return true;
@@ -62,17 +57,17 @@ module.exports = class Cliente  {
     async guardar() {
         try {
             const values = [this.nombre, this.telefono];
-            const existe = (await pool.query("SELECT * FROM cliente WHERE telefono=$1;", [this.telefono])).rows.length == 1;
+            const existe = (await pool.query("SELECT * FROM cliente WHERE id=$1;", [this.id])).rows.length == 1;
     
-            if (!this.#id || !existe) {
+            if (!this.id || !existe) {
                 logTS(`Insertando cliente ${this.toString()}...`);
                 const result = await pool.query("INSERT INTO cliente(nombre, telefono) VALUES($1, $2) RETURNING id", values);
                 logTS(result.command + " finalizado.");
-                this.#id = result.rows[0].id;
+                this.id = result.rows[0].id;
                 return 1;
             } else {
                 logTS(`Actualizando cliente ${this.toString()}...`);
-                const result = await pool.query("UPDATE cliente SET nombre=$2, telefono=$3 WHERE id=$1", values);
+                const result = await pool.query("UPDATE cliente SET nombre=$2, telefono=$3 WHERE id=$1", [this.id].concat(values));
                 logTS(result.command + " finalizado.");
                 return 0;
             }
@@ -85,7 +80,7 @@ module.exports = class Cliente  {
     async eliminar() {
         logTS("Eliminando cliente " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM cliente WHERE id=$1;", [this.#id]);
+            const result = await pool.query("DELETE FROM cliente WHERE id=$1;", [this.id]);
             logTS(result.command + " finalizado.");
             return 1;
         } catch (e) {
@@ -94,6 +89,6 @@ module.exports = class Cliente  {
     }
 
     toString(){
-        return `id: ${this.#id} - ${this.nombre} - Tel: ${this.telefono}`;
+        return `id: ${this.id} - ${this.nombre} - Tel: ${this.telefono}`;
     }
 }

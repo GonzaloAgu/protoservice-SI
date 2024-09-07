@@ -3,57 +3,89 @@
 
 <head>
   <title>Electroservice - Ingresar electrodoméstico</title>
-  <link rel="stylesheet" href="./styles/styles.css">
   <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+  <link rel="stylesheet" href="/styles/bootstrap.css">
+  <link rel="stylesheet" href="/styles/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
   <script src="./views/src/ingreso_producto.js"></script>
 </head>
 
-<body>
-  <h1 id="title">ELECTROSERVICE</h1>
-  <div class="navbar">
-    <a href="/nuevareparacion">Nueva Reparación</a>
-    <a href="/consulta">Consultar Reparaciones</a>
-  </div>
-  <div class="maincontainer">
-    <h2>Ingreso de nueva reparación</h2>
-  <hr>
-    <form id="cliente-form">
-      <fieldset id="cliente-fieldset">
-        <h3>Información del cliente</i></h3>
-        <div class="input-container" id="nombre-form">
-          <label id="dni-label" class="third">Número de DNI(*) <input id="dni-input" type="number" required max="99999999"></label>
-          <input type="submit" style="display: none;"> <!--Permite usar Enter para submitear-->
-      </fieldset>
-    </form>
-    <hr>
-    <form id="producto-form">
-      <fieldset id="producto-fieldset" disabled>
-        <h3>Información de producto</h3>
-        <div class="input-container">
-          <label class="third">Tipo
-            <select id="tipo-input" required>
-              <option value="0">Sin especificar</option>
-            </select>
-          </label>
-          <label class="third">Fabricante
-            <select id="fabricante-input" required>
-              <option value="0">Sin especificar</option>
-            </select>
-          </label>
-          <label class="third">Modelo(*)
-            <input class="texto-input" id="modelo-input" type="text" required maxlength="30">
-          </label>
-          <label>Fallo
-            <textarea class="texto-input" id="falla-input" required maxlength="140"></textarea>
-          </label>
-          <input type="submit" id="main-submit" class="submit" value="Ingresar">
+<body data-bs-theme="dark">
+  <div class="container">
+    <!-- Título principal -->
+    <h1 id="title" class="text-center my-4 text-danger">ELECTROSERVICE</h1>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 rounded col-md-10 mx-auto">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/nuevareparacion">Nueva Reparación</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/consulta">Consultar Reparaciones</a>
+            </li>
+          </ul>
         </div>
-      </fieldset>
-    </form>
-  </div>
-  <div id="successPopup" class="popup">
-    La operación ha sido procesada con éxito.
+      </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="maincontainer col-md-10 mx-auto">
+      <h2 class="">Ingreso de nueva reparación</h2>
+      <hr>
+      <form id="reparacion-form" class="mb-3 d-flex flex-row flex-wrap">
+        <div class="col-md-6 pe-5">
+          <div class="form-floating mb-2">
+            <input required id="nombre-cliente" type="text" class="form-control " placeholder="Ingresa el nombre del cliente">
+            <label for="nombre-cliente" class="form-label">Nombre del Cliente</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input required id="telefono-cliente" type="text" class="form-control" placeholder="persona@email.com">
+            <label for="telefono-cliente" class="form-label">Telefono <i id="check-telefono" class="fa fa-check-circle hidden" hidden></i></label>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="form-floating mb-2 ">
+            <select id="tipo-input" class="form-select" required>
+              <option value="0">Sin especificar</option>
+            </select>
+            <label for="fabricante-input" class="form-label">Tipo de electrodoméstico</label>
+          </div>
+          <div class="form-floating mb-2 ">
+            <select id="fabricante-input" class="form-select" required>
+              <option value="0">Sin especificar</option>
+            </select>
+            <label for="fabricante-input" class="form-label">Marca</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input required id="modelo-input" class="form-control" type="text" maxlength="30" placeholder="">
+            <label for="modelo-input" class="">Modelo</label>
+          </div>
+        </div>
+        
+        <div class="form-floating my-2 me-5 col-md-12">
+          <textarea required class="form-control " id="desc-fallo" style="height: 150px" maxlength="140"></textarea>
+          <label for="desc-fallo" class="form-label" required>Descripción de falla</label>
+        </div>
+        <hr>
+        <button type="submit" class="mt-1 col-md-12 btn btn-primary">Enviar</button>
+      </form>
+    </div>
+
+    <!-- Popup de éxito -->
+    <div id="successPopup" class="alert alert-success" style="display: none;">
+      La operación ha sido procesada con éxito.
+    </div>
   </div>
 </body>
 

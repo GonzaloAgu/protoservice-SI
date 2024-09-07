@@ -1,79 +1,39 @@
-let dniCliente;
-
-function tildarElemento(id){
-  document.getElementById(id).insertAdjacentHTML("afterbegin", ' <i class="fa fa-check-circle" aria-hidden="true"></i> ');
-}
-
-function mostrarInfoCliente(nodoPadre, nodoHijo, data) {
-  console.log(data)
-  nodoHijo.style.display = "flex";
-  nodoHijo.style.alignItems = "center";
-  nodoHijo.style.padding = '0 30px';
-  nodoHijo.innerHTML = `<b>Nombre</b>: ${data.cliente.nombre.slice(0, 25)}`;
-  nodoPadre.append(nodoHijo.cloneNode(true));
-  nodoHijo.innerHTML = `<b>Tel</b>: ${data.cliente.telefono || 'Sin definir'}`;
-  nodoPadre.append(nodoHijo.cloneNode(true));
-}
-
-function agregarCampos() {
-  const form = document.getElementById('nombre-form');
-  const campoNombre = document.createElement('label');
-  campoNombre.setAttribute('class', 'third')
-  campoNombre.innerHTML = `Nombre y apellido(*)<input id="nombre-input" type="text" maxlength="50" required>`;
-
-  const campoTelefono = document.createElement('label');
-  campoTelefono.setAttribute('class', 'third');
-  campoTelefono.innerHTML = `Teléfono(*) <input id="telefono-input" type="number" maxlength="12" required>`;
-
-  form.appendChild(campoNombre);
-  form.appendChild(campoTelefono);
-
-  campoNombre.focus();
-}
-
 async function agregarCliente(cliente) {
   try {
-    const response = await fetch('/cliente', {
+    const response = await fetch('/api/cliente', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ cliente })
+      body: JSON.stringify(cliente)
     });
 
     const data = await response.json();
-    tildarElemento('dni-label');
+    return data.id;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function actualizarCliente(cliente){
+  try {
+    const response = await fetch('/api/cliente', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( cliente )
+    });
+
+    const data = await response.json();
     return data; // Devuelve los datos para que estén disponibles en el siguiente 'then'
 
   } catch (error) {
     console.error(error);
     throw error; // Lanza el error para que pueda ser manejado en el 'catch' del 'then'
   }
-}
-
-const popupIngresarCliente = () => {
-  agregarCampos();
-  const formPopup = document.getElementById('cliente-form');
-  formPopup.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    let nuevoCliente = {
-      dni: dniCliente,
-      nombre: document.getElementById('nombre-input').value,
-      telefono: document.getElementById('telefono-input').value
-    }
-    agregarCliente(nuevoCliente)
-      .then(response => {
-        if (response.agregado) {
-          document.getElementById('cliente-fieldset').setAttribute('disabled', 'true');
-          document.getElementById('producto-fieldset').removeAttribute('disabled');
-          document.getElementById('tipo-input').focus();
-        }
-      })
-      .catch((error) => {
-        alert('Se produjo un error al agregar un cliente. Recargue e intente nuevamente.')
-        console.log(error)
-      });
-  })
 }
 
 /* BUSQUEDA DE OPCIONES */
@@ -121,86 +81,114 @@ fetch('/api/fabricantes')
     console.error('Error:', error);
   });
 
-function main(){
-    document.getElementById('cliente-form').addEventListener('submit', event => {
-      event.preventDefault();
-      let dni = document.getElementById('dni-input');
-      if (!dniCliente) {
-        dni.setAttribute('disabled', 'true');
-        dniCliente = dni.value;
-        fetch(`/cliente?dni=${dniCliente}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
+let clientes = [];
+let cliente_id = null;
+let clienteState = {
+  exists: false,
+  modified: false
+}
+
+
+function main() {
+
+  $('#nombre-cliente').focus()
+
+  $(() => {
+    // Se obtienen los clientes para el autocompletado.
+    fetch('api/cliente')
+      .then(res => res.json())
+      .then(data => {
+        clientes = data;
+        const nombresClientes = data.map(cliente => cliente.nombre);
+        $("#nombre-cliente").autocomplete({
+          source: nombresClientes,
+          minLength: 2,
+          open: function (event, ui) {
+            $('.ui-autocomplete').addClass('dropdown-menu bg-dark text-light');
+            $('.ui-menu-item').addClass('dropdown-item');
           }
-        })
-          .then(response => {
-            return response.json();
-          })
-          .then(data => {
-            let nodoPadre = document.getElementById('nombre-form');
-            let nodoHijo = document.createElement('div');
-            if (data.existe) {
-              // indicar que se encontro cliente, mostrar nombre y telefono (si existen)
-              tildarElemento('dni-label')
-              mostrarInfoCliente(nodoPadre, nodoHijo, data);
-              const fieldsetProducto = document.getElementById('producto-fieldset');
-              fieldsetProducto.removeAttribute('disabled');
-            } else {
-              // indicar que el cliente no existe y añadir los campos para rellenar con datos de nuevo cliente
-              popupIngresarCliente();
-            }
-          })
-          .catch(error => {
-            console.error('Error al enviar la solicitud de cliente:', error);
-          })
+        });
       }
-    })
-  
-    let formData;
-  
-    document.getElementById('producto-form').addEventListener('submit', function (event) {
-      event.preventDefault(); // Evita que el formulario se envíe automáticamente
-  
-      // Crea un objeto con los datos del formulario
-      formData = {
-        dni_cliente: dniCliente,
-        fecha_recepcion: new Date(),
-        desc_falla: document.getElementById('falla-input').value,
-        electrodomestico: {
-          tipo_electro_id: document.getElementById('tipo-input').value,
-          fabricante_id: document.getElementById('fabricante-input').value,
-          modelo: document.getElementById('modelo-input').value
+      )
+      .catch(error => console.error(error))
+  });
+
+  $('#nombre-cliente').on('keyup', (event) => {
+    event.preventDefault();
+    clienteState.exists = clienteState.modified = false;
+
+    if (event.keyCode == 8) { // backspace
+      document.getElementById('check-telefono').setAttribute('hidden', '')
+    } 
+
+    if (event.keyCode == 9 || event.keyCode == 13) { // enter o tab
+      const nombreIngresado = document.getElementById('nombre-cliente').value;
+      clientes.forEach((cl) => {
+        if (cl.nombre === nombreIngresado) {
+          clienteState.exists = true;
+          clienteState.modified = false;
+          cliente_id = cl.id;
+          
+          document.getElementById('check-telefono').removeAttribute('hidden', '')
+
+          document.getElementById('telefono-cliente').value = cl.telefono;
+          document.getElementById('tipo-input').focus();
+          return;
         }
-      };
-  
-      // Realiza una solicitud POST al servidor Node.js
-      fetch('/reparacion', {
-        method: 'POST',
+      })
+    }
+  })
+
+  $('#telefono-cliente').on('keyup', event => {
+    event.preventDefault();
+    if(clienteState.exists) {
+      clienteState.modified = true;
+      document.getElementById('check-telefono').setAttribute('hidden', '');
+    }
+  })
+
+  $('#reparacion-form').on('submit', async(event) => {
+    event.preventDefault();
+    let form = {};
+    if (clienteState.exists && clienteState.modified) {
+      
+      actualizarCliente({
+        id: cliente_id,
+        telefono: $('#telefono-cliente').val()
+      });
+      
+    }
+
+    if(!clienteState.exists){
+      cliente_id = await agregarCliente({
+        nombre: $('#nombre-cliente').val(),
+        telefono: $('#telefono-cliente').val()
+      })
+      form.id_cliente = cliente_id;
+    }
+
+    form = {
+      id_cliente: cliente_id,
+      tipo_electro_id: $('#tipo-input').val(),
+      fabricante_id: $('#fabricante-input').val(),
+      modelo_electro: $('#modelo-input').val(),
+      desc_falla: $('#desc-fallo').val()
+    }
+
+    try {
+      await fetch('/api/reparacion', {
+        body: JSON.stringify(form),
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        method: 'POST'
       })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          document.getElementById('producto-fieldset').setAttribute('disabled', 'true');
-          const popup = document.getElementById('successPopup');
-          popup.classList.add('show');
-          setTimeout(() => {
-            window.location.href = '/reparacion?id=' + (data.id);
-          }, 1000);
-          ;
-        })
-        .catch(function (error) {
-          const popup = document.getElementById('successPopup');
-          popup.classList.add('fail');
-          console.error('Error al enviar la solicitud:', error);
-        });
-    });
-  }
+    } catch(error) {
+      console.log(error)
+    }
+
+  })
+}
 
 /* PROCESAMIENTO DE DATOS DEL FORMULARIO */
 document.addEventListener('DOMContentLoaded', main);

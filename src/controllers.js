@@ -38,11 +38,29 @@ const postCliente = async(req, res) => {
         cliente.nombre = req.body.nombre;
         cliente.telefono = req.body.telefono;
         const result = await cliente.guardar();
-        res.status(200).json({ agregado: result == 1 });
+        console.log('controllers.js:41\n')
+        console.log(cliente)
+        res.status(200).json(cliente);
     } catch(e){
         res.json({agregado: false, error: e})
     }
 }
+
+const patchCliente = async(req, res) => {
+    let cliente = new Cliente(req.body.id);
+    if( !(await cliente.obtener()))
+        res.status(400).json({ error: 'El cliente que se intentó modificar no existe. Id: ' + req.body.id })
+    if(req.body.telefono)
+        cliente.telefono = req.body.telefono;
+    if(req.body.nombre)
+        cliente.nombre = req.body.nombre;
+    
+    if((await cliente.guardar()) == 0)
+        res.status(200).json(cliente)
+    else
+        res.status(500).json({ error: 'Se produjo un error al almacenar el cliente deseado' })
+}
+
 
 const postFactura = async (req, res) => {
     const form = req.body;
@@ -204,6 +222,7 @@ module.exports = {
     getAllTiposElectrodomestico,
     getCliente,
     postCliente,
+    patchCliente,
     postFactura,
     postReparacion,
     putReparacion
