@@ -125,7 +125,7 @@ function main() {
       event.preventDefault();
 
       // Busco cliente en mi array con el correspondiente nombre
-      clientes.some((cl) => {
+      const clientExist = clientes.some((cl) => {
         if (cl.nombre === document.getElementById('nombre-cliente').value) {
       
           // Seteo al cliente como que existe
@@ -135,7 +135,7 @@ function main() {
           // Guardo su ID para posterior uso en formulario
           cliente_id = cl.id;
       
-          // Doy feedback y paso al siguiente campo
+          // Doy feedback y paso al siguiente campo, skipeo telefono
           document.getElementById('check-telefono').removeAttribute('hidden', '');
           document.getElementById('telefono-cliente').value = cl.telefono;
           document.getElementById('tipo-input').focus();
@@ -143,6 +143,9 @@ function main() {
           return true; // Esto detendrá el bucle `some`
         }
       });
+
+      // Si el cliente no existe, ingresamos su telefono
+      if(!clientExist) document.getElementById('telefono-cliente').focus();;
     }
   })
 
