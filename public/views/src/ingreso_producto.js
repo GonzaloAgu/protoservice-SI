@@ -113,8 +113,8 @@ function main() {
       .catch(error => console.error(error))
   });
 
-  $('#nombre-cliente').on('keyup', (event) => {
-    event.preventDefault();
+  $('#nombre-cliente').on('keydown', (event) => {
+    
     clienteState.exists = clienteState.modified = false;
 
     if (event.keyCode == 8) { // backspace
@@ -122,20 +122,27 @@ function main() {
     } 
 
     if (event.keyCode == 9 || event.keyCode == 13) { // enter o tab
-      const nombreIngresado = document.getElementById('nombre-cliente').value;
-      clientes.forEach((cl) => {
-        if (cl.nombre === nombreIngresado) {
+      event.preventDefault();
+
+      // Busco cliente en mi array con el correspondiente nombre
+      clientes.some((cl) => {
+        if (cl.nombre === document.getElementById('nombre-cliente').value) {
+      
+          // Seteo al cliente como que existe
           clienteState.exists = true;
           clienteState.modified = false;
+      
+          // Guardo su ID para posterior uso en formulario
           cliente_id = cl.id;
-          
-          document.getElementById('check-telefono').removeAttribute('hidden', '')
-
+      
+          // Doy feedback y paso al siguiente campo
+          document.getElementById('check-telefono').removeAttribute('hidden', '');
           document.getElementById('telefono-cliente').value = cl.telefono;
           document.getElementById('tipo-input').focus();
-          return;
+      
+          return true; // Esto detendrá el bucle `some`
         }
-      })
+      });
     }
   })
 
@@ -176,15 +183,30 @@ function main() {
     }
 
     try {
-      await fetch('/api/reparacion', {
+      const response = await fetch('/api/reparacion', {
         body: JSON.stringify(form),
         headers: {
           'Content-Type': 'application/json'
         },
         method: 'POST'
       })
+
+      data = await response.json();
+
+      $('#successPopup')
+      .removeClass('alert-danger')
+      .addClass('alert-success')
+      .addClass('show')
+      .text(`La reparación ${data.reparacion_id} ha sido agregada con éxito.`);
     } catch(error) {
+      $('#successPopup')
+      .addClass('show')
+      .removeClass('alert-success')
+      .addClass('alert-danger')
+      .text(`Se produjo un error al agregar la reparación: ${error.message}`);
       console.log(error)
+    } finally {
+      setTimeout(() => $('#successPopup').removeClass('show'), 5000);
     }
 
   })
