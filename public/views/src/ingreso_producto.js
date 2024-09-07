@@ -1,30 +1,25 @@
 async function agregarCliente(cliente) {
-  try {
-    const response = await fetch('/api/cliente', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(cliente)
-    });
 
-    const data = await response.json();
-    return data.id;
+  const response = await fetch('/api/cliente', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(cliente)
+  });
 
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const data = await response.json();
+  return data.id;
 }
 
-async function actualizarCliente(cliente){
+async function actualizarCliente(cliente) {
   try {
     const response = await fetch('/api/cliente', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify( cliente )
+      body: JSON.stringify(cliente)
     });
 
     const data = await response.json();
@@ -114,12 +109,12 @@ function main() {
   });
 
   $('#nombre-cliente').on('keydown', (event) => {
-    
+
     clienteState.exists = clienteState.modified = false;
 
     if (event.keyCode == 8) { // backspace
       document.getElementById('check-telefono').setAttribute('hidden', '')
-    } 
+    }
 
     if (event.keyCode == 9 || event.keyCode == 13) { // enter o tab
       event.preventDefault();
@@ -127,65 +122,67 @@ function main() {
       // Busco cliente en mi array con el correspondiente nombre
       const clientExist = clientes.some((cl) => {
         if (cl.nombre === document.getElementById('nombre-cliente').value) {
-      
+
           // Seteo al cliente como que existe
           clienteState.exists = true;
           clienteState.modified = false;
-      
+
           // Guardo su ID para posterior uso en formulario
           cliente_id = cl.id;
-      
+
           // Doy feedback y paso al siguiente campo, skipeo telefono
           document.getElementById('check-telefono').removeAttribute('hidden', '');
           document.getElementById('telefono-cliente').value = cl.telefono;
           document.getElementById('tipo-input').focus();
-      
+
           return true; // Esto detendrá el bucle `some`
         }
       });
 
       // Si el cliente no existe, ingresamos su telefono
-      if(!clientExist) document.getElementById('telefono-cliente').focus();;
+      if (!clientExist) document.getElementById('telefono-cliente').focus();;
     }
   })
 
   $('#telefono-cliente').on('keyup', event => {
     event.preventDefault();
-    if(clienteState.exists) {
+    if (clienteState.exists) {
       clienteState.modified = true;
       document.getElementById('check-telefono').setAttribute('hidden', '');
     }
   })
 
-  $('#reparacion-form').on('submit', async(event) => {
+  $('#reparacion-form').on('submit', async (event) => {
     event.preventDefault();
+    $('#loading-spinner').css('display', 'block');
+
     let form = {};
-    if (clienteState.exists && clienteState.modified) {
-      
-      actualizarCliente({
-        id: cliente_id,
-        telefono: $('#telefono-cliente').val()
-      });
-      
-    }
-
-    if(!clienteState.exists){
-      cliente_id = await agregarCliente({
-        nombre: $('#nombre-cliente').val(),
-        telefono: $('#telefono-cliente').val()
-      })
-      form.id_cliente = cliente_id;
-    }
-
-    form = {
-      id_cliente: cliente_id,
-      tipo_electro_id: $('#tipo-input').val(),
-      fabricante_id: $('#fabricante-input').val(),
-      modelo_electro: $('#modelo-input').val(),
-      desc_falla: $('#desc-fallo').val()
-    }
 
     try {
+      if (clienteState.exists && clienteState.modified) {
+
+        actualizarCliente({
+          id: cliente_id,
+          telefono: $('#telefono-cliente').val()
+        });
+
+      }
+
+      if (!clienteState.exists) {
+        cliente_id = await agregarCliente({
+          nombre: $('#nombre-cliente').val(),
+          telefono: $('#telefono-cliente').val()
+        })
+        form.id_cliente = cliente_id;
+      }
+
+      form = {
+        id_cliente: cliente_id,
+        tipo_electro_id: $('#tipo-input').val(),
+        fabricante_id: $('#fabricante-input').val(),
+        modelo_electro: $('#modelo-input').val(),
+        desc_falla: $('#desc-fallo').val()
+      }
       const response = await fetch('/api/reparacion', {
         body: JSON.stringify(form),
         headers: {
@@ -197,23 +194,23 @@ function main() {
       data = await response.json();
 
       $('#successPopup')
-      .removeClass('alert-danger')
-      .addClass('alert-success')
-      .addClass('show')
-      .text(`La reparación ${data.reparacion_id} ha sido agregada con éxito.`);
-    } catch(error) {
+        .removeClass('alert-danger')
+        .addClass('alert-success')
+        .addClass('show')
+        .text(`La reparación ${data.reparacion_id} ha sido agregada con éxito.`);
+    } catch (error) {
       $('#successPopup')
-      .addClass('show')
-      .removeClass('alert-success')
-      .addClass('alert-danger')
-      .text(`Se produjo un error al agregar la reparación: ${error.message}`);
+        .addClass('show')
+        .removeClass('alert-success')
+        .addClass('alert-danger')
+        .html(`<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Se produjo un error al agregar la reparación: ${error.message}`);
       console.log(error)
     } finally {
+      $('#loading-spinner').css('display', 'none');
       setTimeout(() => $('#successPopup').removeClass('show'), 5000);
     }
 
   })
 }
 
-/* PROCESAMIENTO DE DATOS DEL FORMULARIO */
 document.addEventListener('DOMContentLoaded', main);
