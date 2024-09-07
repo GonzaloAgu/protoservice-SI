@@ -7,8 +7,8 @@ function agregarFilaATabla(datosFila, tabla){
     fila.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`)
     fila.setAttribute('class', 'hover-fila')
     fila.innerHTML = `
-    <td>${datosFila.nombre}</td>
-    <td>${datosFila.fabricante} ${datosFila.modelo_electro}</td>
+    <td>${datosFila.cliente.nombre}</td>
+    <td>${datosFila.fabricante.descripcion} ${datosFila.modelo_electro}</td>
     <td>${datosFila.desc_falla}</td>
     <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
     <td>${datosFila.estado}</td>

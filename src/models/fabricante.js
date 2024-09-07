@@ -4,15 +4,11 @@ const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
 
 module.exports = class Fabricante  {
-    #id;
+    id;
 
     constructor(id){
-        this.#id = id;
+        this.id = id;
         this.descripcion = undefined;
-    }
-
-    get id() {
-        return this.#id;
     }
 
 
@@ -21,7 +17,7 @@ module.exports = class Fabricante  {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener(){
-        let result = await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id]);
+        let result = await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.id]);
         if(result.rows.length){
             this.descripcion = result.rows[0].descripcion;
             return true;
@@ -61,13 +57,13 @@ module.exports = class Fabricante  {
      */
     async guardar() {
         try {
-            const values = [this.#id || -1, this.descripcion];
-            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.#id])).rows.length == 1;
+            const values = [this.id || -1, this.descripcion];
+            const existe = (await pool.query("SELECT * FROM fabricante WHERE id=$1;", [this.id])).rows.length == 1;
     
             if (!existe) {
                 logTS(`Insertando fabricante...`);
                 const result = await pool.query("INSERT INTO fabricante(descripcion) VALUES($1) RETURNING id;", [this.descripcion]);
-                this.#id = result.rows[0].id;
+                this.id = result.rows[0].id;
                 logTS(result.command + `  ${this.toString()}` + " finalizado.");
                 return 1;
             } else {
@@ -85,7 +81,7 @@ module.exports = class Fabricante  {
     async eliminar() {
         logTS("Eliminando fabricante " + this.toString());
         try {
-            const result = await pool.query("DELETE FROM fabricante WHERE id=$1;", [this.#id]);
+            const result = await pool.query("DELETE FROM fabricante WHERE id=$1;", [this.id]);
             logTS(result.command + " finalizado.");
             return 1;
         } catch (e) {
@@ -95,6 +91,6 @@ module.exports = class Fabricante  {
     
 
     toString(){
-        return `ID: ${this.#id} - ${this.descripcion}`;
+        return `ID: ${this.id} - ${this.descripcion}`;
     }
 }

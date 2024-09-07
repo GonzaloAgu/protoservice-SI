@@ -146,12 +146,26 @@ const deleteReparacion = async (req, res) => {
 }
 
 const getAllReparacion = async(req, res) => {
-    let response;
+    let data;
     if(req.query.search){
-        response = await Reparacion.buscarPorPalabra(req.query.search);
+        data = await Reparacion.buscarPorPalabra(req.query.search);
     } else {
-        response = await Reparacion.obtenerTodos();
+        data = await Reparacion.obtenerTodos();
     }
+
+    const response = await Promise.all(
+        data.map(async (rep) => ({
+            id: rep.id,
+            cliente: await rep.getClienteObj(),
+            fabricante: await rep.getFabricanteObj(),
+            modelo_electro: rep.modelo_electro,
+            factura: await rep.getFacturaObj(),
+            estado: rep.estado,
+            desc_falla: rep.desc_falla,
+            fecha_recepcion: rep.fecha_recepcion
+        }))
+    );
+
     res.json(response);
 }
 
