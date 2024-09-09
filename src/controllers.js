@@ -75,6 +75,16 @@ const postFactura = async (req, res) => {
     res.json(response)
 }
 
+const getReparacion = async (req, res) => {
+    const reparacion = new Reparacion(req.params.id);
+    const existe = await reparacion.obtener();
+
+    if(existe)
+        res.json(reparacion)
+    else
+        res.json({ error: 'Reparacion no existe' })
+}
+
 
 const postReparacion = async (req, res) => {
     const form = req.body;
@@ -238,6 +248,7 @@ module.exports = {
     postCliente,
     patchCliente,
     postFactura,
+    getReparacion,
     postReparacion,
     putReparacion
 }

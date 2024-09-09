@@ -10,3 +10,8 @@
 .hover-fila:hover {
   cursor: pointer;
 }
+
+
+#estado::first-letter {
+  text-transform: capitalize;
+}

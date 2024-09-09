@@ -145,6 +145,8 @@ module.exports = class Reparacion {
             this.fecha_recepcion = result.rows[0].fecha_recepcion;
             this.id_cliente = result.rows[0].id_cliente;
             this.clienteObj = await this.getClienteObj();
+            this.fabricante_id = result.rows[0].fabricante_id;
+            this.fabricanteObj = await this.getFabricanteObj();
             this.factura_id = result.rows[0].factura_id;
             this.estado = result.rows[0].estado;
             return true;
