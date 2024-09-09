@@ -16,9 +16,30 @@ const setContent = rep => {
     $('#modelo').text(rep.modelo_electro);
     $('#estado').text(rep.estado);
     $('#nombre-cliente').text(rep.clienteObj.nombre);
+    $('#whatsapp').attr('href', 'https://wa.me/54' + rep.clienteObj.telefono);
     $('#telefono-cliente').text(rep.clienteObj.telefono);
     $('#descripcion-falla').text(rep.desc_falla);
     $('#fecha-recepcion').text(fechaParser(rep.fecha_recepcion));
+}
+
+const submitComment = comment => {
+    if(!comment) return;
+
+    const fecha = new Date();
+    $('#lista-comentarios')
+        .append(`<li class="list-group-item text-muted"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
+        ${comment}</li>`);
+    
+    $('#input-comentario').val('')
+}
+
+const eventListeners = () => {
+    $('#btn-comentario').on('click', event => {
+        submitComment( $('#input-comentario').val() )
+    });
+    $('#input-comentario').on('keypress', event => {
+        if(event.key === 'Enter') submitComment( $('#input-comentario').val() );
+    });
 }
 
 
@@ -37,6 +58,7 @@ function onLoad() {
         console.error(e);
     })
 
+    eventListeners();
     
 }
 
