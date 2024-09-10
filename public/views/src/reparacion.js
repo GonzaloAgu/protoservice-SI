@@ -20,6 +20,7 @@ const setContent = rep => {
     $('#telefono-cliente').text(rep.clienteObj.telefono);
     $('#descripcion-falla').text(rep.desc_falla);
     $('#fecha-recepcion').text(fechaParser(rep.fecha_recepcion));
+    $('#main-info').removeClass('col-md-3');
 }
 
 const submitComment = comment => {
@@ -28,7 +29,7 @@ const submitComment = comment => {
     const fecha = new Date();
     $('#lista-comentarios')
         .append(`<li class="list-group-item text-muted"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
-        ${comment}</li>`);
+        <span class="fs-6">${comment}<span></li>`);
     
     $('#input-comentario').val('')
 }

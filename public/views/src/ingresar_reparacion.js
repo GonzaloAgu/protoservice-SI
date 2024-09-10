@@ -198,6 +198,10 @@ function main() {
         .addClass('alert-success')
         .addClass('show')
         .text(`La reparación ${data.reparacion_id} ha sido agregada con éxito.`);
+
+      setTimeout(() => {
+        window.location.href("/reparacion?id=" + data.reparacion_id);
+      }, 1000);
     } catch (error) {
       $('#successPopup')
         .addClass('show')

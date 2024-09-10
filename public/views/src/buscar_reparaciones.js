@@ -5,10 +5,9 @@ function dirigirAReparacion(id){
 function agregarFilaATabla(datosFila){
     const card = document.createElement('div');
     card.classList.add('card-body', 'shadow-sm', 'border', 'rounded-4', 'px-4', 'py-3', 'my-1', 'hover-fila');
-    card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`);
+    card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id});`);
 
     const repView = document.createElement('rep-view');
-    repView.classList.replace('justify-content-between', 'justify-content-around')
 
     repView.setAttribute('data-id', datosFila.id);
     repView.setAttribute('estado', datosFila.estado);
@@ -23,19 +22,6 @@ function agregarFilaATabla(datosFila){
     
     const mainDiv = document.getElementById('results');
     mainDiv.appendChild(card)
-
-
-   /*  const fila = document.createElement('tr');
-    fila.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`)
-    fila.setAttribute('class', 'hover-fila')
-    fila.innerHTML = `
-    <td>${datosFila.cliente.nombre}</td>
-    <td>${datosFila.fabricante.descripcion} ${datosFila.modelo_electro}</td>
-    <td>${datosFila.desc_falla}</td>
-    <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
-    <td>${datosFila.estado}</td>
-    `;
-    tabla.appendChild(fila); */
 }
 
 function main (){
