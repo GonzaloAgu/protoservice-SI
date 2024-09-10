@@ -70,7 +70,7 @@ module.exports = class Comentario {
     
             if (!existe) {
                 logTS(`Insertando comentario...`);
-                const result = await pool.query("INSERT INTO comentario(texto, fecha, id_reparacion) VALUES($1, $2, $3) RETURNING id", [this.descripcion]);
+                const result = await pool.query("INSERT INTO comentario(texto, id_reparacion) VALUES($1, $2) RETURNING id", [this.texto, this.id_reparacion]);
                 this.id = result.rows[0].id;
                 logTS(result.command + `  ${this.toString()}` + " finalizado.");
                 return 1;

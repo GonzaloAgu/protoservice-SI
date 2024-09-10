@@ -16,7 +16,7 @@ const validateData = schema => {
 }
 
 
-// Rutas de API
+// --- API ---
 
 // Reparación
 router.get('/api/buscar', ctrls.getAllReparacion);
@@ -25,6 +25,10 @@ router.post('/api/reparacion', validateData(schemas.reparacionCreate), ctrls.pos
 router.put('/api/reparacion', validateData(schemas.reparacionUpdate), ctrls.putReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
 
+// Comentarios
+router.get('/api/comentarios/:id_reparacion', ctrls.getComentarios);
+router.post('/api/comentario', validateData(schemas.comentarioCreate), ctrls.postComentario);
+
 // Factura
 router.get('/api/factura', ctrls.getFactura)
 router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactura);
@@ -32,28 +36,16 @@ router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactu
 // Cliente
 router.get('/api/cliente', ctrls.getCliente);
 router.post('/api/cliente', validateData(schemas.clienteCreate), ctrls.postCliente);
-router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCliente)
+router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCliente);
 
 // Tipo de electrodomestico y fabricantes
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 
-// Rutas de vistas
-
-router.get('/', (req, res) => {
-    res.redirect('/consulta');
-});
-
-router.get('/consulta', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/views/buscar_reparaciones.html'));
-});
-
-router.get('/nuevareparacion', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/views/ingresar_reparacion.html'));
-});
-
-router.get('/reparacion', async (req, res) => {
-    return res.sendFile(path.join(__dirname, '../public/views/reparacion.html'));
-});
+// --- VISTAS ---
+router.get('/', (req, res) => res.redirect('/consulta'));
+router.get('/consulta', (req, res) => res.sendFile(path.join(__dirname, '../public/views/buscar_reparaciones.html')));
+router.get('/nuevareparacion', (req, res) => res.sendFile(path.join(__dirname, '../public/views/ingresar_reparacion.html')));
+router.get('/reparacion', async (req, res) => res.sendFile(path.join(__dirname, '../public/views/reparacion.html')));
 
 module.exports = router;

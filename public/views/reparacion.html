@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="icon" type="image/x-icon" href="../styles/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="./views/src/reparacion.js"></script>
+    <script type="module" src="./views/src/reparacion.js"></script>
     <script src="./views/src/jquery-3.7.1.js"></script>
     <script src="./views/components/navbar.js"></script>
-    <script src="./views/components/reparacionView.js"></script>
+    <script type="module" src="./views/components/reparacionView.js"></script>
 </head>
 
 <body data-bs-theme="dark">
@@ -36,22 +36,24 @@
             <rep-view></rep-view>
 
             <div class="my-4">
-              <ul class="list-group" id="lista-comentarios">
+              <ul class="list-group col-md-11" id="lista-comentarios">
               </ul> 
-              <div class="input-group mt-3">
-                <input placeholder="Ingresar un nueva nota a la reparación..." type="text" id="input-comentario" class="form-control" maxlength="500">
-                <button type="submit" id="btn-comentario" class="input-group-text"><i class="fa fa-comment" aria-hidden="true"></i></button>
-              </div>
             </div>
       
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-secondary me-2" id="btn-estado">
-                Cambiar estado
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="input-group me-2">
+                  <input placeholder="Ingresar una nota a la reparación..." type="text" id="input-comentario" class="form-control" maxlength="500">
+                  <button type="submit" id="btn-comentario" class="input-group-text">
+                      <i class="fa fa-comment" aria-hidden="true"></i>
+                  </button>
+              </div>
+              <button class="btn btn-secondary me-2" id="btn-estado" style="white-space: nowrap;">
+                  Cambiar estado
               </button>
-              <button class="btn btn-success me-2" id="btn-generar-factura">
-                Generar Factura
+              <button class="btn btn-success me-2" id="btn-generar-factura" style="white-space: nowrap;">
+                  Generar Factura
               </button>
-            </div>
+          </div>
           </div>
         </div>
 </body>

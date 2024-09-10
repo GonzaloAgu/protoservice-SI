@@ -1,3 +1,5 @@
+import { fechaParser } from './utils.js';
+
 function dirigirAReparacion(id){
     window.open("/reparacion?id=" + id, "_blank");
 }
@@ -5,7 +7,8 @@ function dirigirAReparacion(id){
 function agregarFilaATabla(datosFila){
     const card = document.createElement('div');
     card.classList.add('card-body', 'shadow-sm', 'border', 'rounded-4', 'px-4', 'py-3', 'my-1', 'hover-fila');
-    card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id});`);
+    //card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id});`);
+    card.addEventListener('click', () => dirigirAReparacion(datosFila.id));
 
     const repView = document.createElement('rep-view');
 
@@ -15,7 +18,7 @@ function agregarFilaATabla(datosFila){
     repView.setAttribute('modelo', datosFila.modelo_electro);
     repView.setAttribute('nombre-cliente', datosFila.cliente.nombre);
     repView.setAttribute('telefono-cliente', datosFila.cliente.telefono);
-    repView.setAttribute('fecha-recepcion', '04/09/2024');
+    repView.setAttribute('fecha-recepcion', fechaParser(datosFila.fecha_recepcion));
     repView.setAttribute('desc-falla', datosFila.desc_falla);
     
     card.appendChild(repView);

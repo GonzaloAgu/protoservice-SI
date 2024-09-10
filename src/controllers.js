@@ -1,19 +1,11 @@
 "use strict";
 
-const { Cliente, Factura, Reparacion, TipoElectrodomestico, Fabricante  } = require('./models/models');
+const { Cliente, Factura, Reparacion, TipoElectrodomestico, Fabricante, Comentario  } = require('./models/models');
 
 const getCliente = async(req, res) => {
     if(!req.query.id){
         const clientes = await Cliente.obtenerTodos();
-        let array = [];
-        clientes.forEach(cliente => {
-            array.push({
-                id: cliente.id,
-                nombre: cliente.nombre,
-                telefono: cliente.telefono
-            })
-        })
-        res.json(array);
+        res.json(clientes);
         return;
     }
 
@@ -37,12 +29,10 @@ const postCliente = async(req, res) => {
         let cliente = new Cliente();
         cliente.nombre = req.body.nombre;
         cliente.telefono = req.body.telefono;
-        const result = await cliente.guardar();
-        console.log('controllers.js:41\n')
-        console.log(cliente)
+        await cliente.guardar();
         res.status(200).json(cliente);
     } catch(e){
-        res.json({agregado: false, error: e})
+        res.json({ error: e })
     }
 }
 
@@ -180,6 +170,32 @@ const getAllReparacion = async(req, res) => {
     res.json(response);
 }
 
+const getComentarios = async(req, res) => {
+    const reparacion = new Reparacion(req.params.id_reparacion);
+    const comentarios = await reparacion.getComentarios();
+    res.json(comentarios);
+}
+
+const postComentario = async(req, res) => {
+    const comment = new Comentario();
+    comment.texto = req.body.texto;
+    comment.id_reparacion = req.body.id_reparacion;
+
+    const ok = await comment.guardar();
+
+    let response = {
+        ok: ok === 1
+    }
+
+    if(ok !== 1){
+        response.error = ok.detail;
+        res.status(300);
+    } else {
+        response.reparacion_id = comment.id;
+    }
+    res.json(response);
+}
+
 const getAllTiposElectrodomestico = async(req, res) => {
     let tipos = await TipoElectrodomestico.obtenerTodos("id<>0");
     let array = [];
@@ -251,5 +267,7 @@ module.exports = {
     postFactura,
     getReparacion,
     postReparacion,
-    putReparacion
+    putReparacion,
+    getComentarios,
+    postComentario
 }

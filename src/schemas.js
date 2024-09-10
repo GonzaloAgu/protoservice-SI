@@ -47,7 +47,7 @@ const facturaUpdate = Joi.object({
 // SCHEMAS DE REPARACION
 
 const reparacionCreate = Joi.object({
-    desc_falla: Joi.string().max(140),
+    desc_falla: Joi.string().max(500),
     id_cliente: Joi.number().min(0).required(),
     factura_id: Joi.number().min(0),
     modelo_electro: Joi.string().max(100).required(),
@@ -57,12 +57,19 @@ const reparacionCreate = Joi.object({
 
 const reparacionUpdate = Joi.object({
     id: Joi.number().min(0).required(),
-    desc_falla: Joi.string().max(140),
+    desc_falla: Joi.string().max(500),
     id_cliente: Joi.number().min(0),
     factura_id: Joi.number().min(0),
     modelo_electro: Joi.string().max(100),
     tipo_electro_id: Joi.number().min(0),
     fabricante_id: Joi.number().min(0)
+})
+
+// SCHEMAS DE COMENTARIO
+
+const comentarioCreate = Joi.object({
+    texto: Joi.string().max(500),
+    id_reparacion: Joi.number().min(0)
 })
 
 module.exports = {
@@ -72,5 +79,6 @@ module.exports = {
     facturaCreate,
     facturaUpdate,
     reparacionCreate,
-    reparacionUpdate
+    reparacionUpdate,
+    comentarioCreate
 }
