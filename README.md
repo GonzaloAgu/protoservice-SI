@@ -14,8 +14,14 @@ El modelo de datos de este sistema es representado por el siguiente diagrama UML
 
 Para esto se diseñó una base de datos relacional que se implementa en **postgreSQL**. 
 
-## Vista previa
+## Vistas
 
-El frontend es la parte por ahora menos elaborada en el proyecto. La prioridad es hacer una arquitectura prolija en el back.
+Se tienen dos vistas principales en la web: una de **ingreso de reparaciones** y otra de **búsqueda**. Además, se p
+
+### Ingreso
+
+![preview](/docs/preview.png)
+
+### Búsqueda
 
 ![preview](/docs/preview.png)
