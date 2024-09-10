@@ -59,12 +59,12 @@ const eventListeners = () => {
 const updateCommentSection = () => {
     const lista = document.getElementById('lista-comentarios');
     lista.innerHTML = '';
-    const fecha = new Date();
-
+    
     if(reparacion.comentarios === null)
         return;
-
+    
     reparacion.comentarios.forEach(comment => {
+        const fecha = new Date(comment.fecha);
         lista.innerHTML += (`<li class="list-group-item text-muted"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
             <span class="fs-6">${comment.texto}<span></li>`);
         
