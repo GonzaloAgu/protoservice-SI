@@ -33,13 +33,8 @@ const submitComment = comment => {
         body: JSON.stringify(body) 
     })
     .then(res => res.json)
-    .then(() => {
-        $('#lista-comentarios')
-            .append(`<li class="list-group-item text-muted p-5"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
-            <span class="fs-6">${comment}<span></li>`);
-        
-        $('#input-comentario').val('')
-    })
+    .then(loadComments)
+    .then(updateCommentSection)
     .catch(error => console.error(error));
 
 }
@@ -65,7 +60,7 @@ const updateCommentSection = () => {
     
     reparacion.comentarios.forEach(comment => {
         const fecha = new Date(comment.fecha);
-        lista.innerHTML += (`<li class="list-group-item text-muted"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
+        lista.innerHTML += (`<li class="list-group-item text-muted px-2"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
             <span class="fs-6">${comment.texto}<span></li>`);
         
         $('#input-comentario').val('')
@@ -77,9 +72,7 @@ const updateCommentSection = () => {
  */
 const loadComments = () => {
     return fetch('/api/comentarios/' + reparacion.id)
-    .then(res => {
-        console.log(res);
-        return res.json()})
+    .then(res => res.json())
     .then(data => {
         reparacion.comentarios = data;
     })

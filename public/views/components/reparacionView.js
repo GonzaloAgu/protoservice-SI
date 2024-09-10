@@ -6,7 +6,7 @@ class ReparacionComponent extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center px-2">
               <div class="me-5 col-md-3" id="main-info">
                 <h4 class="card-title d-flex align-items-center mb-2">
                 <span id="estado" class="badge bg-secondary me-2" style="font-size: 0.75rem;">Pendiente</span>
