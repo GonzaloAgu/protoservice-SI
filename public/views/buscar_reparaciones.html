@@ -9,6 +9,7 @@
   <link rel="icon" type="image/x-icon" href="../styles/icon.png">
   <script src="./views/src/buscar_reparaciones.js"></script>
   <script src="./views/components/navbar.js"></script>
+  <script src="./views/components/reparacionView.js"></script>
 </head>
 
 <!DOCTYPE html>
@@ -41,19 +42,7 @@
         </div>
       </form>
         <br>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="col-md-2">Cliente</th>
-                    <th class="col-md-3">Producto</th>
-                    <th class="col-md-5">Falla</th>
-                    <th class="col-md-1">Ingreso</th>
-                    <th class="col-md-1">Estado</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-resultados">
-            </tbody>
-        </table>
+        <div id="results"></div>
     </div>
     <!-- Popup de error -->
     <div id="errorPopup"  class="alert alert-danger col-md-10 m-auto fade fixed-bottom" rote="alert">

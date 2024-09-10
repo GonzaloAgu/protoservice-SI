@@ -12,6 +12,7 @@
     <script src="./views/src/reparacion.js"></script>
     <script src="./views/src/jquery-3.7.1.js"></script>
     <script src="./views/components/navbar.js"></script>
+    <script src="./views/components/reparacionView.js"></script>
 </head>
 
 <body data-bs-theme="dark">
@@ -21,7 +22,7 @@
 
         <!-- Barra de navegación -->
         <nav-bar></nav-bar>
-        
+
         <div class="card shadow-sm d-none">
 
           <div class="card-header d-flex justify-content-between text-white">
@@ -32,36 +33,13 @@
           </div>
 
           <div class="card-body">
-            <div class="mb-4 position-relative">
-              <h4 class="card-title d-flex align-items-center mb-2">
-                <span id="fabricante" class="me-2"></span>
-                <span id="modelo" class="fw-normal"></span>
-                <span id="estado" class="badge bg-secondary ms-2 fs-6">Pendiente</span>
-              </h4>
-              <h5 class="card-subtitle mb-2 text-body-secondary">
-                <span id="nombre-cliente"></span>
-                <a id="whatsapp" title="Abrir chat de WhatsApp" target="_blank" class="link-underline-opacity-0 link-success"><i class="fa fa-whatsapp ms-2" aria-hidden="true"></i>
-                <span id="telefono-cliente"></span></a>
-              </h5>
-              
-  
-              <div class="mb-4 position-absolute top-0 end-0 text-muted fs-5">
-                <span id="fecha-recepcion">01 de septiembre de 2024</span> <!-- Fecha de recepción -->
-              </div>
-            </div>
-
-            <hr>
-            
-            <div class="mb-4 fs-5">
-              <strong>Falla: </strong><p class="card-text" id="descripcion-falla"></p> <!-- Descripción de la falla -->
-            </div>
+            <rep-view></rep-view>
 
             <div class="mb-4">
-              <h5 class="card-title">Comentarios</h5>
               <ul class="list-group" id="lista-comentarios">
               </ul> 
               <div class="input-group mt-3">
-                <input type="text" id="input-comentario" class="form-control" maxlength="500">
+                <input placeholder="Ingresar un nueva nota a la reparación..." type="text" id="input-comentario" class="form-control" maxlength="500">
                 <button type="submit" id="btn-comentario" class="input-group-text"><i class="fa fa-comment" aria-hidden="true"></i></button>
               </div>
             </div>

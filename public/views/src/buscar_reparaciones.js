@@ -1,9 +1,31 @@
 function dirigirAReparacion(id){
-    window.location.href = "/reparacion?id=" + id;
+    window.open("/reparacion?id=" + id, "_blank");
 }
 
-function agregarFilaATabla(datosFila, tabla){
-    const fila = document.createElement('tr');
+function agregarFilaATabla(datosFila){
+    const card = document.createElement('div');
+    card.classList.add('card-body', 'shadow-sm', 'border', 'rounded-4', 'px-4', 'py-3', 'my-1', 'hover-fila');
+    card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`);
+
+    const repView = document.createElement('rep-view');
+    repView.classList.replace('justify-content-between', 'justify-content-around')
+
+    repView.setAttribute('data-id', datosFila.id);
+    repView.setAttribute('estado', datosFila.estado);
+    repView.setAttribute('fabricante', datosFila.fabricante.descripcion);
+    repView.setAttribute('modelo', datosFila.modelo_electro);
+    repView.setAttribute('nombre-cliente', datosFila.cliente.nombre);
+    repView.setAttribute('telefono-cliente', datosFila.cliente.telefono);
+    repView.setAttribute('fecha-recepcion', '04/09/2024');
+    repView.setAttribute('desc-falla', datosFila.desc_falla);
+    
+    card.appendChild(repView);
+    
+    const mainDiv = document.getElementById('results');
+    mainDiv.appendChild(card)
+
+
+   /*  const fila = document.createElement('tr');
     fila.setAttribute('onclick', `dirigirAReparacion(${datosFila.id})`)
     fila.setAttribute('class', 'hover-fila')
     fila.innerHTML = `
@@ -13,7 +35,7 @@ function agregarFilaATabla(datosFila, tabla){
     <td>${datosFila.fecha_recepcion.slice(0,10)}</td>
     <td>${datosFila.estado}</td>
     `;
-    tabla.appendChild(fila);
+    tabla.appendChild(fila); */
 }
 
 function main (){
@@ -22,10 +44,10 @@ function main (){
 
     form.addEventListener('submit', event => {
         event.preventDefault();
-
         const searchTerm = searchInput.value;
-
-        document.getElementById('loading-spinner').style.display = 'inline-block'
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+        document.getElementById('loading-spinner').style.display = 'inline-block';
 
         let url;
         if(searchTerm)
@@ -36,18 +58,12 @@ function main (){
         fetch(url)
             .then(res => res.json())
             .then(data => {
-                const tabla = document.getElementById('tabla-resultados')
-                tabla.innerHTML = '';
                 if(data.length)
                     data.forEach(fila => {
-                        agregarFilaATabla(fila, tabla);
+                        agregarFilaATabla(fila);
                     })
                 else {
-                    const fila = document.createElement('td');
-                    fila.setAttribute('colspan', 6);
-                    fila.style['text-align'] = 'center';
-                    fila.innerHTML = "No se encontraron resultados.";
-                    tabla.appendChild(fila);
+                    
                 }
             })
             .catch(err => {
