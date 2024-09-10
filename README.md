@@ -24,4 +24,4 @@ Se tienen dos vistas principales en la web: una de **ingreso de reparaciones** y
 
 ### Búsqueda
 
-![preview](/docs/preview.png)
+![preview](/docs/preview2.png)
