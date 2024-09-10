@@ -20,8 +20,8 @@ Se tienen dos vistas principales en la web: una de **ingreso de reparaciones** y
 
 ### Ingreso
 
-![preview](/docs/preview.png)
+![preview](/docs/preview-ingreso.png)
 
 ### Búsqueda
 
-![preview](/docs/preview2.png)
+![preview](/docs/preview-consulta.png)
