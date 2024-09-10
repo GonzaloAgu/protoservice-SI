@@ -2,9 +2,11 @@
 
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
+const Fabricante = require('./fabricante.js');
 const Cliente = require('./cliente.js');
 const Factura = require('./factura.js');
-const Fabricante = require('./fabricante.js');
+const Comentario = require('./comentario.js');
+
 
 module.exports = class Reparacion {
 
@@ -12,6 +14,7 @@ module.exports = class Reparacion {
     clienteObj;
     facturaObj;
     fabricanteObj;
+    comentarios = null;
 
     static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
 
@@ -56,6 +59,20 @@ module.exports = class Reparacion {
             return factura;
         }
         return false;
+    }
+
+    async getComentarios() {
+        if (this.comentarios !== null) return this.comentarios;
+        this.comentarios = [];
+        const result = (await pool.query("SELECT * FROM comentario WHERE id_reparacion=$1", [this.id]));
+        result.rows.forEach(data => {
+            const comentario = new Comentario(data.id);
+            comentario.texto = data.texto;
+            comentario.fecha = data.fecha;
+            comentario.id_reparacion = data.id_reparacion;
+            this.comentarios.push(comentario);
+        })
+        return this.comentarios;
     }
 
 

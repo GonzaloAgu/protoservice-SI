@@ -6,5 +6,6 @@ module.exports = {
     TipoElectrodomestico: require('./tipo_electro.js'),
     MedioPago: require('./medio_pago.js'),
     Factura: require('./factura.js'),
-    Reparacion: require('./reparacion.js')
+    Reparacion: require('./reparacion.js'),
+    Comentario: require('./comentario.js')
 }

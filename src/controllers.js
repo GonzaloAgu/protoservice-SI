@@ -172,7 +172,8 @@ const getAllReparacion = async(req, res) => {
             factura: await rep.getFacturaObj(),
             estado: rep.estado,
             desc_falla: rep.desc_falla,
-            fecha_recepcion: rep.fecha_recepcion
+            fecha_recepcion: rep.fecha_recepcion,
+            comentarios: await rep.getComentarios()
         }))
     );
 
