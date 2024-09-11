@@ -193,7 +193,7 @@ module.exports = class Reparacion {
                 return 1;
             } else {
                 logTS(`Actualizando reparacion ${this.toString()}...`);
-                const result = await pool.query("UPDATE reparacion SET modelo_electro=$2, desc_falla=$3, fecha_recepcion=$4, id_cliente=$5, factura_id=$6, estado=$7, tipo_electro_id=$8, fabricante_id=$9 WHERE id=$1", [this.id].concat(values));
+                const result = await pool.query("UPDATE reparacion SET modelo_electro=$2, desc_falla=$3, id_cliente=$4, factura_id=$5, estado=$6, tipo_electro_id=$7, fabricante_id=$8 WHERE id=$1", [this.id].concat(values));
                 logTS(result.command + " finalizado.");
                 return 0;
             }

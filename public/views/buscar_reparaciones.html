@@ -10,6 +10,7 @@
   <script type="module" src="./views/src/buscar_reparaciones.js"></script>
   <script src="./views/components/navbar.js"></script>
   <script type="module" src="./views/components/reparacionView.js"></script>
+  <script src="./views/src/bootstrap.bundle.min.js"></script>
 </head>
 
 <!DOCTYPE html>
@@ -34,14 +35,30 @@
     <div class="maincontainer col-md-12 mx-auto">
       <h2 class="">Búsqueda de reparaciones</h2>
       <hr>
-      <form id="search-form" action="/buscar" method="GET">
-        <label for="search"><i class="fa fa-search" aria-hidden="true"></i></label>
+      <form id="search-form" action="/buscar" method="GET" class="d-flex align-items-center">
+        <label for="search"><i class="fa fa-search fs-4" aria-hidden="true"></i></label>
         <input class="col-md-6 ms-2" type="text" name="search" id="search" autocomplete="on" placeholder="Buscar por cliente, marca, modelo o fallo...">
-        <div  id="loading-spinner" style="display: none; height: 1.2rem; width: 1.2rem;" class="spinner-border text-light col-md-1 mx-1" role="status">
-          <span class="visually-hidden">Loading...</span> <!-- Spinner de carga -->
+        <div  id="loading-spinner" style="height: 1.2rem; width: 1.2rem;" class="spinner-border text-light col-md-1 mx-1" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="my-3 d-flex align-items-center">
+          <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" class="btn-check" id="chk-pendientes" autocomplete="off" checked>
+            <label class="btn btn-outline-secondary" for="chk-pendientes">Pendientes</label>
+          
+            <input type="checkbox" class="btn-check" id="chk-en-revision" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="chk-en-revision">En revisión</label>
+          
+            <input type="checkbox" class="btn-check" id="chk-reparados" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="chk-reparados">Reparados</label>
+    
+            <input type="checkbox" class="btn-check" id="chk-sin-arreglo" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="chk-sin-arreglo">Sin arreglo</label>
+          </div>
         </div>
       </form>
-        <br>
+      <h4>Resultados</h3>
+      <hr>
         <div id="results"></div>
     </div>
     <!-- Popup de error -->

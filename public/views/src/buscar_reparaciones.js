@@ -28,27 +28,53 @@ function agregarFilaATabla(datosFila){
     mainDiv.appendChild(card)
 }
 
+const filtros = [null, null, null, null];
+
+const includedInFilter = rep => {
+    const estado = rep.estado;
+    return (
+        (filtros[0] && estado == 'pendiente') ||
+        (filtros[1] && estado == 'en revision') ||
+        (filtros[2] && estado == 'reparado') ||
+        (filtros[3] && estado == 'sin arreglo')
+    )
+}
+
+const actualizarFiltros = () => {
+    filtros[0] = document.getElementById('chk-pendientes')?.checked;
+    filtros[1] = document.getElementById('chk-en-revision')?.checked;
+    filtros[2] = document.getElementById('chk-reparado')?.checked;
+    filtros[3] = document.getElementById('chk-sin-arreglo')?.checked;
+}
+
 const busqueda = event => {
+    actualizarFiltros();
+    
     if(event)
         event.preventDefault();
 
     const searchTerm = document.getElementById('search').value;
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '';
-    document.getElementById('loading-spinner').style.display = 'inline-block';
+    document.getElementById('loading-spinner').style.visibility = 'visible';
 
+    
+    
     let url;
     if(searchTerm)
         url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
     else
         url = '/api/buscar';
 
+
+
     fetch(url)
         .then(res => res.json())
         .then(data => {
             if(data.length)
-                data.forEach(fila => {
-                    agregarFilaATabla(fila);
+                data.forEach(rep => {
+                    if(includedInFilter(rep))
+                        agregarFilaATabla(rep);
                 })
             else {
                 
@@ -64,13 +90,13 @@ const busqueda = event => {
             }, 5000)
         })
         .finally(() => {
-            document.getElementById('loading-spinner').style.display = 'none'
+            document.getElementById('loading-spinner').style.visibility = 'hidden'
         })
 }
 
 function onLoad (){
     const form = document.getElementById('search-form');
-    form.addEventListener('submit', busqueda)
+    form.addEventListener('submit', busqueda);
     busqueda();
 }
 
