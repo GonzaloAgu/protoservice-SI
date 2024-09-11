@@ -43,13 +43,13 @@ const includedInFilter = rep => {
 const actualizarFiltros = () => {
     filtros[0] = document.getElementById('chk-pendientes')?.checked;
     filtros[1] = document.getElementById('chk-en-revision')?.checked;
-    filtros[2] = document.getElementById('chk-reparado')?.checked;
+    filtros[2] = document.getElementById('chk-reparados')?.checked;
     filtros[3] = document.getElementById('chk-sin-arreglo')?.checked;
 }
 
 const busqueda = event => {
     actualizarFiltros();
-    
+
     if(event)
         event.preventDefault();
 
@@ -97,6 +97,7 @@ const busqueda = event => {
 function onLoad (){
     const form = document.getElementById('search-form');
     form.addEventListener('submit', busqueda);
+    document.getElementById('btn-refresh').addEventListener('click', () => busqueda());
     busqueda();
 }
 

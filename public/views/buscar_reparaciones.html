@@ -33,6 +33,10 @@
 
      <!-- Contenedor principal -->
     <div class="maincontainer col-md-12 mx-auto">
+      <!-- Popup de éxito -->
+      <div id="successPopup"  class="alert alert-success m-auto fade fixed-bottom" rote="alert">
+        La operación ha sido procesada con éxito.
+      </div>
       <h2 class="">Búsqueda de reparaciones</h2>
       <hr>
       <form id="search-form" action="/buscar" method="GET" class="d-flex align-items-center">
@@ -41,8 +45,8 @@
         <div  id="loading-spinner" style="height: 1.2rem; width: 1.2rem;" class="spinner-border text-light col-md-1 mx-1" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="my-3 d-flex align-items-center">
-          <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <div class="my-3 d-flex align-items-center" >
+          <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="filters">
             <input type="checkbox" class="btn-check" id="chk-pendientes" autocomplete="off" checked>
             <label class="btn btn-outline-secondary" for="chk-pendientes">Pendientes</label>
           
@@ -54,6 +58,9 @@
     
             <input type="checkbox" class="btn-check" id="chk-sin-arreglo" autocomplete="off">
             <label class="btn btn-outline-secondary" for="chk-sin-arreglo">Sin arreglo</label>
+            <button class="btn btn-secondary" id="btn-refresh" title="Aplicar filtros">
+              <i class="fa fa-refresh mx-1" aria-hidden="true" ></i>
+            </button>
           </div>
         </div>
       </form>
@@ -66,6 +73,7 @@
       
     </div>
   </div>
+  
 </body>
 
 </html>

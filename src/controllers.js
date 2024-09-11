@@ -113,7 +113,7 @@ const patchReparacion = async (req, res) => {
             reparacion[key] = value;
         }
     }
-    console.log(reparacion);
+    
     let result = await reparacion.guardar();
     if (result === 0) {
         res.json({ ok: true, reparacion });
