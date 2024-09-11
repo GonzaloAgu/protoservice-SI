@@ -1,4 +1,5 @@
 let reparacion = {};
+const estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
 
 import { fechaParser } from './utils.js';
 
@@ -39,6 +40,17 @@ const submitComment = comment => {
 
 }
 
+const actualizarEstado = () => {
+    const selected = $('input[name="estado"]:checked').val();
+    fetch('/api/reparacion', {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({ id: reparacion.id, estado: estados[Number(selected)] })
+    })
+}
+
 const eventListeners = () => {
     $('#btn-comentario').on('click', event => {
         submitComment( $('#input-comentario').val() )
@@ -46,6 +58,14 @@ const eventListeners = () => {
     $('#input-comentario').on('keypress', event => {
         if(event.key === 'Enter') submitComment( $('#input-comentario').val() );
     });
+    $('.dropdown-menu').on('click', (event) => {
+        if (!$(event.target).closest('button').length) {
+            event.stopPropagation();
+          }
+      });
+
+    $('#btn-actualizar-estado').on('click', () => actualizarEstado())
+      
 }
 
 /**

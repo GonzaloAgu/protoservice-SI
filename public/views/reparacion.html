@@ -2,60 +2,96 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electroservice - Ingresar electrodoméstico</title>
-    <link rel="stylesheet" href="/styles/bootstrap.css">
-    <link rel="stylesheet" href="./styles/styles.css">
-    <link rel="icon" type="image/x-icon" href="../styles/icon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="module" src="./views/src/reparacion.js"></script>
-    <script src="./views/src/jquery-3.7.1.js"></script>
-    <script src="./views/components/navbar.js"></script>
-    <script type="module" src="./views/components/reparacionView.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electroservice - Ingresar electrodoméstico</title>
+  <link rel="stylesheet" href="/styles/bootstrap.css">
+  <link rel="stylesheet" href="./styles/styles.css">
+  <link rel="icon" type="image/x-icon" href="../styles/icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="module" src="./views/src/reparacion.js"></script>
+  <script src="./views/src/jquery-3.7.1.js"></script>
+  <script src="./views/components/navbar.js"></script>
+  <script type="module" src="./views/components/reparacionView.js"></script>
+  <script src="./views/src/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body data-bs-theme="dark">
-    <div class="container">
-        <!-- Título principal -->
-        <h1 id="title" class="text-center my-4 text-danger">ELECTROSERVICE</h1>
+  <div class="container">
+    <!-- Título principal -->
+    <h1 id="title" class="text-center my-4 text-danger">ELECTROSERVICE</h1>
 
-        <!-- Barra de navegación -->
-        <nav-bar></nav-bar>
+    <!-- Barra de navegación -->
+    <nav-bar></nav-bar>
 
-        <div class="card shadow-sm d-none">
+    <div class="card shadow-sm d-none">
 
-          <div class="card-header d-flex justify-content-between text-white px-3">
-            <h4 class="my-1">Reparación #<span id="nro-reparacion"></span> </h4> <!-- Número de reparación -->
-            <button class="btn btn-danger btn-sm" id="btn-eliminar">
-              Eliminar
+      <div class="card-header d-flex justify-content-between text-white px-3">
+        <h4 class="my-1">Reparación #<span id="nro-reparacion"></span> </h4> <!-- Número de reparación -->
+        <button class="btn btn-danger btn-sm" id="btn-eliminar">
+          Eliminar
+        </button>
+      </div>
+
+      <div class="card-body">
+        <rep-view></rep-view>
+
+        <div class="my-2">
+          <ul class="list-group list-group-flush" id="lista-comentarios">
+          </ul>
+        </div>
+
+        <div class="d-flex justify-content-end align-items-center">
+          <div class="input-group me-2">
+            <input placeholder="Ingresar una nota a la reparación..." type="text" id="input-comentario"
+              class="form-control" maxlength="500">
+            <button type="submit" id="btn-comentario" class="input-group-text">
+              <i class="fa fa-comment" aria-hidden="true"></i>
             </button>
           </div>
-
-          <div class="card-body">
-            <rep-view></rep-view>
-
-            <div class="my-2">
-              <ul class="list-group list-group-flush" id="lista-comentarios">
-              </ul>
-            </div>
-      
-            <div class="d-flex justify-content-end align-items-center">
-              <div class="input-group me-2">
-                  <input placeholder="Ingresar una nota a la reparación..." type="text" id="input-comentario" class="form-control" maxlength="500">
-                  <button type="submit" id="btn-comentario" class="input-group-text">
-                      <i class="fa fa-comment" aria-hidden="true"></i>
-                  </button>
-              </div>
-              <button class="btn btn-secondary me-2" id="btn-estado" style="white-space: nowrap;">
-                  Cambiar estado
-              </button>
-              <button class="btn btn-success me-2" id="btn-generar-factura" style="white-space: nowrap;">
-                  Generar Factura
-              </button>
+          <div class="btn-group dropup me-2">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Cambiar estado
+            </button>
+            <ul class="dropdown-menu p-4">
+              <li class="form-check">
+                <input class="form-check-input" type="radio" name="estado" value="0" id="opc-pendiente">
+                <label class="form-check-label" for="opc-pendiente">
+                  Pendiente
+                </label>
+              </li>
+              <li class="form-check">
+                <input class="form-check-input" type="radio" name="estado" value="1" id="opc-revision">
+                <label class="form-check-label" for="opc-revision">
+                  En revisión
+                </label>
+              </li>
+              <li class="form-check">
+                <input class="form-check-input" type="radio" name="estado" value="2" id="opc-reparado">
+                <label class="form-check-label" for="opc-reparado">
+                  Reparado
+                </label>
+              </li>
+              <li class="form-check">
+                <input class="form-check-input" type="radio" name="estado" value="3" id="opc-sin-arreglo">
+                <label class="form-check-label" for="opc-sin-arreglo">
+                  Sin arreglo
+                </label>
+              </li>
+              <li class="text-center">
+                <button class="btn btn-primary mt-3" id="btn-actualizar-estado" type="button">Actualizar</button>
+              </li>
+            </ul>
+            
+            
           </div>
-          </div>
+          <button class="btn btn-success me-2" id="btn-generar-factura" style="white-space: nowrap;">
+            Generar Factura
+          </button>
         </div>
+      </div>
+    </div>
 </body>
 
 </html>

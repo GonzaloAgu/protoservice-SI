@@ -46,6 +46,8 @@ const facturaUpdate = Joi.object({
 
 // SCHEMAS DE REPARACION
 
+const estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
+
 const reparacionCreate = Joi.object({
     desc_falla: Joi.string().max(500),
     id_cliente: Joi.number().min(0).required(),
@@ -55,10 +57,12 @@ const reparacionCreate = Joi.object({
     fabricante_id: Joi.number().min(0).required()
 })
 
+
 const reparacionUpdate = Joi.object({
     id: Joi.number().min(0).required(),
     desc_falla: Joi.string().max(500),
     id_cliente: Joi.number().min(0),
+    estado: Joi.string().valid(...estados),
     factura_id: Joi.number().min(0),
     modelo_electro: Joi.string().max(100),
     tipo_electro_id: Joi.number().min(0),

@@ -22,7 +22,7 @@ const validateData = schema => {
 router.get('/api/buscar', ctrls.getAllReparacion);
 router.get('/api/reparacion/:id', ctrls.getReparacion);
 router.post('/api/reparacion', validateData(schemas.reparacionCreate), ctrls.postReparacion);
-router.put('/api/reparacion', validateData(schemas.reparacionUpdate), ctrls.putReparacion);
+router.patch('/api/reparacion', validateData(schemas.reparacionUpdate), ctrls.patchReparacion);
 router.delete('/api/reparacion', ctrls.deleteReparacion);
 
 // Comentarios

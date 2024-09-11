@@ -103,7 +103,7 @@ const postReparacion = async (req, res) => {
     res.json(response);
 }
 
-const putReparacion = async (req, res) => {
+const patchReparacion = async (req, res) => {
     const { id, ...updates } = req.body;
     const reparacion = new Reparacion(id);
     await reparacion.obtener();
@@ -113,7 +113,7 @@ const putReparacion = async (req, res) => {
             reparacion[key] = value;
         }
     }
-
+    console.log(reparacion);
     let result = await reparacion.guardar();
     if (result === 0) {
         res.json({ ok: true, reparacion });
@@ -267,7 +267,7 @@ module.exports = {
     postFactura,
     getReparacion,
     postReparacion,
-    putReparacion,
+    patchReparacion,
     getComentarios,
     postComentario
 }

@@ -8,7 +8,8 @@ function agregarFilaATabla(datosFila){
     const card = document.createElement('div');
     card.classList.add('card-body', 'shadow-sm', 'border', 'rounded-4', 'px-4', 'py-3', 'my-1', 'hover-fila');
     //card.setAttribute('onclick', `dirigirAReparacion(${datosFila.id});`);
-    card.addEventListener('click', () => dirigirAReparacion(datosFila.id));
+    card.addEventListener('click', () => window.location.href = '/reparacion?id=' + datosFila.id);
+    card.addEventListener('mousedown', event => { if(event.button === 1) dirigirAReparacion(datosFila.id)} )
 
     const repView = document.createElement('rep-view');
 

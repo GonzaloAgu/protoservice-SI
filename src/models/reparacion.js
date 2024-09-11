@@ -16,7 +16,7 @@ module.exports = class Reparacion {
     fabricanteObj;
     comentarios = null;
 
-    static estados = ['pendiente', 'en revisión', 'reparado', 'sin arreglo', 'no disponible', 'abandonado'];
+    static estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
 
     constructor(id) {
         this.id = id;
