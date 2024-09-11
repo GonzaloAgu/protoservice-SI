@@ -154,21 +154,25 @@ module.exports = class Reparacion {
      * @returns true si lo encontró, false si no existe.
      */
     async obtener() {
-        const result = await pool.query("SELECT * FROM reparacion WHERE id=$1", [this.id]);
-
-        if (result.rows.length) {
-            this.modelo_electro = result.rows[0].modelo_electro;
-            this.desc_falla = result.rows[0].desc_falla;
-            this.fecha_recepcion = result.rows[0].fecha_recepcion;
-            this.id_cliente = result.rows[0].id_cliente;
-            this.clienteObj = await this.getClienteObj();
-            this.fabricante_id = result.rows[0].fabricante_id;
-            this.fabricanteObj = await this.getFabricanteObj();
-            this.factura_id = result.rows[0].factura_id;
-            this.estado = result.rows[0].estado;
-            return true;
+        try {
+            const result = await pool.query("SELECT * FROM reparacion WHERE id=$1", [this.id]);
+    
+            if (result.rows.length) {
+                this.modelo_electro = result.rows[0].modelo_electro;
+                this.desc_falla = result.rows[0].desc_falla;
+                this.fecha_recepcion = result.rows[0].fecha_recepcion;
+                this.id_cliente = result.rows[0].id_cliente;
+                this.clienteObj = await this.getClienteObj();
+                this.fabricante_id = result.rows[0].fabricante_id;
+                this.fabricanteObj = await this.getFabricanteObj();
+                this.factura_id = result.rows[0].factura_id;
+                this.estado = result.rows[0].estado;
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.log(e);
         }
-        return false;
     }
 
     /**
@@ -177,12 +181,12 @@ module.exports = class Reparacion {
     */
     async guardar() {
         try {
-            const values = [this.modelo_electro, this.desc_falla, this.fecha_recepcion, this.id_cliente, this.factura_id, this.estado, this.tipo_electro_id, this.fabricante_id];
+            const values = [this.modelo_electro, this.desc_falla, this.id_cliente, this.factura_id, this.estado, this.tipo_electro_id, this.fabricante_id];
             const existe = (await pool.query("SELECT * FROM reparacion WHERE id=$1;", [this.id])).rows.length == 1;
 
             if (!existe) {
                 logTS(`Insertando reparación...`);
-                const result = await pool.query("INSERT INTO reparacion(modelo_electro, desc_falla, fecha_recepcion, id_cliente, factura_id, estado, tipo_electro_id, fabricante_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", values);
+                const result = await pool.query("INSERT INTO reparacion(modelo_electro, desc_falla, id_cliente, factura_id, estado, tipo_electro_id, fabricante_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id", values);
                 this.id = result.rows[0].id;
                 this.clienteObj = await this.getClienteObj();
                 logTS(result.command + ` ${this.toString()}` + " finalizado.");

@@ -193,6 +193,8 @@ function main() {
 
       data = await response.json();
 
+      if(!data || !data.reparacion_id) throw new Error('No se pudo guardar en la base de datos.')
+
       $('#successPopup')
         .removeClass('alert-danger')
         .addClass('alert-success')
