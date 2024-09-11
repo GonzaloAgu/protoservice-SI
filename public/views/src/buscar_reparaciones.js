@@ -1,4 +1,4 @@
-import { fechaParser } from './utils.js';
+import { fechaParser, badgeColors } from './utils.js';
 
 function dirigirAReparacion(id){
     window.open("/reparacion?id=" + id, "_blank");
@@ -58,7 +58,10 @@ const busqueda = event => {
     resultsDiv.innerHTML = '';
     document.getElementById('loading-spinner').style.visibility = 'visible';
 
-    
+    if(searchTerm.slice(0, 2) === '--'){
+        window.location.href = '/reparacion?id=' + searchTerm.slice(2);
+        return;
+    }
     
     let url;
     if(searchTerm)
@@ -66,7 +69,7 @@ const busqueda = event => {
     else
         url = '/api/buscar';
 
-
+    
 
     fetch(url)
         .then(res => res.json())
@@ -97,7 +100,6 @@ const busqueda = event => {
 function onLoad (){
     const form = document.getElementById('search-form');
     form.addEventListener('submit', busqueda);
-    document.getElementById('btn-refresh').addEventListener('click', () => busqueda());
     busqueda();
 }
 

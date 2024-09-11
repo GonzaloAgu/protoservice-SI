@@ -1,13 +1,31 @@
 let reparacion = {};
 const estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
 
-import { fechaParser } from './utils.js';
+
+import { fechaParser, badgeColors } from './utils.js';
+
+const updateBadge = (estado) => {
+    const posicion = badgeColors.findIndex(item => item.estado === estado);
+    const estadoElement = document.querySelector('#estado');
+    estadoElement.textContent = estado;
+
+    estadoElement.classList.forEach(className => {
+        if (className.match(/\b(bg-\w+)/)) {
+          estadoElement.classList.remove(className);
+        }
+      });
+
+    estadoElement.classList.add(badgeColors[posicion].class)
+}
 
 const setContent = rep => {
     $('#nro-reparacion').text(rep.id);
+    $('#nro-reparacion-title').text(rep.id);
     $('#fabricante').text(rep.fabricanteObj.descripcion + ' ');
     $('#modelo').text(rep.modelo_electro);
-    $('#estado').text(rep.estado);
+    //$('#estado').text(rep.estado);
+    updateBadge(rep.estado)
+
     $('#nombre-cliente').text(rep.clienteObj.nombre);
     $('#whatsapp').attr('href', 'https://wa.me/54' + rep.clienteObj.telefono);
     $('#telefono-cliente').text(rep.clienteObj.telefono);
@@ -49,6 +67,11 @@ const actualizarEstado = () => {
         },
         body: JSON.stringify({ id: reparacion.id, estado: estados[Number(selected)] })
     })
+    .then(res => res.json)
+    .then(data => {
+        updateBadge(estados[selected])
+    })
+    .catch(error => console.error(error))
 }
 
 const eventListeners = () => {
@@ -104,10 +127,14 @@ function onLoad() {
     const urlParams = new URLSearchParams(window.location.search);
     const idReparacion = urlParams.get('id');
 
+
+    document.title = `Reparacion #${idReparacion} - Electroservice`
+
     fetch('/api/reparacion/' + idReparacion)
     .then(res => res.json())
     .then(data => {
         reparacion = data;
+        document.querySelector('#rep-view').setAttribute('estado', reparacion.estado);
         setContent(reparacion);
     })
     .then(() => {
@@ -117,10 +144,13 @@ function onLoad() {
     .then(() => {
         updateCommentSection();
     })
-    .then(() => $('.card').removeClass('d-none'))
     .catch(e => {
+        $('.card').html(`<h2>Error 404: No se encontró la reparación</h2>`)
         console.error(e);
     })
+    .finally(() => $('.card').removeClass('d-none'))
 }
+
+
 
 document.addEventListener('DOMContentLoaded', onLoad)
