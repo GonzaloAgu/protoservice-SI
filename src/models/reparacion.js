@@ -98,7 +98,7 @@ module.exports = class Reparacion {
         if (isNumeric(termino)) {
             query += ` OR Cx.id::TEXT LIKE $1`
         }
-        query += ' ORDER BY Rx.fecha_recepcion, Cx.nombre;'
+        query += ' ORDER BY Rx.id;'
 
         let result = (await pool.query(query, ['%' + termino + '%']))
 
@@ -125,9 +125,9 @@ module.exports = class Reparacion {
     static async obtenerTodos(query) {
         let result;
         if (query)
-            result = (await pool.query("SELECT * FROM reparacion WHERE " + query)).rows;
+            result = (await pool.query("SELECT * FROM reparacion WHERE " + query +' ORDER BY reparacion.id;')).rows;
         else
-            result = (await pool.query("SELECT * FROM reparacion")).rows;
+            result = (await pool.query("SELECT * FROM reparacion ORDER BY reparacion.id;")).rows;
 
         if (!result || result.length === 0)
             return [];

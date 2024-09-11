@@ -28,47 +28,50 @@ function agregarFilaATabla(datosFila){
     mainDiv.appendChild(card)
 }
 
-function main (){
-    const form = document.getElementById('search-form');
-    let searchInput = document.getElementById('search');
-
-    form.addEventListener('submit', event => {
+const busqueda = event => {
+    if(event)
         event.preventDefault();
-        const searchTerm = searchInput.value;
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '';
-        document.getElementById('loading-spinner').style.display = 'inline-block';
 
-        let url;
-        if(searchTerm)
-            url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
-        else
-            url = '/api/buscar';
+    const searchTerm = document.getElementById('search').value;
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+    document.getElementById('loading-spinner').style.display = 'inline-block';
 
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if(data.length)
-                    data.forEach(fila => {
-                        agregarFilaATabla(fila);
-                    })
-                else {
-                    
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                const errorPopup =  document.getElementById('errorPopup');
-                errorPopup.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Se ha producido un error: ${err}`
-                errorPopup.classList.add('show')
-                setTimeout(() => {
-                    errorPopup.classList.remove('show');
-                }, 5000)
-            })
-            .finally(() => {
-                document.getElementById('loading-spinner').style.display = 'none'
-            })
-    })
+    let url;
+    if(searchTerm)
+        url = '/api/buscar?search=' + encodeURIComponent(searchTerm);
+    else
+        url = '/api/buscar';
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if(data.length)
+                data.forEach(fila => {
+                    agregarFilaATabla(fila);
+                })
+            else {
+                
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            const errorPopup =  document.getElementById('errorPopup');
+            errorPopup.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Se ha producido un error: ${err}`
+            errorPopup.classList.add('show')
+            setTimeout(() => {
+                errorPopup.classList.remove('show');
+            }, 5000)
+        })
+        .finally(() => {
+            document.getElementById('loading-spinner').style.display = 'none'
+        })
 }
 
-document.addEventListener('DOMContentLoaded', main)
+function onLoad (){
+    const form = document.getElementById('search-form');
+    form.addEventListener('submit', busqueda)
+    busqueda();
+}
+
+document.addEventListener('DOMContentLoaded', onLoad)
