@@ -11,9 +11,9 @@ const updateBadge = (estado) => {
 
     estadoElement.classList.forEach(className => {
         if (className.match(/\b(bg-\w+)/)) {
-          estadoElement.classList.remove(className);
+            estadoElement.classList.remove(className);
         }
-      });
+    });
 
     estadoElement.classList.add(badgeColors[posicion].class)
 }
@@ -23,7 +23,6 @@ const setContent = rep => {
     $('#nro-reparacion-title').text(rep.id);
     $('#fabricante').text(rep.fabricanteObj.descripcion + ' ');
     $('#modelo').text(rep.modelo_electro);
-    //$('#estado').text(rep.estado);
     updateBadge(rep.estado)
 
     $('#nombre-cliente').text(rep.clienteObj.nombre);
@@ -35,7 +34,7 @@ const setContent = rep => {
 }
 
 const submitComment = comment => {
-    if(!comment) return;
+    if (!comment) return;
 
     const fecha = new Date();
 
@@ -49,13 +48,20 @@ const submitComment = comment => {
         headers: {
             'Content-Type': "application/json"
         },
-        body: JSON.stringify(body) 
+        body: JSON.stringify(body)
     })
-    .then(res => res.json)
-    .then(loadComments)
-    .then(updateCommentSection)
-    .catch(error => console.error(error));
+        .then(res => res.json)
+        .then(loadComments)
+        .then(updateCommentSection)
+        .catch(error => showError(error.message));
 
+}
+
+const showError = (message) => {
+    $('#errorPopup').addClass('show').text('Error: ' + message);
+    setTimeout(() => {
+        $('#errorPopup').removeClass('show')
+    }, 3000)
 }
 
 const actualizarEstado = () => {
@@ -67,28 +73,30 @@ const actualizarEstado = () => {
         },
         body: JSON.stringify({ id: reparacion.id, estado: estados[Number(selected)] })
     })
-    .then(res => res.json)
-    .then(data => {
-        updateBadge(estados[selected])
-    })
-    .catch(error => console.error(error))
+        .then(res => res.json)
+        .then(data => {
+            updateBadge(estados[selected])
+        })
+        .catch(error => {
+            showError(error.message)
+        })
 }
 
 const eventListeners = () => {
     $('#btn-comentario').on('click', event => {
-        submitComment( $('#input-comentario').val() )
+        submitComment($('#input-comentario').val())
     });
     $('#input-comentario').on('keypress', event => {
-        if(event.key === 'Enter') submitComment( $('#input-comentario').val() );
+        if (event.key === 'Enter') submitComment($('#input-comentario').val());
     });
     $('.dropdown-menu').on('click', (event) => {
         if (!$(event.target).closest('button').length) {
             event.stopPropagation();
-          }
-      });
+        }
+    });
 
     $('#btn-actualizar-estado').on('click', () => actualizarEstado())
-      
+
 }
 
 /**
@@ -97,15 +105,15 @@ const eventListeners = () => {
 const updateCommentSection = () => {
     const lista = document.getElementById('lista-comentarios');
     lista.innerHTML = '';
-    
-    if(reparacion.comentarios === null)
+
+    if (reparacion.comentarios === null)
         return;
-    
+
     reparacion.comentarios.forEach(comment => {
         const fecha = new Date(comment.fecha);
         lista.innerHTML += (`<li class="list-group-item text-muted px-2"><span class="fw-bolder">${fechaParser(fecha.toString())}</span> ${fecha.getHours().toString().padStart(2, '0')}:${fecha.getMinutes().toString().padStart(2, '0')}<br>
             <span class="fs-6">${comment.texto}<span></li>`);
-        
+
         $('#input-comentario').val('')
     })
 }
@@ -115,11 +123,11 @@ const updateCommentSection = () => {
  */
 const loadComments = () => {
     return fetch('/api/comentarios/' + reparacion.id)
-    .then(res => res.json())
-    .then(data => {
-        reparacion.comentarios = data;
-    })
-    .catch(error => console.error(error));
+        .then(res => res.json())
+        .then(data => {
+            reparacion.comentarios = data;
+        })
+        .catch(error => showError(error.message));
 }
 
 
@@ -131,24 +139,24 @@ function onLoad() {
     document.title = `Reparacion #${idReparacion} - Electroservice`
 
     fetch('/api/reparacion/' + idReparacion)
-    .then(res => res.json())
-    .then(data => {
-        reparacion = data;
-        document.querySelector('#rep-view').setAttribute('estado', reparacion.estado);
-        setContent(reparacion);
-    })
-    .then(() => {
-        eventListeners();
-        return loadComments();
-    })
-    .then(() => {
-        updateCommentSection();
-    })
-    .catch(e => {
-        $('.card').html(`<h2>Error 404: No se encontró la reparación</h2>`)
-        console.error(e);
-    })
-    .finally(() => $('.card').removeClass('d-none'))
+        .then(res => res.json())
+        .then(data => {
+            reparacion = data;
+            document.querySelector('#rep-view').setAttribute('estado', reparacion.estado);
+            setContent(reparacion);
+        })
+        .then(() => {
+            eventListeners();
+            return loadComments();
+        })
+        .then(() => {
+            updateCommentSection();
+        })
+        .catch(e => {
+            $('.card').html(`<h2>Error 404: No se encontró la reparación</h2>`)
+            showError(error.message);
+        })
+        .finally(() => $('.card').removeClass('d-none'))
 }
 
 

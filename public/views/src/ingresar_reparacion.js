@@ -201,6 +201,8 @@ function main() {
         .addClass('show')
         .text(`La reparación ${data.reparacion_id} ha sido agregada con éxito.`);
 
+      $('#submit').attr('disabled', '');
+
       setTimeout(() => {
         window.location.href = "/reparacion?id=" + data.reparacion_id;
       }, 1000);

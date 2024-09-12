@@ -55,27 +55,27 @@
               Cambiar estado
             </button>
             <ul class="dropdown-menu p-3">
-              <li class="form-check">
+              <li class="form-check  item-estado">
                 <input class="form-check-input" type="radio" name="estado" value="0" id="opc-pendiente">
-                <label class="form-check-label" for="opc-pendiente">
+                <label class="form-check-label item-estado" for="opc-pendiente">
                   Pendiente
                 </label>
               </li>
               <li class="form-check">
                 <input class="form-check-input" type="radio" name="estado" value="1" id="opc-revision">
-                <label class="form-check-label" for="opc-revision">
+                <label class="form-check-label item-estado" for="opc-revision">
                   En revisión
                 </label>
               </li>
               <li class="form-check">
                 <input class="form-check-input" type="radio" name="estado" value="2" id="opc-reparado">
-                <label class="form-check-label" for="opc-reparado">
+                <label class="form-check-label item-estado" for="opc-reparado">
                   Reparado
                 </label>
               </li>
               <li class="form-check">
                 <input class="form-check-input" type="radio" name="estado" value="3" id="opc-sin-arreglo">
-                <label class="form-check-label" for="opc-sin-arreglo">
+                <label class="form-check-label item-estado" for="opc-sin-arreglo">
                   Sin arreglo
                 </label>
               </li>
@@ -91,6 +91,9 @@
           </button>
         </div>
       </div>
+    </div>
+    <div id="errorPopup"  class="alert alert-danger m-auto fade" rote="alert"></div>
+      
     </div>
 </body>
 

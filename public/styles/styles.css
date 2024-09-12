@@ -20,3 +20,8 @@
 #btn-comentario:hover {
   background-color: rgb(65, 65, 65);
 }
+
+.item-estado:hover {
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
