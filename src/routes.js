@@ -23,7 +23,7 @@ router.get('/api/buscar', ctrls.getAllReparacion);
 router.get('/api/reparacion/:id', ctrls.getReparacion);
 router.post('/api/reparacion', validateData(schemas.reparacionCreate), ctrls.postReparacion);
 router.patch('/api/reparacion', validateData(schemas.reparacionUpdate), ctrls.patchReparacion);
-router.delete('/api/reparacion', ctrls.deleteReparacion);
+router.delete('/api/reparacion', validateData(schemas.deleteSch), ctrls.deleteReparacion);
 
 // Comentarios
 router.get('/api/comentarios/:id_reparacion', ctrls.getComentarios);

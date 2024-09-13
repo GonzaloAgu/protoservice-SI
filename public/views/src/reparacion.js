@@ -130,11 +130,28 @@ const loadComments = () => {
         .catch(error => showError(error.message));
 }
 
+const eliminarReparacion = () => {
+    $('.card').addClass('d-none');
+    $('#spinner-container').removeClass('d-none');
+    
+    fetch('api/reparacion', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: reparacion.id })
+    })
+    .then(res =>  res.json())
+    .then(data => window.location.href = '/consulta')
+    .catch(error => showError(error.message))
+    
+}
 
 function onLoad() {
     const urlParams = new URLSearchParams(window.location.search);
     const idReparacion = urlParams.get('id');
 
+    $('#btn-eliminar-confirmado').on('click', eliminarReparacion);
 
     document.title = `Reparacion #${idReparacion} - Electroservice`
 
