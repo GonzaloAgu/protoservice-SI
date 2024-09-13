@@ -134,7 +134,15 @@ const patchReparacion = async (req, res) => {
 const deleteReparacion = async (req, res) => {
     let reparacion = new Reparacion(req.body.id);
     let result;
+    
     if(await reparacion.obtener()){
+        // eliminar comentarios de la reparación
+        reparacion.getComentarios()
+        .then(comentarios => {
+            comentarios.forEach( async(c) => c.eliminar())
+        })
+
+        // eliminar reparación
         result = await reparacion.eliminar();
         res.json({
             ok: result,

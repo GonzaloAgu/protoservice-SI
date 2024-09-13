@@ -130,6 +130,7 @@ const loadComments = () => {
         .catch(error => showError(error.message));
 }
 
+
 const eliminarReparacion = () => {
     $('.card').addClass('d-none');
     $('#spinner-container').removeClass('d-none');
@@ -141,7 +142,7 @@ const eliminarReparacion = () => {
         },
         body: JSON.stringify({ id: reparacion.id })
     })
-    .then(res =>  res.json())
+    .then(res => res.json())
     .then(data => window.location.href = '/consulta')
     .catch(error => showError(error.message))
     
