@@ -22,4 +22,6 @@ Se tienen dos vistas principales en la web: una de **ingreso de reparaciones** y
 
 ### Búsqueda
 
+El sistema permite buscar las reparaciones por su nombre, y con un filtro por su estado. Al abrir la pestaña, de forma predeterminada buscará todas las reparaciones pendientes y en revisión, que suelen ser de mayor interés.
+
 ![preview](/docs/preview-consulta.png)
