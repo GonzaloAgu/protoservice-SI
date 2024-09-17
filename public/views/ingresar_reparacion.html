@@ -12,6 +12,7 @@
   <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
   <script src="./views/src/ingresar_reparacion.js"></script>
   <script src="./views/components/navbar.js"></script>
+  <script src="./views/src/bootstrap.bundle.min.js"></script>
 </head>
 
 <body data-bs-theme="dark">
@@ -38,32 +39,34 @@
           </div>
         </div>
         
-        <div class="col-md-6">
-          <div class="form-floating mb-2 ">
+        <div class="col-md-6 d-flex flex-wrap align-items-stretch">
+          <div class="form-floating mb-2 col-md-11">
             <select id="tipo-input" class="form-select" required>
               <option value="0">Sin especificar</option>
             </select>
             <label for="fabricante-input" class="form-label">Tipo de electrodoméstico</label>
           </div>
-          <div class="form-floating mb-2 ">
+          <button type="button" class="btn btn-dark mx-auto mb-2 col-md-1" title="Agregar un tipo de electrodoméstico" data-bs-toggle="modal" data-bs-target="#agregar-tipo-modal"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          <div class="form-floating mb-2 col-md-11">
             <select id="fabricante-input" class="form-select" required>
               <option value="0">Sin especificar</option>
             </select>
             <label for="fabricante-input" class="form-label">Marca</label>
           </div>
-          <div class="form-floating mb-2">
+          <button type="button" class="btn btn-dark mx-auto col-md-1 mb-2 " title="Agregar una nueva marca"  data-bs-toggle="modal" data-bs-target="#agregar-marca-modal"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          <div class="form-floating mb-2 col-md-12">
             <input required id="modelo-input" class="form-control" type="text" maxlength="30" placeholder="">
             <label for="modelo-input" class="">Modelo</label>
           </div>
         </div>
         
         <div class="form-floating my-2 me-5 col-md-12">
-          <textarea required class="form-control " id="desc-fallo" style="height: 150px" maxlength="500"></textarea>
+          <textarea required class="form-control " id="desc-fallo" style="height: 100px" maxlength="500"></textarea>
           <label for="desc-fallo" class="form-label" required>Descripción de falla</label>
         </div>
         <hr>
         <button type="submit" id="submit" class="mt-1 col-md-11 btn btn-primary">Enviar</button>
-        <div id="loading-spinner"  style="display: none;" class="spinner-border text-primary col-md-1 m-auto" role="status">
+        <div id="loading-spinner" style="display: none;" class="spinner-border text-primary col-md-1 m-auto" role="status">
           <span class="visually-hidden">Loading...</span> <!-- Spinner de carga -->
         </div>
       </form>
@@ -75,6 +78,56 @@
     <!-- Popup de éxito -->
     <div id="successPopup"  class="alert alert-success m-auto fade" rote="alert">
       La operación ha sido procesada con éxito.
+    </div>
+  </div>
+
+  <!-- Modal tipo electrodomestico-->
+  <div class="modal fade" id="agregar-tipo-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar tipo de electrodoméstico</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="agregar-tipo-form">
+            <div class="form-floating mb-2">
+              <input required id="nombre-cliente" type="text" class="form-control " placeholder="Ingresa el nombre del cliente">
+              <label for="nombre-cliente" class="form-label">Tipo de electrodoméstico</label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btn-agregar-tipo" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal marca-->
+  <div class="modal fade" id="agregar-marca-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar marca</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="agregar-tipo-form">
+            <div class="form-floating mb-2">
+              <input required id="nombre-cliente" type="text" class="form-control " placeholder="Ingresa el nombre del cliente">
+              <label for="nombre-cliente" class="form-label">Marca</label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btn-agregar-marca" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
