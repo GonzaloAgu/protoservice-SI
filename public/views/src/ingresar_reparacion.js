@@ -214,6 +214,7 @@ function main() {
 
   $('#nombre-cliente').on('keydown', onAutocomplete)
 
+  // si se modifica el teléfono, se levanta la flag para que se actualice el cliente
   $('#telefono-cliente').on('keyup', event => {
     event.preventDefault();
     if (clienteState.exists) {
@@ -223,6 +224,31 @@ function main() {
   })
 
   $('#reparacion-form').on('submit', submitForm);
+
+  $('#agregar-tipo-modal').on('shown.bs.modal', () => {
+    $('#nuevo-tipo-input').trigger('focus');
+  });
+
+  $('#agregar-marca-modal').on('shown.bs.modal',  () => {
+    $('#nueva-marca-input').trigger('focus');
+  });
+
+  
+  $('#agregar-tipo-form').on('submit', event => {
+    event.preventDefault();
+    const selectorTipos = $('#tipo-input');
+    const options = selectorTipos.find('option').length;
+    selectorTipos.append(`<option value=${options}>${$('#nuevo-tipo-input').val()}</option>`)
+    $(`#tipo-input option:eq(${options})`).prop('selected', true);
+  })
+
+  $('#agregar-marca-form').on('submit', event => {
+    event.preventDefault();
+    const selectorTipos = $('#fabricante-input');
+    const options = selectorTipos.find('option').length;
+    selectorTipos.append(`<option value=${options}>${$('#nueva-marca-input').val()}</option>`)
+    $(`#fabricante-input option:eq(${options})`).prop('selected', true);
+  })
 }
 
 document.addEventListener('DOMContentLoaded', main);
