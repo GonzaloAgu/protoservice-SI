@@ -121,7 +121,7 @@ const onAutocomplete = event => {
 const submitForm = async (event) => {
   event.preventDefault();
   $('#loading-spinner').css('display', 'block');
-
+  $('#submit').css('display', 'none')
   let form = {};
 
   try {
@@ -171,7 +171,7 @@ const submitForm = async (event) => {
 
     setTimeout(() => {
       window.location.href = "/reparacion?id=" + data.reparacion_id;
-    }, 1000);
+    }, 500);
   } catch (error) {
     $('#successPopup')
       .addClass('show')
