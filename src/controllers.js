@@ -81,7 +81,6 @@ const postReparacion = async (req, res) => {
     const reparacion = new Reparacion();
     reparacion.modelo_electro = form.modelo_electro;
     reparacion.desc_falla = form.desc_falla;
-    //reparacion.fecha_recepcion = new Date();
     reparacion.id_cliente = form.id_cliente;
     reparacion.factura_id = form.factura_id;
     reparacion.fabricante_id = form.fabricante_id;
