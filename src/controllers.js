@@ -215,6 +215,29 @@ const getAllTiposElectrodomestico = async(req, res) => {
     res.json(array);
 }
 
+const postTipoElectrodomestico = async(req, res) => {
+    const tipo = new TipoElectrodomestico();
+    tipo.descripcion = req.body.descripcion;
+    
+    const ok = await tipo.guardar();
+
+    console.log('ok:', ok)
+
+    let response = {
+        ok: ok === 1,
+        error: null,
+        tipo_electro_id: null
+    }
+
+    if(ok !== 1){
+        response.error = ok.detail;
+        res.status(300);
+    } else {
+        response.tipo_electro_id = tipo.id;
+    }
+    res.json(response);
+}
+
 const getAllFabricantes = async(req, res) => {
     let fabricantes = await Fabricante.obtenerTodos("id<>0");
     let array = [];
@@ -276,5 +299,6 @@ module.exports = {
     postReparacion,
     patchReparacion,
     getComentarios,
-    postComentario
+    postComentario,
+    postTipoElectrodomestico
 }

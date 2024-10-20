@@ -29,6 +29,12 @@ const fabricanteCreate = fabricanteBase.append({
 
 const fabricanteUpdate = fabricanteCreate;
 
+// SCHEMAS DE TIPO DE ELECTRODOMESTICO
+
+const tipoCreate = Joi.object({
+    descripcion: Joi.string().max(30).required()
+})
+
 // SCHEMAS DE FACTURA
 
 const facturaCreate = Joi.object({
@@ -84,5 +90,6 @@ module.exports = {
     facturaUpdate,
     reparacionCreate,
     reparacionUpdate,
-    comentarioCreate
+    comentarioCreate,
+    tipoCreate
 }

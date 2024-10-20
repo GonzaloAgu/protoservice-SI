@@ -236,10 +236,27 @@ function main() {
   
   $('#agregar-tipo-form').on('submit', event => {
     event.preventDefault();
-    const selectorTipos = $('#tipo-input');
-    const options = selectorTipos.find('option').length;
-    selectorTipos.append(`<option value=${options}>${$('#nuevo-tipo-input').val()}</option>`)
-    $(`#tipo-input option:eq(${options})`).prop('selected', true);
+    const form = {
+      descripcion: $('#nuevo-tipo-input').val()
+    }
+    // agregar a la BD
+    fetch('api/tipos', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+      .then( res => res.json())
+      .then( data => {
+        console.log(data);
+        const selectorTipos = $('#tipo-input');
+        const options = selectorTipos.find('option').length;
+        selectorTipos.append(`<option value=${data.tipo_electro_id}>${$('#nuevo-tipo-input').val()}</option>`);
+        $(`#tipo-input option:eq(${options})`).prop('selected', true);
+      })
+      .catch(error => console.error(error))
+
   })
 
   $('#agregar-marca-form').on('submit', event => {

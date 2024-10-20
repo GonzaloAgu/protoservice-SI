@@ -40,6 +40,7 @@ router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCli
 
 // Tipo de electrodomestico y fabricantes
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
+router.post('/api/tipos', validateData(schemas.tipoCreate), ctrls.postTipoElectrodomestico)
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 
 // --- VISTAS ---
