@@ -94,7 +94,7 @@
 
 
           </div>
-          <button class="btn btn-success" id="btn-generar-factura" style="white-space: nowrap;">
+          <button class="btn btn-success" id="btn-generar-factura" style="white-space: nowrap;" data-bs-toggle="modal" data-bs-target="#generar-factura-modal">
             Generar Factura
           </button>
         </div>
@@ -102,7 +102,7 @@
     </div>
     <div id="errorPopup" class="alert alert-danger m-auto fade" rote="alert"></div>
 
-    <!-- Modal -->
+    <!-- Modal de eliminacion -->
     <div class="modal fade" id="eliminar-warning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -117,6 +117,49 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" id="btn-eliminar-confirmado" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de generar factura -->
+    <div class="modal fade" id="generar-factura-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Generando factura</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Rellene los campos para generar su factura.</p>
+            <form id="generar-factura-form">
+              <div class="form-floating mb-2">
+                <input required id="monto-input" type="numer" min="0" class="form-control">
+                <label for="monto-input" class="form-label">Monto</label>
+              </div>
+              <div class="form-floating mb-2">
+                <select id="tipo-factura-input" class="form-select" required>
+                  <option value="A">Factura A</option>
+                  <option value="B">Factura B</option>
+                  <option value="C">Factura C</option>
+                </select>
+                <label for="tipo-factura-input" class="form-label">Tipo de factura</label>
+              </div>
+              <div class="form-floating mb-2">
+                <select id="medio-pago-input" class="form-select" required>
+                  <option value="A">Efectivo</option>
+                  <option value="B">Tarjeta de débito</option>
+                  <option value="C">Tarjeta de crédito</option>
+                </select>
+                <label for="medio-pago-input" class="form-label">Tipo de factura</label>
+              </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" id="btn-generar-pdf" class="btn btn-primary">Generar PDF</button>
+          </div>
           </div>
         </div>
       </div>
