@@ -221,8 +221,6 @@ const postTipoElectrodomestico = async(req, res) => {
     
     const ok = await tipo.guardar();
 
-    console.log('ok:', ok)
-
     let response = {
         ok: ok === 1,
         error: null,
@@ -231,7 +229,7 @@ const postTipoElectrodomestico = async(req, res) => {
 
     if(ok !== 1){
         response.error = ok.detail;
-        res.status(300);
+        res.status(300).json(response);
     } else {
         response.tipo_electro_id = tipo.id;
     }
@@ -248,6 +246,28 @@ const getAllFabricantes = async(req, res) => {
         })
     })
     res.json(array);
+}
+
+const postFabricante = async(req, res) => {
+    const fabricante = new Fabricante();
+    fabricante.descripcion = req.body.descripcion;
+
+    const ok = await fabricante.guardar();
+
+    let response = {
+        ok: ok === 1,
+        error: null,
+        fabricante_id: null
+    }
+
+    if(ok !== 1) {
+        response.error = ok.detail;
+        res.status(300).json(response);
+    } else {
+        response.fabricante_id = fabricante.id;
+    }
+
+    res.json(response);
 }
 
 const getFactura = async(req, res) => {
@@ -294,6 +314,7 @@ module.exports = {
     getCliente,
     postCliente,
     patchCliente,
+    postFabricante,
     postFactura,
     getReparacion,
     postReparacion,

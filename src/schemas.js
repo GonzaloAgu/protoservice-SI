@@ -19,12 +19,8 @@ const clienteUpdate = Joi.object({
 
 // SCHEMAS DE FABRICANTE
 
-const fabricanteBase = Joi.object({
+const fabricanteCreate = Joi.object({
     descripcion: Joi.string().max(20).required()
-})
-
-const fabricanteCreate = fabricanteBase.append({
-    id: Joi.number().min(0).required()
 })
 
 const fabricanteUpdate = fabricanteCreate;
@@ -86,6 +82,7 @@ module.exports = {
     deleteSch,
     clienteCreate,
     clienteUpdate,
+    fabricanteCreate,
     facturaCreate,
     facturaUpdate,
     reparacionCreate,

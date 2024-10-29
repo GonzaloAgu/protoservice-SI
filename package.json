@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha --exit",
-    "dev": "cls && node app.js"
+    "dev": "cls && node app.js --watch"
   },
   "author": "gonzalo agu",
   "license": "ISC",

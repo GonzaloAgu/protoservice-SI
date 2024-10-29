@@ -249,7 +249,6 @@ function main() {
     })
       .then( res => res.json())
       .then( data => {
-        console.log(data);
         const selectorTipos = $('#tipo-input');
         const options = selectorTipos.find('option').length;
         selectorTipos.append(`<option value=${data.tipo_electro_id}>${$('#nuevo-tipo-input').val()}</option>`);
@@ -261,10 +260,28 @@ function main() {
 
   $('#agregar-marca-form').on('submit', event => {
     event.preventDefault();
-    const selectorTipos = $('#fabricante-input');
-    const options = selectorTipos.find('option').length;
-    selectorTipos.append(`<option value=${options}>${$('#nueva-marca-input').val()}</option>`)
-    $(`#fabricante-input option:eq(${options})`).prop('selected', true);
+
+    const form = {
+      descripcion: $('#nueva-marca-input').val()
+    }
+    // agregar a la BD
+    fetch('api/fabricantes', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+      .then( res => res.json())
+      .then( data => {
+        const selectorMarcas = $('#fabricante-input');
+        const options = selectorMarcas.find('option').length;
+        selectorMarcas.append(`<option value=${data.fabricante_id}>${$('#nueva-marca-input').val()}</option>`)
+        $(`#fabricante-input option:eq(${options})`).prop('selected', true);
+      })
+      .catch(error => console.error(error))
+
+    
   })
 }
 

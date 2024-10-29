@@ -42,6 +42,7 @@ router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCli
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.post('/api/tipos', validateData(schemas.tipoCreate), ctrls.postTipoElectrodomestico)
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
+router.post('/api/fabricantes', validateData(schemas.fabricanteCreate), ctrls.postFabricante)
 
 // --- VISTAS ---
 router.get('/', (req, res) => res.redirect('/consulta'));

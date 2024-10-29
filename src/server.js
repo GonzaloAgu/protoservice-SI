@@ -20,6 +20,6 @@ module.exports = class Server {
 
     listen(port) {
         this.app.listen(port);
-        console.log("Servidor abierto en puerto ", port);
+        console.log("Servidor abierto en http://localhost:" + port);
     }
 }
