@@ -325,7 +325,7 @@ const getFacturaPdf = async(req, res) =>{
         const response = await fetch('http://localhost:3000/api/factura?id=' + id);
         const factura = await response.json();
     
-        const templatePath = path.join(__dirname, '../public/pdf/factura.ejs');
+        const templatePath = path.join(__dirname, './pdf/factura.ejs');
         const html = await ejs.renderFile(templatePath, factura);
     
         

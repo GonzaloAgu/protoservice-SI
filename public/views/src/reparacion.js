@@ -3,7 +3,7 @@ const estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
 
 
 import { fechaParser, badgeColors } from './utils.js';
-import { handleGenerarPdfBtn } from '../../pdf/factura_logic.js';
+import { handleGenerarPdfBtn } from './factura_logic.js';
 
 const updateBadge = (estado) => {
     const posicion = badgeColors.findIndex(item => item.estado === estado);
