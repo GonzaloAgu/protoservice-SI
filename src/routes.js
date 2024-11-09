@@ -38,9 +38,11 @@ router.get('/api/cliente', ctrls.getCliente);
 router.post('/api/cliente', validateData(schemas.clienteCreate), ctrls.postCliente);
 router.patch('/api/cliente', validateData(schemas.clienteUpdate), ctrls.patchCliente);
 
-// Tipo de electrodomestico y fabricantes
+// Tipo de electrodomestico
 router.get('/api/tipos', ctrls.getAllTiposElectrodomestico);
 router.post('/api/tipos', validateData(schemas.tipoCreate), ctrls.postTipoElectrodomestico)
+
+// Fabricantes
 router.get('/api/fabricantes', ctrls.getAllFabricantes);
 router.post('/api/fabricantes', validateData(schemas.fabricanteCreate), ctrls.postFabricante)
 
