@@ -12,30 +12,33 @@ const craftForm = () => {
  * @throws
  */
 const saveFacturaInDB = async form => {
-    fetch('/api/factura', {
+    const response = await fetch('/api/factura', {
         method: 'POST',
         headers: {
-            'Content-Type': "application/json"
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(form)
-    })
-    .then(res => res.json())
-    .then(res => {
-        if(res.ok)
-            return res.factura_id;
-        else
-            throw new Error('Error al guardar factura')
-    })
-}
+    });
+
+    const res = await response.json();
+
+    if (res.ok) {
+        return res.factura_id;
+    } else {
+        throw new Error('Error al guardar factura');
+    }
+};
 
 const getToPDF = (facturaId) => {
-    window.href = `/printfactura?id=${facturaId}`
+    window.open(`/printfactura?id=${facturaId}`, '_blank').focus()
 }
 
 export async function handleGenerarPdfBtn (event) {
+    $('#pdf-loading-spinner').removeClass('d-none')
     const form = craftForm();
     try {
         const facturaId = await saveFacturaInDB(form)
+        $('#pdf-loading-spinner').addClass('d-none')
         getToPDF(facturaId)
     } catch (err) {
         console.error('Error al guardar la factura o generando su PDF: ', err)
