@@ -1,8 +1,11 @@
 const craftForm = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const reparacion_id = urlParams.get('id');
     return {
         monto: $('#monto-input').val(),
         tipo: $('#tipo-factura-input').val(),
         medio_pago_id: $('#medio-pago-input').val(),
+        reparacion_id
     }
 }
 

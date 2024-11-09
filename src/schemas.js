@@ -36,7 +36,8 @@ const tipoCreate = Joi.object({
 const facturaCreate = Joi.object({
     tipo: Joi.string().regex(/^[a-cA-C]$/).required(),
     monto: Joi.number().min(0).required(),
-    medio_pago_id: Joi.number().min(0).required()
+    medio_pago_id: Joi.number().min(0).required(),
+    reparacion_id: Joi.number().min(0).required()
 })
 
 const facturaUpdate = Joi.object({

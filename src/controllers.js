@@ -59,15 +59,33 @@ const patchCliente = async(req, res) => {
 
 const postFactura = async (req, res) => {
     const form = req.body;
+
     let factura = new Factura();
     factura.tipo = form.tipo;
     factura.fecha = new Date();
     factura.monto = form.monto;
     factura.medio_pago_id = form.medio_pago_id;
-    await factura.guardar();
-
-    const response = {ok: true, factura_id: factura._id};
-    res.json(response)
+    let response = {};
+    try {
+        console.log('Guardando factura...')
+        await factura.guardar();
+    
+        console.log('Asociando factura a reparacion con id: ', form.reparacion_id)
+        const reparacion = new Reparacion(form.reparacion_id);
+        const repExiste = await reparacion.obtener()
+    
+        if(repExiste) {
+            reparacion.factura_id = factura.id;
+            await reparacion.guardar();
+            response = {ok: true, factura_id: factura._id};
+        } else {
+            response = {ok: false}
+        }
+    } catch (err) {
+        console.error('Error al generar la factura: ', err)
+    } finally {
+        res.json(response)
+    }
 }
 
 const getReparacion = async (req, res) => {
@@ -312,6 +330,14 @@ const getFacturaPdf = async(req, res) =>{
     const htmlPDF = new PuppeteerHTMLPDF();
     try {
         const { id } = req.query;
+
+        
+        // const factura = new Factura(id);
+        // const encontrado = await factura.obtener();
+        // if(!encontrado)
+        //     throw new Error(`Factura con id ${id} no encontrada.`)
+
+        // const cliente = await factura.getClienteObj();
         const response = await fetch('http://localhost:3000/api/factura?id=' + id);
         const factura = await response.json();
     
