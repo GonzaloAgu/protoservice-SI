@@ -1,5 +1,21 @@
 "use strict";
 
+const path = require('path')
+const ejs = require('ejs');
+
+const PuppeteerHTMLPDF = require('puppeteer-html-pdf');
+const htmlPDF = new PuppeteerHTMLPDF();
+htmlPDF.setOptions({
+    format: 'A4',
+    printBackground: true,
+    margin: {
+        top: '1cm',
+        right: '1cm',
+        bottom: '1cm',
+        left: '1cm'
+      },
+})
+
 const { Cliente, Factura, Reparacion, TipoElectrodomestico, Fabricante, Comentario  } = require('./models/models');
 
 const getCliente = async(req, res) => {
@@ -303,6 +319,26 @@ const getFactura = async(req, res) => {
 
 }
 
+const getFacturaPdf = async(req, res) =>{
+    try {
+        const { id } = req.query;
+        const response = await fetch('http://localhost:3000/api/factura?id=' + id);
+        const factura = await response.json();
+    
+        const templatePath = path.join(__dirname, '../public/pdf/factura.ejs');
+        const html = await ejs.renderFile(templatePath, factura);
+    
+        
+    
+        const pdfBuffer = await htmlPDF.create(html);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename=factura.pdf');
+        res.send(pdfBuffer);
+    } catch (error) {
+        console.error('Error generando el PDF:', error);
+        res.status(500).send('Error al generar la factura');
+    }
+}
 
 
 module.exports = {
@@ -321,5 +357,6 @@ module.exports = {
     patchReparacion,
     getComentarios,
     postComentario,
-    postTipoElectrodomestico
+    postTipoElectrodomestico,
+    getFacturaPdf
 }

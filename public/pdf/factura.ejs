@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:3000/pdf/pdf.css">
+    <title>Factura - Electroservice</title>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Encabezado de la Factura -->
+        <h1>Electroservice</h1>
+        <div class="invoice-header">
+            <p></p>
+        </div>
+        <!-- Información del Cliente -->
+        <table class="client-details">
+            <tr>
+                <td><strong>Cliente:</strong> Juan Pérez</td>
+                <td><strong>Teléfono:</strong> +54 9 1234 567890</td>
+                <td><strong>Factura Nº</strong>: 12345</td>
+            </tr>
+        </table>
+        
+        <hr/>
+        <!-- Detalles de la reparación -->
+        <table class="invoice-details">
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Descripción del Fallo</th>
+            </tr>
+            <tr>
+                <td>Samsung</td>
+                <td>ABC123</td>
+                <td>No enciende</td>
+            </tr>
+        </table>
+
+        <!-- Fechas de recepción y entrega -->
+        <table class="dates">
+            <tr>
+                <td><strong>Fecha de Recepción:</strong> 08/11/2024</td>
+                <td><strong>Fecha de Entrega:</strong> 15/11/2024</td>
+            </tr>
+        </table>
+
+        <!-- Pie de página -->
+        <div class="footer">
+            <p>Gracias por confiar en Electroservice</p>
+            <p>Dirección: Av. Siempreviva 123, Catamarca, Argentina</p>
+            <p>Tel: +54 383 1234567 | Email: contacto@electroservice.com.ar</p>
+        </div>
+    </div>
+</body>
+</html>
