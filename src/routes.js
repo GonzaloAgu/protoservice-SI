@@ -31,7 +31,7 @@ router.post('/api/comentario', validateData(schemas.comentarioCreate), ctrls.pos
 // Factura
 router.get('/api/factura', ctrls.getFactura)
 router.post('/api/factura', validateData(schemas.facturaCreate), ctrls.postFactura);
-router.get('/api/facturapdf', ctrls.getFacturaPdf);
+router.get('/printfactura', ctrls.getFacturaPdf);
 
 // Cliente
 router.get('/api/cliente', ctrls.getCliente);

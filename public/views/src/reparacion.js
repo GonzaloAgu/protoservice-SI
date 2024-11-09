@@ -3,6 +3,7 @@ const estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
 
 
 import { fechaParser, badgeColors } from './utils.js';
+import { handleGenerarPdfBtn } from '../../pdf/factura_logic.js';
 
 const updateBadge = (estado) => {
     const posicion = badgeColors.findIndex(item => item.estado === estado);
@@ -96,6 +97,8 @@ const eventListeners = () => {
     });
 
     $('#btn-actualizar-estado').on('click', () => actualizarEstado())
+    $('#btn-eliminar-confirmado').on('click', eliminarReparacion);
+    $('#btn-generar-pdf').on('click', handleGenerarPdfBtn)
 
 }
 
@@ -151,8 +154,6 @@ const eliminarReparacion = () => {
 function onLoad() {
     const urlParams = new URLSearchParams(window.location.search);
     const idReparacion = urlParams.get('id');
-
-    $('#btn-eliminar-confirmado').on('click', eliminarReparacion);
 
     document.title = `Reparacion #${idReparacion} - Electroservice`
 
