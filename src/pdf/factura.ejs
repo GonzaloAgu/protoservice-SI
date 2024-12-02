@@ -9,16 +9,16 @@
 <body>
     <div class="invoice-container">
         <!-- Encabezado de la Factura -->
-        <h1>Electroservice</h1>
+        <h1 style="color: red;">Electroservice</h1>
         <div class="invoice-header">
             <p></p>
         </div>
         <!-- Información del Cliente -->
         <table class="client-details">
             <tr>
-                <td><strong>Cliente:</strong> Juan Pérez</td>
-                <td><strong>Teléfono:</strong> +54 9 1234 567890</td>
-                <td><strong>Factura Nº</strong>: 12345</td>
+                <td><strong>Cliente:</strong> <%= cliente.nombre %></td>
+                <td><strong>Teléfono:</strong> <%= cliente.telefono %></td>
+                <td><strong>Factura Nº</strong>: <%= factura.id %></td>
             </tr>
         </table>
         
@@ -31,25 +31,24 @@
                 <th>Descripción del Fallo</th>
             </tr>
             <tr>
-                <td>Samsung</td>
-                <td>ABC123</td>
-                <td>No enciende</td>
+                <td><%= fabricante.descripcion %></td>
+                <td><%= reparacion.modelo_electro %></td>
+                <td><%= reparacion.desc_falla %></td>
             </tr>
         </table>
 
         <!-- Fechas de recepción y entrega -->
         <table class="dates">
             <tr>
-                <td><strong>Fecha de Recepción:</strong> 08/11/2024</td>
-                <td><strong>Fecha de Entrega:</strong> 15/11/2024</td>
+                <td><strong>Fecha de Recepción:</strong> <%= fecha_recepcion %></td>
+                <td><strong>Fecha de Entrega:</strong> <%= fecha_hoy %></td>
             </tr>
         </table>
 
         <!-- Pie de página -->
         <div class="footer">
             <p>Gracias por confiar en Electroservice</p>
-            <p>Dirección: Av. Siempreviva 123, Catamarca, Argentina</p>
-            <p>Tel: +54 383 1234567 | Email: contacto@electroservice.com.ar</p>
+            <p>Dirección: Eduardo Price 19, Trelew, Chubut (9100), Argentina.</p>
         </div>
     </div>
 </body>

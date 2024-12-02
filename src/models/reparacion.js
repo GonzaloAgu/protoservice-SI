@@ -40,6 +40,15 @@ module.exports = class Reparacion {
         }
         return false;
     }
+    static async getFromFacturaId(factura_id) {
+        const result = await pool.query("SELECT id FROM reparacion WHERE factura_id=$1", [factura_id])
+        const reparacion = new Reparacion(result.rows[0].id)
+        await reparacion.obtener()
+
+        if(reparacion.desc_falla)
+            return reparacion
+        throw new Error("No se encontró una reparación con una factura de id: ", factura_id)
+    }
 
     async getFabricanteObj() {
         if (this.fabricanteObj) return this.fabricanteObj;

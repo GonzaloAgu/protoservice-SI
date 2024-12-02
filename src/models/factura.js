@@ -3,12 +3,16 @@
 const { logTS } = require('../utils/log');
 const pool = require("../utils/pg.js").getInstance();
 const MedioPago = require('./medio_pago.js');
+const Reparacion = require('./reparacion.js')
+const Cliente = require('./cliente.js')
 
 module.exports = class Factura {
 
     static tipos = ['A', 'B'];
     #id;
     medioPagoObj;
+    reparacionObj;
+    clienteObj;
 
     constructor(id = undefined){
         this.#id = id;
@@ -27,6 +31,17 @@ module.exports = class Factura {
             return this.medioPagoObj;
         let mp = new MedioPago(this.medio_pago_id);
         if(await mp.obtener()){
+            this.medioPagoObj = mp;
+            return mp;
+        }
+        return false;
+    }
+
+    async getReparacionObj() {
+        if(this.reparacionObj)
+            return this.reparacionObj;
+        let rep = new Reparacion(this.medio_pago_id);
+        if(await rep.obtener()){
             this.medioPagoObj = mp;
             return mp;
         }

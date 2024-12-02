@@ -189,7 +189,6 @@ const getAllReparacion = async(req, res) => {
             cliente: await rep.getClienteObj(),
             fabricante: await rep.getFabricanteObj(),
             modelo_electro: rep.modelo_electro,
-            factura: await rep.getFacturaObj(),
             estado: rep.estado,
             desc_falla: rep.desc_falla,
             fecha_recepcion: rep.fecha_recepcion,
@@ -327,6 +326,20 @@ const getFactura = async(req, res) => {
 }
 
 const getFacturaPdf = async(req, res) =>{
+
+    const dateFormatter = (ticks) => {
+        const date = new Date(ticks);
+    
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+    
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+    
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
+
     const htmlPDF = new PuppeteerHTMLPDF();
     try {
         const { id } = req.query;
@@ -337,12 +350,17 @@ const getFacturaPdf = async(req, res) =>{
         // if(!encontrado)
         //     throw new Error(`Factura con id ${id} no encontrada.`)
 
-        // const cliente = await factura.getClienteObj();
-        const response = await fetch('http://localhost:3000/api/factura?id=' + id);
-        const factura = await response.json();
+        //const response = await fetch('http://localhost:3000/api/factura?id=' + id);
+        //const jsonres = await response.json();
+        const factura = new Factura(id);
+        await factura.obtener()
+        const cliente = await Cliente.getFromFacturaId(id)
+        const reparacion = await Reparacion.getFromFacturaId(id)
+        let fabricante = new Fabricante(reparacion.fabricante_id)
+        await fabricante.obtener()
     
         const templatePath = path.join(__dirname, './pdf/factura.ejs');
-        const html = await ejs.renderFile(templatePath, factura);
+        const html = await ejs.renderFile(templatePath, {factura, cliente, reparacion, fabricante, fecha_recepcion: dateFormatter(reparacion.fecha_recepcion.getTime()), fecha_hoy: dateFormatter(Date.now())});
     
         htmlPDF.setOptions({
             format: 'A4',

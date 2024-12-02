@@ -50,6 +50,17 @@ module.exports = class Cliente  {
         });
         return lista;
     }
+
+    static async getFromFacturaId(factura_id) {
+        const result = await pool.query("SELECT cliente.id FROM cliente JOIN reparacion ON cliente.id=reparacion.id_cliente JOIN factura ON reparacion.factura_id = factura.id WHERE factura_id=$1", [factura_id])
+        const cliente = new Cliente(result.rows[0].id)
+        await cliente.obtener()
+
+        if(cliente.nombre)
+            return cliente
+        throw new Error("No se encontró un cliente para el cual exista una factura de id: ", factura_id)
+    }
+
     /**
      * Almacena datos del cliente en la base de datos. Si no existia, lo agrega.
      * @returns 1 si lo agrego en la base. 0 si lo modifico. -1 si se produjo un error.
