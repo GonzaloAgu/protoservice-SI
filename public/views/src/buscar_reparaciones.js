@@ -12,9 +12,11 @@ function agregarFilaATabla(datosFila){
     card.addEventListener('mousedown', event => { if(event.button === 1) dirigirAReparacion(datosFila.id)} )
 
     const repView = document.createElement('rep-view');
+    console.log("datosFila: ", datosFila)
 
     repView.setAttribute('data-id', datosFila.id);
     repView.setAttribute('estado', datosFila.estado);
+    repView.setAttribute('tipo-electro', datosFila.tipo_electro.descripcion)
     repView.setAttribute('fabricante', datosFila.fabricante.descripcion);
     repView.setAttribute('modelo', datosFila.modelo_electro);
     repView.setAttribute('nombre-cliente', datosFila.cliente.nombre);

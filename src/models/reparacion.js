@@ -6,6 +6,7 @@ const Fabricante = require('./fabricante.js');
 const Cliente = require('./cliente.js');
 const Factura = require('./factura.js');
 const Comentario = require('./comentario.js');
+const TipoElectrodomestico = require('./tipo_electro.js');
 
 
 module.exports = class Reparacion {
@@ -14,6 +15,7 @@ module.exports = class Reparacion {
     clienteObj;
     facturaObj;
     fabricanteObj;
+    tipoElectroObj;
     comentarios = null;
 
     static estados = ['pendiente', 'en revision', 'reparado', 'sin arreglo'];
@@ -58,6 +60,16 @@ module.exports = class Reparacion {
             return fabricante;
         }
         return false;
+    }
+
+    async getTipoElectroObj() {
+        if (this.tipoElectroObj) return this.tipoElectroObj;
+        let tipo = new TipoElectrodomestico(this.tipo_electro_id);
+        if (await tipo.obtener()) {
+            this.tipoElectroObj = tipo;
+            return tipo;
+        }
+        throw new Error("No se encontro el tipo de electrodomestico N°" + this.tipo_electro_id);
     }
 
     async getFacturaObj() {
@@ -119,6 +131,7 @@ module.exports = class Reparacion {
             obj.fecha_recepcion = item.fecha_recepcion;
             obj.id_cliente = item.id_cliente;
             obj.fabricante_id = item.fabricante_id;
+            obj.tipo_electro_id = item.tipo_electro_id;
             obj.factura_id = item.factura_id;
             obj.estado = item.estado;
             lista.push(obj);
@@ -149,6 +162,7 @@ module.exports = class Reparacion {
             obj.fecha_recepcion = item.fecha_recepcion;
             obj.id_cliente = item.id_cliente;
             obj.fabricante_id = item.fabricante_id;
+            obj.tipo_electro_id = item.tipo_electro_id;
             obj.factura_id = item.factura_id;
             obj.estado = item.estado;
             lista.push(obj);

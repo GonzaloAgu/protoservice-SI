@@ -182,12 +182,14 @@ const getAllReparacion = async(req, res) => {
     } else {
         data = await Reparacion.obtenerTodos();
     }
-
+    console.log("response:", data)
     const response = await Promise.all(
+
         data.map(async (rep) => ({
             id: rep.id,
             cliente: await rep.getClienteObj(),
             fabricante: await rep.getFabricanteObj(),
+            tipo_electro: await rep.getTipoElectroObj(),
             modelo_electro: rep.modelo_electro,
             estado: rep.estado,
             desc_falla: rep.desc_falla,

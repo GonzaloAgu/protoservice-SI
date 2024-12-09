@@ -12,6 +12,7 @@ class ReparacionComponent extends HTMLElement {
               <div class="me-4 col-md-4" id="main-info">
                 <h4 class="card-title d-flex align-items-center mb-2">
                 <span id="estado" class="badge bg-secondary me-2" style="font-size: 0.75rem;">Pendiente</span>
+                  <span id="tipo" class="me-2"></span>
                   <span id="fabricante" class="me-2"></span>
                   <span id="modelo" class="fw-normal text-nowrap"></span>
                 </h4>
@@ -56,6 +57,7 @@ class ReparacionComponent extends HTMLElement {
     element.classList.add(badgeColors[posicion].class);
 
     this.querySelector('#nombre-cliente').textContent = this.getAttribute('nombre-cliente');
+    this.querySelector('#tipo').textContent = this.getAttribute('tipo-electro');
     this.querySelector('#telefono-cliente').textContent = this.getAttribute('telefono-cliente')
     this.querySelector('#whatsapp').href = `https://wa.me/54${this.getAttribute('telefono-cliente')}`;
     this.querySelector('#descripcion-falla').textContent = this.getAttribute('desc-falla');
