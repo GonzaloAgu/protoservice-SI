@@ -12,7 +12,6 @@ function agregarFilaATabla(datosFila){
     card.addEventListener('mousedown', event => { if(event.button === 1) dirigirAReparacion(datosFila.id)} )
 
     const repView = document.createElement('rep-view');
-    console.log("datosFila: ", datosFila)
 
     repView.setAttribute('data-id', datosFila.id);
     repView.setAttribute('estado', datosFila.estado);

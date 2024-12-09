@@ -182,7 +182,6 @@ const getAllReparacion = async(req, res) => {
     } else {
         data = await Reparacion.obtenerTodos();
     }
-    console.log("response:", data)
     const response = await Promise.all(
 
         data.map(async (rep) => ({
